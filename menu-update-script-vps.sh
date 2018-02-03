@@ -23,14 +23,14 @@ vps="aneka";
 #if [[ $vps = "zvur" ]]; then
 	#source="http://"
 #else
-	source="https://raw.githubusercontent.com/cream/mei"
+	source="https://raw.githubusercontent.com/brantbell/cream/mei"
 #fi
 
 # go to root
 cd
 
 # check registered ip
-wget -q -O IP $source/cream/mei/IP.txt
+wget -q -O IP $source/brantbell/cream/meicream/mei/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	if [[ $vps = "zvur" ]]; then
@@ -44,7 +44,7 @@ fi
 cd
 function update_script() {
 cd
-wget -O /usr/bin/updatescript.sh $source/debian7/updatescript.sh && clear && chmod +x /usr/bin/updatescript.sh && /usr/bin/updatescript.sh && rm -f /root/IP && rm -f /root/IPcarding
+wget -O /usr/bin/updatescript.sh $source/brantbell/cream/meicream/mei/updatescript.sh && clear && chmod +x /usr/bin/updatescript.sh && /usr/bin/updatescript.sh && rm -f /root/IP && rm -f /root/IPcarding
 }
 function anti_ddos() {
 if [ -d '/usr/local/ddos' ]; then
@@ -101,7 +101,7 @@ do
 	;;
 	"Install SQLmap")
 	cd /root
-	wget -O /usr/bin/install-sqlmap.sh $source/cream/mei/install-sqlmap.sh
+	wget -O /usr/bin/install-sqlmap.sh $source/brantbell/cream/mei/install-sqlmap.sh
 	chmod 755 /usr/bin/install-sqlmap.sh
 	clear
 	/usr/bin/install-sqlmap.sh
