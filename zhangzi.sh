@@ -20,7 +20,7 @@ if [[ $ether = "" ]]; then
         ether=eth0
 fi
 
-	source="https://raw.githubusercontent.com/elangoverdosis88/deenie"
+	source="https://raw.githubusercontent.com/brantbell/cream/mei"
 
 
 # go to root
@@ -60,7 +60,7 @@ if ! grep -w -q $MYIP IP; then
 	echo "        Hubungi: editor ( elang overdosis atau deeniedoank)"
 	
 	rm /root/IP
-	rm cinta7.sh
+	rm zhangzi.sh
 	rm -f /root/IP
 	exit
 fi
@@ -400,7 +400,7 @@ rm -f /root/.bash_history && history -c
 
 echo "=======================================================" | tee -a log-install.txt
 cd ~/
-rm -f /root/cinta7.sh
+rm -f /root/zhangzi.sh
 rm -f /root/pptp.sh
 rm -f /root/ovpn.sh
 rm -f /root/IP
