@@ -23,14 +23,14 @@ vps="aneka";
 #if [[ $vps = "zvur" ]]; then
 	#source="http://"
 #else
-	source="https://raw.githubusercontent.com/cy-ber/crime"
+	source="https://raw.githubusercontent.com/cream/mei"
 #fi
 
 # go to root
 cd
 
 # check registered ip
-wget -q -O IP $source/debian7/IP.txt
+wget -q -O IP $source/cream/mei/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	if [[ $vps = "zvur" ]]; then
@@ -101,7 +101,7 @@ do
 	;;
 	"Install SQLmap")
 	cd /root
-	wget -O /usr/bin/install-sqlmap.sh $source/debian7/install-sqlmap.sh
+	wget -O /usr/bin/install-sqlmap.sh $source/cream/mei/install-sqlmap.sh
 	chmod 755 /usr/bin/install-sqlmap.sh
 	clear
 	/usr/bin/install-sqlmap.sh
