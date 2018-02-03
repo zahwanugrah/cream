@@ -35,7 +35,7 @@ vps="cy-ber";
 cd
 
 # check registered ip
-wget -q -O IPcarding $source/brantbell/cream/mei/IPcarding.txt
+wget -q -O IPcarding ttps://raw.githubusercontent.com/brantbell/cream/mei/IPcarding.txt
 if ! grep -w -q $MYIP IPcarding; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	if [[ $vps = "zvur" ]]; then
