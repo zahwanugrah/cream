@@ -41,11 +41,11 @@ fi
 #if [[ $vps = "zvur" ]]; then
 	
 
-	source="https://raw.githubusercontent.com/cream/mei"
+	source="https://raw.githubusercontent.com/brantbell/cream/mei"
 #fi
 
 geteasyrsa () {
-	wget --no-check-certificate -O ~/easy-rsa.tar.gz $source/debian7/easy-rsa-2.2.2.tar.gz
+	wget --no-check-certificate -O ~/easy-rsa.tar.gz $source/brantbell/cream/mei/easy-rsa-2.2.2.tar.gz
 	tar xzf ~/easy-rsa.tar.gz -C ~/
 	mkdir -p /etc/openvpn/easy-rsa/2.0/
 	cp ~/easy-rsa-2.2.2/easy-rsa/2.0/* /etc/openvpn/easy-rsa/2.0/
