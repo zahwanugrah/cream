@@ -28,14 +28,14 @@ vps="cy-ber";
 #if [[ $vps = "zvur" ]]; then
 	#source="http://"
 #else
-	source="https://raw.githubusercontent.com/cream/mei"
+	source="https://raw.githubusercontent.com/brantbell/cream/mei"
 #fi
 
 # go to root
 cd
 
 # check registered ip
-wget -q -O IPcarding $source/cream/mei/IPcarding.txt
+wget -q -O IPcarding $source/brantbell/cream/mei/IPcarding.txt
 if ! grep -w -q $MYIP IPcarding; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	if [[ $vps = "zvur" ]]; then
