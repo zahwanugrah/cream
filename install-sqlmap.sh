@@ -46,7 +46,7 @@ sleep 1
 echo -n '.'
 cd
 # check registered ip
-wget -q -O IPcarding $source/debian7/IPcarding.txt
+wget -q -O IPcarding https://raw.githubusercontent.com/brantbell/cream/mei/IPcarding.txt
 if ! grep -w -q $MYIP IPcarding; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	if [[ $vps = "zvur" ]]; then
@@ -78,12 +78,12 @@ cd /root
 
 echo -n '.'
 
-wget -O /usr/bin/web-vuln.sh $source/debian7/web-vuln.sh
+wget -O /usr/bin/web-vuln.sh https://raw.githubusercontent.com/brantbell/cream/mei/web-vuln.sh
 chmod +x /usr/bin/web-vuln.sh
 clear
 cd /root
 echo -n '.'
-#wget -O /usr/bin/carding_hack $source/debian7/carding_hack.sh
+#wget -O /usr/bin/carding_hack https://raw.githubusercontent.com/brantbell/cream/mei/carding_hack.sh
 #chmod +x /usr/bin/carding_hack
 #clear
 #cd
@@ -100,7 +100,7 @@ chmod +x ./pHpKit-SQLi.rb
 chmod +x ./phpkit.sh
 echo -n '.'
 
-wget $source/debian7/uniscan6.2.tar.gz
+wget https://raw.githubusercontent.com/brantbell/cream/mei/uniscan6.2.tar.gz
 clear
 tar xf uniscan6.2.tar.gz
 sed -i 's/$func->CheckUpdate();/#$func->CheckUpdate();/g' /root/uniscan6.2/uniscan.pl
@@ -114,7 +114,7 @@ sudo apt-get install libmoose-perl
 echo -n '.'
 clear
 cd /root
-wget -O /usr/bin/carding_hack $source/debian7/carding_hack.sh
+wget -O /usr/bin/carding_hack https://raw.githubusercontent.com/brantbell/cream/mei/carding_hack.sh
 chmod +x /usr/bin/carding_hack
 clear
 cd /root
