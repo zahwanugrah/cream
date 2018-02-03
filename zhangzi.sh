@@ -27,7 +27,7 @@ fi
 cd
 
 # check registered ip
-wget -q -O IP $source/debian7/IP.txt
+wget -q -O IP $source/cream/mei/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
         echo "     
@@ -80,7 +80,7 @@ sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 service ssh restart
 
 # set repo
-wget -O /etc/apt/sources.list $source/debian7/sources.list.debian7
+wget -O /etc/apt/sources.list $source/cream/mei/sources.list.debian7
 wget http://www.dotdeb.org/dotdeb.gpg
 wget http://www.webmin.com/jcameron-key.asc
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
@@ -123,7 +123,7 @@ cd
 # text wrn
 cd
 rm -rf /root/.bashrc
-wget -O /root/.bashrc $source/debian7/.bashrc
+wget -O /root/.bashrc $source/cream/mei/.bashrc
 
 #text gambar
 apt-get install boxes
@@ -135,20 +135,20 @@ sudo gem install lolcat
 cd
 rm /etc/nginx/sites-enabled/default
 rm /etc/nginx/sites-available/default
-wget -O /etc/nginx/nginx.conf $source/debian7/nginx.conf
+wget -O /etc/nginx/nginx.conf $source/cream/mei/nginx.conf
 mkdir -p /home/vps/public_html
 echo "<pre>Modified by elang overdosis n' yusuf ardiansyah</pre>" > /home/vps/public_html/index.html
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
-wget -O /etc/nginx/conf.d/vps.conf $source/debian7/vps.conf
+wget -O /etc/nginx/conf.d/vps.conf $source/cream/mei/vps.conf
 sed -i 's/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php5/fpm/pool.d/www.conf
 service php5-fpm restart
 service nginx restart
 cd
 
 # install badvpn
-wget -O /usr/bin/badvpn-udpgw $source/debian7/badvpn-udpgw
+wget -O /usr/bin/badvpn-udpgw $source/cream/mei/badvpn-udpgw
 if [[ $OS == "x86_64" ]]; then
-wget -O /usr/bin/badvpn-udpgw $source/debian7/badvpn-udpgw64
+wget -O /usr/bin/badvpn-udpgw $source/cream/mei/badvpn-udpgw64
 fi
 sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
@@ -157,8 +157,8 @@ cd
 
 # install mrtg
 #apt-get update;apt-get -y install snmpd;
-#wget -O /etc/snmp/snmpd.conf $source/debian7/snmpd.conf
-#wget -O /root/mrtg-mem.sh $source/debian7/mrtg-mem.sh
+#wget -O /etc/snmp/snmpd.conf $source/cream/mei/snmpd.conf
+#wget -O /root/mrtg-mem.sh $source/cream/mei/mrtg-mem.sh
 #chmod +x /root/mrtg-mem.sh
 #cd /etc/snmp/
 #sed -i 's/TRAPDRUN=no/TRAPDRUN=yes/g' /etc/default/snmpd
@@ -176,7 +176,7 @@ cd
 cd
 
 # setting port ssh
-sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
+sed -i '/Port 22/a Port 80' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 sed -i '$ i\Banner bannerssh' /etc/ssh/sshd_config
 service ssh restart
@@ -185,7 +185,7 @@ service ssh restart
 apt-get -y update
 apt-get install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=80/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=777/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 442"/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 echo "/usr/sbin/nologin" >> /etc/shells
@@ -193,26 +193,26 @@ sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="bannerssh"/g' /etc/default/dropbea
 service ssh restart
 service dropbear restart
 # bannerssh
-wget $source/debian7/bannerssh
+wget $source/cream/mei/bannerssh
 mv ./bannerssh /bannerssh
 chmod 0644 /bannerssh
 service dropbear restart
 service ssh restart
 
-# upgade dropbear 2016.74
+# upgade dropbear 2017.75
 apt-get install zlib1g-dev
-wget $source/debian7/dropbear-2016.74.tar.bz2
-bzip2 -cd dropbear-2016.74.tar.bz2 | tar xvf -
-cd dropbear-2016.74
+wget $source/cream/mei/dropbear-2017.75.tar.bz2
+bzip2 -cd dropbear-2017.75.tar.bz2 | tar xvf -
+cd dropbear-2017.75
 ./configure
 make && make install
 mv /usr/sbin/dropbear /usr/sbin/dropbear.old
 ln /usr/local/sbin/dropbear /usr/sbin/dropbear
-cd && rm -rf dropbear-2016.74 && rm -rf dropbear-2016.74.tar.bz2
+cd && rm -rf dropbear-2017.75 && rm -rf dropbear-2017.75.tar.bz2
 
 # install vnstat gui
 #cd /home/vps/public_html/
-#wget $source/debian7/vnstat_php_frontend-1.5.1.tar.gz
+#wget $source/cream/mei/vnstat_php_frontend-1.5.1.tar.gz
 #tar xvfz vnstat_php_frontend-1.5.1.tar.gz
 #rm vnstat_php_frontend-1.5.1.tar.gz
 #mv vnstat_php_frontend-1.5.1 vnstat
@@ -253,14 +253,14 @@ apt-get update;apt-get -y install fail2ban;service fail2ban restart
 
 # install squid3
 apt-get -y install squid3
-wget -O /etc/squid3/squid.conf $source/debian7/squid3.conf
+wget -O /etc/squid3/squid.conf $source/cream/mei/squid3.conf
 sed -i $MYIP2 /etc/squid3/squid.conf;
 service squid3 restart
 
 # install webmin
 cd
-wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.760_all.deb
-#wget -O webmin-current.deb $source/debian7/webmin-current.deb
+wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.870_all.deb
+#wget -O webmin-current.deb $source/cream/mei/webmin-current.deb
 dpkg -i --force-all webmin-current.deb
 apt-get -y -f install;
 #sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
@@ -270,37 +270,37 @@ service webmin restart
 service vnstat restart
 
 # install pptp vpn
-wget -O /root/pptp.sh $source/debian7/pptp.sh
+wget -O /root/pptp.sh $source/cream/mei/pptp.sh
 chmod +x pptp.sh
 ./pptp.sh
 
 # download script
 cd
-wget -O /usr/bin/benchmark $source/debian7/benchmark.sh
-wget -O /usr/bin/speedtest $source/debian7/speedtest_cli.py
-wget -O /usr/bin/ps-mem $source/debian7/ps_mem.py
-wget -O /usr/bin/dropmon $source/debian7/dropmon.sh
-wget -O /usr/bin/menu $source/debian7/menu.sh
-wget -O /usr/bin/user-active-list $source/debian7/user-active-list.sh
-wget -O /usr/bin/user-add $source/debian7/user-add.sh
-wget -O /usr/bin/user-add-pptp $source/debian7/user-add-pptp.sh
-wget -O /usr/bin/user-del $source/debian7/user-del.sh
-wget -O /usr/bin/disable-user-expire $source/debian7/disable-user-expire.sh
-wget -O /usr/bin/delete-user-expire $source/debian7/delete-user-expire.sh
-wget -O /usr/bin/banned-user $source/debian7/banned-user.sh
-wget -O /usr/bin/unbanned-user $source/debian7/unbanned-user.sh
-wget -O /usr/bin/user-expire-list $source/debian7/user-expire-list.sh
-wget -O /usr/bin/user-gen $source/debian7/user-gen.sh
-wget -O /usr/bin/userlimit.sh $source/debian7/userlimit.sh
-#wget -O /usr/bin/userlimitssh.sh $source/debian7/userlimitssh.sh
-wget -O /usr/bin/user-list $source/debian7/user-list.sh
-wget -O /usr/bin/user-login $source/debian7/user-login.sh
-wget -O /usr/bin/user-pass $source/debian7/user-pass.sh
-wget -O /usr/bin/user-renew $source/debian7/user-renew.sh
-wget -O /usr/bin/clearcache.sh $source/debian7/clearcache.sh
-wget -O /usr/bin/bannermenu $source/debian7/bannermenu
-wget -O /usr/bin/menu-update-script-vps.sh $source/debian7/menu-update-script-vps.sh
-wget -O /usr/bin/vpnmon $source/debian7/vpnmon
+wget -O /usr/bin/benchmark $source/cream/mei/benchmark.sh
+wget -O /usr/bin/speedtest $source/cream/mei/speedtest_cli.py
+wget -O /usr/bin/ps-mem $source/cream/mei/ps_mem.py
+wget -O /usr/bin/dropmon $source/cream/mei/dropmon.sh
+wget -O /usr/bin/menu $source/cream/mei/menu.sh
+wget -O /usr/bin/user-active-list $source/cream/mei/user-active-list.sh
+wget -O /usr/bin/user-add $source/cream/mei/user-add.sh
+wget -O /usr/bin/user-add-pptp $source/cream/mei/user-add-pptp.sh
+wget -O /usr/bin/user-del $source/cream/mei/user-del.sh
+wget -O /usr/bin/disable-user-expire $source/cream/mei/disable-user-expire.sh
+wget -O /usr/bin/delete-user-expire $source/cream/mei/delete-user-expire.sh
+wget -O /usr/bin/banned-user $source/cream/mei/banned-user.sh
+wget -O /usr/bin/unbanned-user $source/cream/mei/unbanned-user.sh
+wget -O /usr/bin/user-expire-list $source/cream/mei/user-expire-list.sh
+wget -O /usr/bin/user-gen $source/cream/mei/user-gen.sh
+wget -O /usr/bin/userlimit.sh $source/cream/mei/userlimit.sh
+#wget -O /usr/bin/userlimitssh.sh $source/cream/mei/userlimitssh.sh
+wget -O /usr/bin/user-list $source/cream/mei/user-list.sh
+wget -O /usr/bin/user-login $source/cream/mei/user-login.sh
+wget -O /usr/bin/user-pass $source/cream/mei/user-pass.sh
+wget -O /usr/bin/user-renew $source/cream/mei/user-renew.sh
+wget -O /usr/bin/clearcache.sh $source/cream/mei/clearcache.sh
+wget -O /usr/bin/bannermenu $source/cream/mei/bannermenu
+wget -O /usr/bin/menu-update-script-vps.sh $source/cream/mei/menu-update-script-vps.sh
+wget -O /usr/bin/vpnmon $source/cream/mei/vpnmon
 cd
 # cronjob
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
@@ -337,7 +337,7 @@ chmod +x /usr/bin/bannermenu
 chmod +x /usr/bin/menu-update-script-vps.sh
 chmod 777 /usr/bin/vpnmon
 cd
-wget $source/debian7/instalshc.sh
+wget $source/cream/mei/instalshc.sh
 chmod +x /root/instalshc.sh
 /root/instalshc.sh
 rm /root/instalshc.sh
@@ -349,7 +349,7 @@ mkswap /swapfile
 # jalan swapfile
 swapon /swapfile
 #auto star saat reboot
-wget $source/debian7/fstab
+wget $source/cream/mei/fstab
 mv ./fstab /etc/fstab
 chmod 644 /etc/fstab
 sysctl vm.swappiness=10
@@ -362,7 +362,7 @@ cd
 apt-get update
 apt-get upgrade
 apt-get install stunnel4
-wget -O /etc/stunnel/stunnel.conf $source/debian7/stunnel.conf
+wget -O /etc/stunnel/stunnel.conf $source/cream/mei/stunnel.conf
 openssl genrsa -out key.pem 2048
 openssl req -new -x509 -key key.pem -out cert.pem -days 1095
 cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
@@ -370,7 +370,7 @@ sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 /etc/init.d/stunnel4 restart
 
 #ovpn
-wget -O ovpn.sh $source/debian7/installovpn.sh
+wget -O ovpn.sh $source/cream/mei/installovpn.sh
 chmod +x ovpn.sh
 ./ovpn.sh
 rm ./ovpn.sh
