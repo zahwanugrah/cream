@@ -29,14 +29,14 @@ vps="cy-ber";
 #if [[ $vps = "zvur" ]]; then
 	#source="http://"
 #else
-	source="https://raw.githubusercontent.com/cy-ber/crime"
+	source="https://raw.githubusercontent.com/cream/mei"
 #fi
 
 # go to root
 cd
 
 # check registered ip
-wget -q -O IP $source/debian7/IP.txt
+wget -q -O IP $source/cream/mei/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	if [[ $vps = "zvur" ]]; then
@@ -50,15 +50,15 @@ if ! grep -w -q $MYIP IP; then
 fi
 rm /root/IP
 #echo "Maaf.. Saat ini belum tersedia update script bos......!!!" | boxes -d boy
-#echo "Update webmin tersedia bos, tp versi webmin 1.820_all.deb..gk apa2 ya boss.." | lolcat
+#echo "Update webmin tersedia bos, tp versi webmin 1.870_all.deb..gk apa2 ya boss.." | lolcat
 echo "Perbaikan MENU update script" | boxes -d boy | lolcat
 sleep 4
 cd
 
-#wget "http://prdownloads.sourceforge.net/webadmin/webmin_1.820_all.deb"
-#dpkg --install webmin_1.820_all.deb
+#wget "http://prdownloads.sourceforge.net/webadmin/webmin_1.870_all.deb"
+#dpkg --install webmin_1.870_all.deb
 #apt-get -y -f install
-#rm /root/webmin_1.820_all.deb
+#rm /root/webmin_1.870_all.deb
 #sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
 #service webmin restart
 #source="https://raw.githubusercontent.com/elangoverdosis/deeniedoank"
@@ -86,7 +86,7 @@ cd
 #wget -O /usr/bin/user-renew $source/debian7/user-renew.sh
 #wget -O /usr/bin/clearcache.sh $source/debian7/clearcache.sh
 #wget -O /usr/bin/bannermenu $source/debian7/bannermenu
-wget -O /usr/bin/menu-update-script-vps.sh $source/debian7/menu-update-script-vps.sh
+wget -O /usr/bin/menu-update-script-vps.sh $source/cream/mei/menu-update-script-vps.sh
 
 
 #chmod +x /usr/bin/benchmark
