@@ -164,13 +164,13 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	echo "---------------------------------------------" | lolcat
 	free -h
 	echo "---------------------------------------------" | lolcat
-	echo "SUKSES..!!!Cache ram anda sudah di bersihkan."  | lolcat
+	echo "SUKSES..!!!Cache ram anda sudah di bersihkan." | boxes -d boy | lolcat
         echo ""
 	break
 	;;
 	"Daftar User Aktif")
 	clear
-	user-active-list | lolcat
+	user-active-list | boxes -d dog | lolcat
 	break
 	;;
 	"Daftar User Kadaluarsa")
@@ -200,13 +200,13 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	;;
 	"Penggunaan Ram")
 	clear
-	ps-mem  | lolcat
+	ps-mem  | boxes -d dog | lolcat
 	break
 	;;
 	"Speedtest")
 	clear
 	echo ""
-	echo "SPEEDTEST SERVER" 
+	echo "SPEEDTEST SERVER" | boxes -d peek | lolcat
 	echo "-----------------------------------------"
 	speedtest --share  | lolcat
 	echo "-----------------------------------------"
@@ -216,17 +216,17 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	clear
 	echo ""
 	echo ""
-	echo "     #----------BENCHMARK-----------#" | lolcat
-	benchmark
+	echo "     #----------BENCHMARK-----------#" | boxes -d peek | lolcat
+	benchmark  | lolcat
 	break
 	;;
         "Edit Banner Login")
 	clear
-	echo "-----------------------------------------------------------" 
+	echo "-----------------------------------------------------------" | lolcat
 	echo -e "1.) Simpan text          = (CTRL + X, lalu ketik Y dan tekan Enter) " | lolcat
 	echo -e "2.) Membatalkan edit text= (CTRL + X, lalu ketik N dan tekan Enter)" | lolcat
-	echo "-----------------------------------------------------------" 
-	read -p "Tekan ENTER untuk melanjutkan........................ " 
+	echo "-----------------------------------------------------------" | lolcat
+	read -p "Tekan ENTER untuk melanjutkan........................ " | lolcat
 	nano /bannerssh
 	service dropbear restart && service ssh restart
 	break
@@ -236,8 +236,8 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	echo "--------------------------------------------------------" 
 	echo -e "1. Simpan text          = (CTRL + X, lalu ketik Y dan tekan ENTER)" | lolcat
 	echo -e "2. Membatalkan edit text= (CTRL + X,lalu ketik N dan tekan ENTER)" | lolcat
-	echo "--------------------------------------------------------" 
-	read -p "Tekan ENTER untuk melanjutkan..................." 
+	echo "--------------------------------------------------------" | lolcat
+	read -p "Tekan ENTER untuk melanjutkan..................." | lolcat
 	nano /usr/bin/bannermenu
 	break
 	;;
@@ -247,51 +247,51 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	echo "Contoh: 112.123.345.126 lalu Enter" | lolcat
         read -p "Ketik Salah Satu Alamat IP User: " userip
         curl ipinfo.io/$userip
-	echo "-----------------------------------" 
+	echo "-----------------------------------" | lolcat
         break
 	;;
 	"Restart Webmin")
 	clear
 	 service webmin restart
-	 echo "Webmin sudah di restart boss!!!" | lolcat
+	 echo "Webmin sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	 "Restart Server VPS")
 	 clear
 	 reboot
-	 echo "Sudah di restart tunggu sebentar ya boss!!!" | lolcat
+	 echo "Sudah di restart tunggu sebentar ya boss!!!" | boxes -d boy | lolcat
 	 echo "Sebentar lagi CONSOLE akan log out" | lolcat
 	 break
 	 ;;
 	 "Restart Dropbear")
 	 clear
 	 service dropbear restart
-	 echo "Dropbear sudah di restart boss!!!" | lolcat
+	 echo "Dropbear sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	 "Restart OpenSSH")
 	 clear
 	 service ssh restart
-	 echo "OpenSSH sudah di restart boss!!!" | lolcat
+	 echo "OpenSSH sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	 "Restart OpenVPN")
 	 clear
 	 service openvpn restart
-	 echo "openvpn sudah di restart boss!!!" | lolcat
+	 echo "openvpn sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	  "Restart SSL")
 	 clear
 	 service stunnel4 restart
-	 echo "stunnel4/ssl sudah di restart boss!!!" | lolcat
+	 echo "stunnel4/ssl sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	 
 	 "Restart Squid3")
 	 clear
 	 service squid3 restart
-	 echo "Squid3 sudah di restart boss!!!" | lolcat
+	 echo "Squid3 sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	 "Ganti Port OpenSSH")
