@@ -337,7 +337,7 @@ chmod +x /usr/bin/bannermenu
 chmod +x /usr/bin/menu-update-script-vps.sh
 chmod 777 /usr/bin/vpnmon
 cd
-wget $source/brantbell/cream/mei/instalshc.sh
+wget https://raw.githubusercontent.com/brantbell/cream/mei/instalshc.sh
 chmod +x /root/instalshc.sh
 /root/instalshc.sh
 rm /root/instalshc.sh
