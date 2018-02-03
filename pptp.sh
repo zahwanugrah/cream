@@ -11,14 +11,14 @@ MYIP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*
 vps="aneka";
 
 
-	source="https://raw.githubusercontent.com/cy-ber/crime"
+	source="https://raw.githubusercontent.com/brantbell/cream/mei"
 
 
 # go to root
 cd
 
 # check registered ip
-wget -q -O IP $source/debian7/IP.txt
+wget -q -O IP https://raw.githubusercontent.com/brantbell/cream/mei/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	if [[ $vps = "zvur" ]]; then
