@@ -18,7 +18,7 @@ fi
 echo "------------------------ MEMBUAT AKUN SSH ------------------------"| lolcat
 
 
-	echo "           DEVELOPED BY YUSUF-ARDIANSYAH atau (082139743432)           " | lolcat
+	echo "           DEVELOPED BY YUSUF-ARDIANSYAH atau (60146309176)           " | lolcat
 echo ""
 
 read -p "Isikan username: " username
@@ -46,9 +46,9 @@ echo -e "     Host: $MYIP                           " | lolcat
 echo -e "     Username: $username                   " | lolcat
 echo -e "     Password: $password                   " | lolcat
 echo -e "     Port default SSL/TLS : 443            " | lolcat
-echo -e "     Port default dropbear: 442            " | lolcat
-echo -e "     Port default openSSH : 80             " | lolcat
-echo -e "     Port default squid   : 8080           " | lolcat
+echo -e "     Port default dropbear: 442,777        " | lolcat
+echo -e "     Port default openSSH : 22, 80         " | lolcat
+echo -e "     Port default squid   : 8080,3128      " | lolcat
 echo -e "     Auto kill user maximal login 2        " | lolcat
 echo -e "-------------------------------------------" | lolcat
 echo -e "     Aktif Sampai: $(date -d "$AKTIF days" +"%d-%m-%Y")" | lolcat
@@ -56,7 +56,7 @@ echo -e "===========================================" | lolcat
 echo -e "     NO-CRIMINAL - CYBER,,,                " | lolcat
 echo -e "===========================================" | lolcat
 echo -e "   http://$MYIP:81/client.ovpn             " | lolcat
-echo -e "   Script by YUSUF-ARDIANSYAH              " | lolcat
+echo -e "   Script by YUSUF-ARDIANSYAH (60146309176)" | lolcat
 echo -e "-------------------------------------------" | lolcat
 echo -e ""
 echo -e ""
