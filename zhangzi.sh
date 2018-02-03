@@ -27,7 +27,7 @@ fi
 cd
 
 # check registered ip
-wget -q -O IP $source/cream/mei/IP.txt
+wget -q -O IP $source/brantbell/cream/mei/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
         echo "     
@@ -80,7 +80,7 @@ sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 service ssh restart
 
 # set repo
-wget -O /etc/apt/sources.list $source/cream/mei/sources.list.debian7
+wget -O /etc/apt/sources.list $source/brantbell/cream/mei/sources.list.debian7
 wget http://www.dotdeb.org/dotdeb.gpg
 wget http://www.webmin.com/jcameron-key.asc
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
@@ -123,7 +123,7 @@ cd
 # text wrn
 cd
 rm -rf /root/.bashrc
-wget -O /root/.bashrc $source/cream/mei/.bashrc
+wget -O /root/.bashrc $source/brantbell/cream/mei/.bashrc
 
 #text gambar
 apt-get install boxes
@@ -135,20 +135,20 @@ sudo gem install lolcat
 cd
 rm /etc/nginx/sites-enabled/default
 rm /etc/nginx/sites-available/default
-wget -O /etc/nginx/nginx.conf $source/cream/mei/nginx.conf
+wget -O /etc/nginx/nginx.conf $source/brantbell/cream/mei/nginx.conf
 mkdir -p /home/vps/public_html
 echo "<pre>Modified by elang overdosis n' yusuf ardiansyah</pre>" > /home/vps/public_html/index.html
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
-wget -O /etc/nginx/conf.d/vps.conf $source/cream/mei/vps.conf
+wget -O /etc/nginx/conf.d/vps.conf $source/brantbell/cream/mei/vps.conf
 sed -i 's/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php5/fpm/pool.d/www.conf
 service php5-fpm restart
 service nginx restart
 cd
 
 # install badvpn
-wget -O /usr/bin/badvpn-udpgw $source/cream/mei/badvpn-udpgw
+wget -O /usr/bin/badvpn-udpgw $source/brantbell/cream/mei/badvpn-udpgw
 if [[ $OS == "x86_64" ]]; then
-wget -O /usr/bin/badvpn-udpgw $source/cream/mei/badvpn-udpgw64
+wget -O /usr/bin/badvpn-udpgw $source/brantbell/cream/mei/badvpn-udpgw64
 fi
 sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
@@ -157,8 +157,8 @@ cd
 
 # install mrtg
 #apt-get update;apt-get -y install snmpd;
-#wget -O /etc/snmp/snmpd.conf $source/cream/mei/snmpd.conf
-#wget -O /root/mrtg-mem.sh $source/cream/mei/mrtg-mem.sh
+#wget -O /etc/snmp/snmpd.conf $source/brantbell/cream/mei/snmpd.conf
+#wget -O /root/mrtg-mem.sh $source/brantbell/cream/mei/mrtg-mem.sh
 #chmod +x /root/mrtg-mem.sh
 #cd /etc/snmp/
 #sed -i 's/TRAPDRUN=no/TRAPDRUN=yes/g' /etc/default/snmpd
@@ -166,7 +166,7 @@ cd
 #snmpwalk -v 1 -c public localhost 1.3.6.1.4.1.2021.10.1.3.1
 #mkdir -p /home/vps/public_html/mrtg
 #cfgmaker --zero-speed 100000000 --global 'WorkDir: /home/vps/public_html/mrtg' --output /etc/mrtg.cfg public@localhost
-#curl $source/debian7/mrtg.conf >> /etc/mrtg.cfg
+#curl $source/brantbell/cream/mei/mrtg.conf >> /etc/mrtg.cfg
 #sed -i 's/WorkDir: \/var\/www\/mrtg/# WorkDir: \/var\/www\/mrtg/g' /etc/mrtg.cfg
 #sed -i 's/# Options\[_\]: growright, bits/Options\[_\]: growright/g' /etc/mrtg.cfg
 #indexmaker --output=/home/vps/public_html/mrtg/index.html /etc/mrtg.cfg
@@ -193,7 +193,7 @@ sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="bannerssh"/g' /etc/default/dropbea
 service ssh restart
 service dropbear restart
 # bannerssh
-wget $source/cream/mei/bannerssh
+wget $source/brantbell/cream/mei/bannerssh
 mv ./bannerssh /bannerssh
 chmod 0644 /bannerssh
 service dropbear restart
@@ -201,7 +201,7 @@ service ssh restart
 
 # upgade dropbear 2017.75
 apt-get install zlib1g-dev
-wget $source/cream/mei/dropbear-2017.75.tar.bz2
+wget $source/brantbell/cream/mei/dropbear-2017.75.tar.bz2
 bzip2 -cd dropbear-2017.75.tar.bz2 | tar xvf -
 cd dropbear-2017.75
 ./configure
@@ -212,7 +212,7 @@ cd && rm -rf dropbear-2017.75 && rm -rf dropbear-2017.75.tar.bz2
 
 # install vnstat gui
 #cd /home/vps/public_html/
-#wget $source/cream/mei/vnstat_php_frontend-1.5.1.tar.gz
+#wget $source/brantbell/cream/mei/vnstat_php_frontend-1.5.1.tar.gz
 #tar xvfz vnstat_php_frontend-1.5.1.tar.gz
 #rm vnstat_php_frontend-1.5.1.tar.gz
 #mv vnstat_php_frontend-1.5.1 vnstat
@@ -253,7 +253,7 @@ apt-get update;apt-get -y install fail2ban;service fail2ban restart
 
 # install squid3
 apt-get -y install squid3
-wget -O /etc/squid3/squid.conf $source/cream/mei/squid3.conf
+wget -O /etc/squid3/squid.conf $source/brantbell/cream/mei/squid3.conf
 sed -i $MYIP2 /etc/squid3/squid.conf;
 service squid3 restart
 
@@ -270,37 +270,37 @@ service webmin restart
 service vnstat restart
 
 # install pptp vpn
-wget -O /root/pptp.sh $source/cream/mei/pptp.sh
+wget -O /root/pptp.sh $source/brantbell/cream/mei/pptp.sh
 chmod +x pptp.sh
 ./pptp.sh
 
 # download script
 cd
-wget -O /usr/bin/benchmark $source/cream/mei/benchmark.sh
-wget -O /usr/bin/speedtest $source/cream/mei/speedtest_cli.py
-wget -O /usr/bin/ps-mem $source/cream/mei/ps_mem.py
-wget -O /usr/bin/dropmon $source/cream/mei/dropmon.sh
-wget -O /usr/bin/menu $source/cream/mei/menu.sh
-wget -O /usr/bin/user-active-list $source/cream/mei/user-active-list.sh
-wget -O /usr/bin/user-add $source/cream/mei/user-add.sh
-wget -O /usr/bin/user-add-pptp $source/cream/mei/user-add-pptp.sh
-wget -O /usr/bin/user-del $source/cream/mei/user-del.sh
-wget -O /usr/bin/disable-user-expire $source/cream/mei/disable-user-expire.sh
-wget -O /usr/bin/delete-user-expire $source/cream/mei/delete-user-expire.sh
-wget -O /usr/bin/banned-user $source/cream/mei/banned-user.sh
-wget -O /usr/bin/unbanned-user $source/cream/mei/unbanned-user.sh
-wget -O /usr/bin/user-expire-list $source/cream/mei/user-expire-list.sh
-wget -O /usr/bin/user-gen $source/cream/mei/user-gen.sh
-wget -O /usr/bin/userlimit.sh $source/cream/mei/userlimit.sh
-#wget -O /usr/bin/userlimitssh.sh $source/cream/mei/userlimitssh.sh
-wget -O /usr/bin/user-list $source/cream/mei/user-list.sh
-wget -O /usr/bin/user-login $source/cream/mei/user-login.sh
-wget -O /usr/bin/user-pass $source/cream/mei/user-pass.sh
-wget -O /usr/bin/user-renew $source/cream/mei/user-renew.sh
-wget -O /usr/bin/clearcache.sh $source/cream/mei/clearcache.sh
-wget -O /usr/bin/bannermenu $source/cream/mei/bannermenu
-wget -O /usr/bin/menu-update-script-vps.sh $source/cream/mei/menu-update-script-vps.sh
-wget -O /usr/bin/vpnmon $source/cream/mei/vpnmon
+wget -O /usr/bin/benchmark $source/brantbell/cream/mei/benchmark.sh
+wget -O /usr/bin/speedtest $source/brantbell/cream/mei/speedtest_cli.py
+wget -O /usr/bin/ps-mem $source/brantbell/cream/mei/ps_mem.py
+wget -O /usr/bin/dropmon $source/brantbell/cream/mei/dropmon.sh
+wget -O /usr/bin/menu $source/brantbell/cream/mei/menu.sh
+wget -O /usr/bin/user-active-list $source/brantbell/cream/mei/user-active-list.sh
+wget -O /usr/bin/user-add $source/brantbell/cream/mei/user-add.sh
+wget -O /usr/bin/user-add-pptp $source/brantbell/cream/mei/user-add-pptp.sh
+wget -O /usr/bin/user-del $source/brantbell/cream/mei/user-del.sh
+wget -O /usr/bin/disable-user-expire $source/brantbell/cream/mei/disable-user-expire.sh
+wget -O /usr/bin/delete-user-expire $source/brantbell/cream/mei/delete-user-expire.sh
+wget -O /usr/bin/banned-user $source/brantbell/cream/mei/banned-user.sh
+wget -O /usr/bin/unbanned-user $source/brantbell/cream/mei/unbanned-user.sh
+wget -O /usr/bin/user-expire-list $source/brantbell/cream/mei/user-expire-list.sh
+wget -O /usr/bin/user-gen $source/brantbell/cream/mei/user-gen.sh
+wget -O /usr/bin/userlimit.sh $source/brantbell/cream/mei/userlimit.sh
+#wget -O /usr/bin/userlimitssh.sh $source/brantbell/cream/mei/userlimitssh.sh
+wget -O /usr/bin/user-list $source/brantbell/cream/mei/user-list.sh
+wget -O /usr/bin/user-login $source/brantbell/cream/mei/user-login.sh
+wget -O /usr/bin/user-pass $source/brantbell/cream/mei/user-pass.sh
+wget -O /usr/bin/user-renew $source/brantbell/cream/mei/user-renew.sh
+wget -O /usr/bin/clearcache.sh $source/brantbell/cream/mei/clearcache.sh
+wget -O /usr/bin/bannermenu $source/brantbell/cream/mei/bannermenu
+wget -O /usr/bin/menu-update-script-vps.sh $source/brantbell/cream/mei/menu-update-script-vps.sh
+wget -O /usr/bin/vpnmon $source/brantbell/cream/mei/vpnmon
 cd
 # cronjob
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
@@ -337,7 +337,7 @@ chmod +x /usr/bin/bannermenu
 chmod +x /usr/bin/menu-update-script-vps.sh
 chmod 777 /usr/bin/vpnmon
 cd
-wget $source/cream/mei/instalshc.sh
+wget $source/brantbell/cream/mei/instalshc.sh
 chmod +x /root/instalshc.sh
 /root/instalshc.sh
 rm /root/instalshc.sh
@@ -349,7 +349,7 @@ mkswap /swapfile
 # jalan swapfile
 swapon /swapfile
 #auto star saat reboot
-wget $source/cream/mei/fstab
+wget $source/brantbell/cream/mei/fstab
 mv ./fstab /etc/fstab
 chmod 644 /etc/fstab
 sysctl vm.swappiness=10
@@ -362,7 +362,7 @@ cd
 apt-get update
 apt-get upgrade
 apt-get install stunnel4
-wget -O /etc/stunnel/stunnel.conf $source/cream/mei/stunnel.conf
+wget -O /etc/stunnel/stunnel.conf $source/brantbell/cream/mei/stunnel.conf
 openssl genrsa -out key.pem 2048
 openssl req -new -x509 -key key.pem -out cert.pem -days 1095
 cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
@@ -370,7 +370,7 @@ sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 /etc/init.d/stunnel4 restart
 
 #ovpn
-wget -O ovpn.sh $source/cream/mei/installovpn.sh
+wget -O ovpn.sh $source/brantbell/cream/mei/installovpn.sh
 chmod +x ovpn.sh
 ./ovpn.sh
 rm ./ovpn.sh
