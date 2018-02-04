@@ -21,7 +21,7 @@ fi
 vps="aneka";
 
 
-	source="https://raw.githubusercontent.com/elangoverdosis88/deenie"
+	source="https://raw.githubusercontent.com/brantbell/cream/mei"
 
 
 # go to root
@@ -30,7 +30,7 @@ cd
 MYIP=$(wget -qO- ipv4.icanhazip.com);
 
 # check registered ip
-wget -q -O "IP" "$source/debian7/IP.txt"
+wget -q -O "IP" "https://raw.githubusercontent.com/brantbell/cream/mei/IP.txt"
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	echo "Hubungi: Yusuf ardiansyah Or elang.overdosis"
@@ -99,8 +99,8 @@ rm /etc/nginx/sites-available/default
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.old
 #wget -O /etc/nginx/nginx.conf "http://script.hostingtermurah.net/repo/blog/ocspanel-debian7/nginx.conf"
 #wget -O /etc/nginx/conf.d/vps.conf "http://script.hostingtermurah.net/repo/blog/ocspanel-debian7/vps.conf"
-wget -O /etc/nginx/nginx.conf $source/debian7/ocspanels/nginx.conf
-wget -O /etc/nginx/conf.d/vps.conf $source/debian7/ocspanels/vps.conf
+wget -O /etc/nginx/nginx.conf https://raw.githubusercontent.com/brantbell/cream/mei/ocspanels/nginx.conf
+wget -O /etc/nginx/conf.d/vps.conf https://raw.githubusercontent.com/brantbell/cream/mei/ocspanels/vps.conf
 sed -i 's/cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php5/fpm/php.ini
 sed -i 's/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php5/fpm/pool.d/www.conf
 
