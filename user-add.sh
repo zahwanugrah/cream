@@ -18,7 +18,7 @@ fi
 echo "------------------------ MEMBUAT AKUN SSH ------------------------"| lolcat
 
 
-	echo "           DEVELOPED BY YUSUF-ARDIANSYAH atau (60146309176)           " | lolcat
+	echo "           DEVELOPED BY ZHANG-ZI atau (60146309176)           " | lolcat
 echo ""
 
 read -p "Isikan username: " username
@@ -56,7 +56,7 @@ echo -e "===========================================" | lolcat
 echo -e "     NO-CRIMINAL - CYBER,,,                " | lolcat
 echo -e "===========================================" | lolcat
 echo -e "   http://$MYIP:81/client.ovpn             " | lolcat
-echo -e "   Script by YUSUF-ARDIANSYAH (60146309176)" | lolcat
+echo -e "   Script by ZHANG-ZI (60146309176)" | lolcat
 echo -e "-------------------------------------------" | lolcat
 echo -e ""
 echo -e ""
