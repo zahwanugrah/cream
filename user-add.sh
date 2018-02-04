@@ -40,7 +40,7 @@ echo -e ""
 echo -e ""
 echo -e ""
 echo -e ""| lolcat
-echo -e "|       Informasi Akun Baru SSH      |" | boxes -d dog | lolcat
+echo -e "|       Informasi Akun Baru SSH      |" | boxes -d cat | lolcat
 echo -e "============[[-SERVER-PREMIUM-]]===========" | lolcat
 echo -e "     Host: $MYIP                           " | lolcat
 echo -e "     Username: $username                   " | lolcat
