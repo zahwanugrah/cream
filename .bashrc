@@ -121,7 +121,7 @@ clear
 echo "" | lolcat
 echo "" | lolcat
 echo "" | lolcat
-echo "            ---[ SELAMAT DATANG  DI VPS ZHANGZI-SSL ]---"| boxes -d dog | lolcat
+echo "            ---[ SELAMAT DATANG  DI VPS ZHANGZI-SSL ]---"| boxes -d cat | lolcat
 echo "            ====================================================="| lolcat
 echo "            #           WhatsApp     : 60146309176              #"| lolcat
 echo "            #           Telegram     : DENBAGUSS                #"| lolcat
