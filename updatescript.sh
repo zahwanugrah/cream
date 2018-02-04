@@ -36,7 +36,7 @@ vps="cy-ber";
 cd
 
 # check registered ip
-wget -q -O IP $source/brantbell/cream/mei/IP.txt
+wget -q -O IP https://raw.githubusercontent.com/brantbell/cream/mei/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	if [[ $vps = "zvur" ]]; then
@@ -86,7 +86,7 @@ cd
 #wget -O /usr/bin/user-renew $source/debian7/user-renew.sh
 #wget -O /usr/bin/clearcache.sh $source/debian7/clearcache.sh
 #wget -O /usr/bin/bannermenu $source/debian7/bannermenu
-wget -O /usr/bin/menu-update-script-vps.sh $source/brantbell/cream/mei/menu-update-script-vps.sh
+wget -O /usr/bin/menu-update-script-vps.sh https://raw.githubusercontent.com/brantbell/cream/mei/menu-update-script-vps.sh
 
 
 #chmod +x /usr/bin/benchmark
