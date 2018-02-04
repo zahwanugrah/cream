@@ -30,7 +30,7 @@ vps="aneka";
 cd
 
 # check registered ip
-wget -q -O IP https://raw.githubusercontent.com/brantbell/cream/mei/brantbell/cream/meicream/mei/IP.txt
+wget -q -O IP https://raw.githubusercontent.com/brantbell/cream/mei/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	if [[ $vps = "zvur" ]]; then
@@ -101,7 +101,7 @@ do
 	;;
 	"Install SQLmap")
 	cd /root
-	wget -O /usr/bin/install-sqlmap.sh https://raw.githubusercontent.com/brantbell/cream/mei/brantbell/cream/mei/install-sqlmap.sh
+	wget -O /usr/bin/install-sqlmap.sh https://raw.githubusercontent.com/brantbell/cream/mei/install-sqlmap.sh
 	chmod 755 /usr/bin/install-sqlmap.sh
 	clear
 	/usr/bin/install-sqlmap.sh
