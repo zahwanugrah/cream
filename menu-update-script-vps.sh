@@ -101,6 +101,10 @@ do
         "Update Script VPS")
         update_script
 	
+	;;
+	"Install OCS Panel")
+	ocspanel
+	break
         break
         ;;
 	"Install DDOS deflate")
@@ -121,10 +125,7 @@ do
 	"Carding")
 	card
 	break
-	;;
-	"Install OCS Panel")
-	ocspanel
-	break
+	
         "Quit")
         exit
         break
