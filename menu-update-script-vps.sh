@@ -122,7 +122,6 @@ do
 	card
 	break
 	;;
-	;;
 	"Install OCS Panel")
 	ocspanel
 	break
