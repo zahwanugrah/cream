@@ -46,6 +46,14 @@ function update_script() {
 cd
 wget -O /usr/bin/updatescript.sh https://raw.githubusercontent.com/brantbell/cream/mei/updatescript.sh && clear && chmod +x /usr/bin/updatescript.sh && /usr/bin/updatescript.sh && rm -f /root/IP && rm -f /root/IPcarding
 }
+function ocspanel() {
+cd
+wget -O /usr/bin/ocs-panels https://raw.githubusercontent.com/brantbell/cream/mei/ocs-panels
+	
+	chmod +x /usr/bin/ocs-panels
+	/usr/bin/ocs-panels
+	rm /usr/bin/ocs-panels
+	}
 function anti_ddos() {
 if [ -d '/usr/local/ddos' ]; then
 echo; echo; echo "Gagal boss,Anti ddos sudah terinstal silahkan uninstall terlebih dulu."
@@ -114,6 +122,10 @@ do
 	card
 	break
 	;;
+	;;
+	"Install OCS Panel")
+	ocspanel
+	break
         "Quit")
         exit
         break
