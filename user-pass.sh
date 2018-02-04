@@ -16,7 +16,7 @@ fi
 
 echo "--------------------------- GANTI PASSWORD AKUN SSH ---------------------------"
 
-	echo "            DEVELOPED BY YUSUF-ARDIANSYAH atau (082139743432)            "
+	echo "            DEVELOPED BY zhang-zi atau (6014309176)            "
 echo ""
 
 # begin of user-list
@@ -52,9 +52,10 @@ if [ $? -eq 0 ]; then
 		echo "Data Login:"
 		echo "-----------------------------------"
 		echo "Host/IP: $MYIP"
-		echo "Dropbear Port: 443, 110, 109"
-		echo "OpenSSH Port: 22, 143"
-		echo "Squid Proxy: 80, 8080, 3128"
+		echo "Dropbear Port: 442, 777"
+		echo "SSL/TSL Port: 443"
+		echo "OpenSSH Port: 22, 80"
+		echo "Squid Proxy: 8080, 3128"
 		echo "OpenVPN Config: http://$MYIP:81/client.ovpn"
 		echo "Username: $username"
 		echo "Password: $password"
