@@ -259,15 +259,16 @@ service squid3 restart
 
 # install webmin
 cd
+apt-get -y update && apt-get -y upgrade
+apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
 wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.890_all.deb
 #wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
 dpkg -i --force-all webmin-current.deb
 apt-get -y -f install;
-#sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
+sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
 rm -f /root/webmin-current.deb
-apt-get -y --force-yes -f install libxml-parser-perl
+#apt-get -y --force-yes -f install libxml-parser-perl
 service webmin restart
-service vnstat restart
 
 # install pptp vpn
 wget -O /root/pptp.sh https://raw.githubusercontent.com/brantbell/cream/mei/pptp.sh
@@ -378,16 +379,16 @@ rm ./ovpn.sh
 echo "deenie" > /etc/openvpn/pass.txt
 
 usermod -s /bin/false mail
-echo "mail:deenie" | chpasswd
-useradd -s /bin/false -M deenie11
-echo "deenie11:deenie" | chpasswd
+echo "mail:kopet" | chpasswd
+useradd -s /bin/false -M zhangzi
+echo "zhangzi:kopet" | chpasswd
 # finishing
 chown -R www-data:www-data /home/vps/public_html
 service cron restart
 service nginx start
 service php5-fpm start
-service vnstat restart
-service snmpd restart
+#service vnstat restart
+#service snmpd restart
 service ssh restart
 service dropbear restart
 service fail2ban restart
