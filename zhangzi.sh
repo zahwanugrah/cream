@@ -201,14 +201,14 @@ service ssh restart
 
 # upgade dropbear 2016.74
 apt-get install zlib1g-dev
-wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2016.74.tar.bz2
-bzip2 -cd dropbear-2016.74.tar.bz2 | tar xvf -
-cd dropbear-2016.74
+wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2018.76.tar.bz2
+bzip2 -cd dropbear-2018.76.tar.bz2 | tar xvf -
+cd dropbear-2018.76
 ./configure
 make && make install
 mv /usr/sbin/dropbear /usr/sbin/dropbear.old
 ln /usr/local/sbin/dropbear /usr/sbin/dropbear
-cd && rm -rf dropbear-2016.74 && rm -rf dropbear-2016.74.tar.bz2
+cd && rm -rf dropbear-2018.76 && rm -rf dropbear-2018.76.tar.bz2
 
 # install vnstat gui
 cd /home/vps/public_html/
