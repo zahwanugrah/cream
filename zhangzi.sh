@@ -371,10 +371,10 @@ sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 /etc/init.d/stunnel4 restart
 
 #ovpn
-#wget -O ovpn.sh https://raw.githubusercontent.com/brantbell/cream/mei/installovpn.sh
-#chmod +x ovpn.sh
-#./ovpn.sh
-#rm ./ovpn.sh
+wget -O ovpn.sh https://raw.githubusercontent.com/brantbell/cream/mei/installovpn.sh
+chmod +x ovpn.sh
+./ovpn.sh
+rm ./ovpn.sh
 
 echo "kopet" > /etc/openvpn/pass.txt
 
