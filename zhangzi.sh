@@ -182,16 +182,13 @@ sed -i '$ i\Banner bannerssh' /etc/ssh/sshd_config
 service ssh restart
 
 # install dropbear
-apt-get -y update
 apt-get install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=777/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 442"/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 109 -p 110"/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
-echo "/usr/sbin/nologin" >> /etc/shells
-sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="bannerssh"/g' /etc/default/dropbear
-service ssh restart
-service dropbear restart
+/etc/init.d/dropbear restart
+
 # bannerssh
 wget https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh
 mv ./bannerssh /bannerssh
