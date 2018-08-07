@@ -379,13 +379,43 @@ usermod -s /bin/false mail
 echo "mail:kopet" | chpasswd
 useradd -s /bin/false -M zhangzi
 echo "zhangzi:kopet" | chpasswd
+
+# Restart openvpn
+/etc/init.d/openvpn restart
+service openvpn start
+service openvpn status
+
+#Setting USW
+apt-get install ufw
+ufw allow ssh
+ufw allow 1194/tcp
+sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
+sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
+cat > /etc/ufw/before.rules <<-END
+# START OPENVPN RULES
+# NAT table rules
+*nat
+:POSTROUTING ACCEPT [0:0]
+# Allow traffic from OpenVPN client to eth0
+-A POSTROUTING -s 10.8.0.0/8 -o eth0 -j MASQUERADE
+COMMIT
+# END OPENVPN RULES
+END
+ufw enable
+ufw status
+ufw disable
+
+# set ipv4 forward
+echo 1 > /proc/sys/net/ipv4/ip_forward
+sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
+
 # finishing
 chown -R www-data:www-data /home/vps/public_html
 service cron restart
 service nginx start
 service php5-fpm start
-#service vnstat restart
-#service snmpd restart
+service vnstat restart
+service snmpd restart
 service ssh restart
 service dropbear restart
 service fail2ban restart
