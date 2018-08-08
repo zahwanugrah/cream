@@ -79,27 +79,18 @@ sed -i '$ i\echo "nameserver 8.8.4.4" >> /etc/resolv.conf' /etc/rc.local
 apt-get update;apt-get -y install wget curl;
 apt-get install gem
 # set time GMT +8
-ln -fs /usr/share/zoneinfo/Asia/malaysia/etc/localtime
+ln -fs /usr/share/zoneinfo/Asia/Malaysia/etc/localtime
 
 # set locale
 sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 service ssh restart
 
 # set repo
-#wget -O /etc/apt/sources.list https://raw.githubusercontent.com/brantbell/cream/mei/sources.list.debian7
-#wget http://www.dotdeb.org/dotdeb.gpg
-#wget http://www.webmin.com/jcameron-key.asc
-#cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
-#cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
-cat > /etc/apt/sources.list <<END2
-deb http://security.debian.org/ jessie/updates main contrib non-free
-deb-src http://security.debian.org/ jessie/updates main contrib non-free
-deb http://http.us.debian.org/debian jessie main contrib non-free
-deb http://packages.dotdeb.org jessie all
-deb-src http://packages.dotdeb.org jessie all
-END2
-wget "http://www.dotdeb.org/dotdeb.gpg"
+wget -O /etc/apt/sources.list https://raw.githubusercontent.com/brantbell/cream/mei/sources.list.debian7
+wget http://www.dotdeb.org/dotdeb.gpg
+wget http://www.webmin.com/jcameron-key.asc
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
+cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
 
 # remove unused
 apt-get -y --purge remove samba*;
@@ -117,6 +108,7 @@ apt-get -y install nginx php5-fpm php5-cli
 apt-get -y install zip tar
 apt-get install python
 cd
+
 # install essential package
 echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
 #apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
@@ -132,7 +124,7 @@ sysv-rc-conf exim4 off
 apt-file update
 
 # setting vnstat
-vnstat -u -i $ether
+vnstat -u -i eth0
 service vnstat restart
 cd
 
@@ -200,14 +192,19 @@ service ssh restart
 # install dropbear
 apt-get -y update
 apt-get install dropbear
+#sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
+#sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=80/g' /etc/default/dropbear
+#sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 442"/g' /etc/default/dropbear
+#echo "/bin/false" >> /etc/shells
+#echo "/usr/sbin/nologin" >> /etc/shells
+#sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="bannerssh"/g' /etc/default/dropbear
+#service ssh restart
+#service dropbear restart
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=80/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 442"/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 109 -p 110"/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
-echo "/usr/sbin/nologin" >> /etc/shells
-sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="bannerssh"/g' /etc/default/dropbear
-service ssh restart
-service dropbear restart
+/etc/init.d/dropbear restart
 
 # bannerssh
 wget https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh
