@@ -69,12 +69,6 @@ fi
 echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 
-#Add DNS Server ipv4
-echo "nameserver 8.8.8.8" > /etc/resolv.conf
-echo "nameserver 8.8.4.4" >> /etc/resolv.conf
-sed -i '$ i\echo "nameserver 8.8.8.8" > /etc/resolv.conf' /etc/rc.local
-sed -i '$ i\echo "nameserver 8.8.4.4" >> /etc/resolv.conf' /etc/rc.local
-
 # install wget and curl
 apt-get update;apt-get -y install wget curl;
 apt-get install gem
@@ -88,9 +82,9 @@ service ssh restart
 # set repo
 wget -O /etc/apt/sources.list https://raw.githubusercontent.com/brantbell/cream/mei/sources.list.debian7
 wget http://www.dotdeb.org/dotdeb.gpg
-#wget http://www.webmin.com/jcameron-key.asc
+wget http://www.webmin.com/jcameron-key.asc
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
-#cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
+cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
 
 # remove unused
 apt-get -y --purge remove samba*;
