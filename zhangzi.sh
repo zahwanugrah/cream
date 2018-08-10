@@ -35,9 +35,10 @@ if ! grep -w -q $MYIP IP; then
                        
                =============== OS-32 & 64-bit ================
                ♦                                             ♦
-               ♦   AUTOSCRIPT CREATED BY YUSUF ARDIANSYAH    ♦
+               ♦  AUTOSCRIPT CREATED BY YUSUF ARDIANSYAH     ♦
 	       ♦                     &                       ♦
 	       ♦               DENY SISWANTO                 ♦
+	       ♦           MODIFIED BY DENBAGUSS             ♦
                ♦       -----------About Us------------       ♦ 
                ♦            Tel : +6283843700098             ♦
                ♦         { Sms/whatsapp/telegram }           ♦ 
@@ -80,11 +81,20 @@ sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 service ssh restart
 
 # set repo
-wget -O /etc/apt/sources.list https://raw.githubusercontent.com/brantbell/cream/mei/sources.list.debian7
-wget http://www.dotdeb.org/dotdeb.gpg
-wget http://www.webmin.com/jcameron-key.asc
+cat > /etc/apt/sources.list <<END2
+deb http://security.debian.org/ jessie/updates main contrib non-free
+deb-src http://security.debian.org/ jessie/updates main contrib non-free
+deb http://http.us.debian.org/debian jessie main contrib non-free
+deb http://packages.dotdeb.org jessie all
+deb-src http://packages.dotdeb.org jessie all
+END2
+wget "http://www.dotdeb.org/dotdeb.gpg"
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
-cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
+#wget -O /etc/apt/sources.list https://raw.githubusercontent.com/brantbell/cream/mei/sources.list.debian7
+#wget http://www.dotdeb.org/dotdeb.gpg
+#wget http://www.webmin.com/jcameron-key.asc
+#cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
+#cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
 
 # remove unused
 apt-get -y --purge remove samba*;
@@ -104,7 +114,7 @@ apt-get install python
 cd
 
 # install essential package
-#echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
+echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
 #apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
 apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs less screen psmisc apt-file whois ptunnel ngrep mtr git zsh unzip unrar rsyslog debsums rkhunter
 apt-get -y install build-essential
