@@ -202,8 +202,9 @@ sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 442"/g' /etc/default/drop
 echo "/bin/false" >> /etc/shells
 echo "/usr/sbin/nologin" >> /etc/shells
 sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="bannerssh"/g' /etc/default/dropbear
+/etc/init.d/dropbear restart
 service ssh restart
-service dropbear restart
+
 
 # bannerssh
 wget https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh
