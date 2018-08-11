@@ -376,12 +376,12 @@ sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 /etc/init.d/stunnel4 restart
 
 #ovpn
-wget -O ovpn.sh https://raw.githubusercontent.com/brantbell/cream/mei/installovpn.sh
-chmod +x ovpn.sh
-./ovpn.sh
-rm ./ovpn.sh
+#wget -O ovpn.sh https://raw.githubusercontent.com/brantbell/cream/mei/installovpn.sh
+#chmod +x ovpn.sh
+#./ovpn.sh
+#rm ./ovpn.sh
 
-echo "kopet" > /etc/openvpn/pass.txt
+#echo "kopet" > /etc/openvpn/pass.txt
 
 usermod -s /bin/false mail
 echo "mail:kopet" | chpasswd
@@ -389,9 +389,9 @@ useradd -s /bin/false -M zhangzi
 echo "zhangzi:kopet" | chpasswd
 
 # Restart openvpn
-/etc/init.d/openvpn restart
-service openvpn start
-service openvpn status
+#/etc/init.d/openvpn restart
+#service openvpn start
+#service openvpn status
 
 # set ipv4 forward
 echo 1 > /proc/sys/net/ipv4/ip_forward
