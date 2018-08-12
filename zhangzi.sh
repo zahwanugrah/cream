@@ -83,9 +83,9 @@ service ssh restart
 # set repo
 wget -O /etc/apt/sources.list https://raw.githubusercontent.com/brantbell/cream/mei/sources.list.debian7
 wget http://www.dotdeb.org/dotdeb.gpg
-wget http://www.webmin.com/jcameron-key.asc
+#wget http://www.webmin.com/jcameron-key.asc
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
-cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
+#cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
 
 # remove unused
 apt-get -y --purge remove samba*;
