@@ -179,7 +179,7 @@ if [ -x /usr/bin/mrtg ] && [ -r /etc/mrtg.cfg ]; then mkdir -p /var/log/mrtg ; e
 cd
 
 # setting port ssh
-sed -i '/Port 22/a Port 80' /etc/ssh/sshd_config
+sed -i '/Port 22/a Port 90' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 sed -i '$ i\Banner bannerssh' /etc/ssh/sshd_config
 service ssh restart
@@ -188,7 +188,7 @@ service ssh restart
 apt-get -y update
 apt-get install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=777/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=3128/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 443"/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 echo "/usr/sbin/nologin" >> /etc/shells
@@ -196,6 +196,16 @@ sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="bannerssh"/g' /etc/default/dropbea
 /etc/init.d/dropbear restart
 service ssh restart
 
+# upgade dropbear 2016.74
+apt-get install zlib1g-dev
+wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2018.76.tar.bz2
+bzip2 -cd dropbear-2018.76.tar.bz2 | tar xvf -
+cd dropbear-2018.76
+./configure
+make && make install
+mv /usr/sbin/dropbear /usr/sbin/dropbear.old
+ln /usr/local/sbin/dropbear /usr/sbin/dropbear
+cd && rm -rf dropbear-2018.76 && rm -rf dropbear-2018.76.tar.bz2
 
 # bannerssh
 wget https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh
@@ -203,17 +213,6 @@ mv ./bannerssh /bannerssh
 chmod 0644 /bannerssh
 service dropbear restart
 service ssh restart
-
-# upgade dropbear 2016.74
-#apt-get install zlib1g-dev
-#wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2018.76.tar.bz2
-#bzip2 -cd dropbear-2018.76.tar.bz2 | tar xvf -
-#cd dropbear-2018.76
-#./configure
-#make && make install
-#mv /usr/sbin/dropbear /usr/sbin/dropbear.old
-#ln /usr/local/sbin/dropbear /usr/sbin/dropbear
-#cd && rm -rf dropbear-2018.76 && rm -rf dropbear-2018.76.tar.bz2
 
 # install vnstat gui
 cd /home/vps/public_html/
@@ -284,8 +283,9 @@ http_access deny manager
 http_access allow localhost
 http_access deny all
 http_port 8080
+http_port 8888
 http_port 8000
-http_port 3128
+http_port 80
 coredump_dir /var/spool/squid3
 refresh_pattern ^ftp: 1440 20% 10080
 refresh_pattern ^gopher: 1440 0% 1440
@@ -426,6 +426,26 @@ echo "zhangzi:kopet" | chpasswd
 /etc/init.d/openvpn restart
 service openvpn start
 service openvpn status
+
+#Setting USW
+apt-get install ufw
+ufw allow ssh
+ufw allow 1194/tcp
+sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
+sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
+cat > /etc/ufw/before.rules <<-END
+# START OPENVPN RULES
+# NAT table rules
+*nat
+:POSTROUTING ACCEPT [0:0]
+# Allow traffic from OpenVPN client to eth0
+-A POSTROUTING -s 10.8.0.0/8 -o eth0 -j MASQUERADE
+COMMIT
+# END OPENVPN RULES
+END
+ufw enable
+ufw status
+ufw disable
 
 # set ipv4 forward
 echo 1 > /proc/sys/net/ipv4/ip_forward
