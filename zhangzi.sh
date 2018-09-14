@@ -83,9 +83,9 @@ service ssh restart
 # set repo
 wget -O /etc/apt/sources.list https://raw.githubusercontent.com/brantbell/cream/mei/sources.list.debian7
 wget http://www.dotdeb.org/dotdeb.gpg
-#wget http://www.webmin.com/jcameron-key.asc
+wget http://www.webmin.com/jcameron-key.asc
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
-#cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
+cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
 
 # remove unused
 apt-get -y --purge remove samba*;
@@ -197,15 +197,15 @@ sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="bannerssh"/g' /etc/default/dropbea
 service ssh restart
 
 # upgade dropbear 2016.74
-#apt-get install zlib1g-dev
-#wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2016.74.tar.bz2
-#bzip2 -cd dropbear-2016.74.tar.bz2 | tar xvf -
-#cd dropbear-2016.74
-#./configure
-#make && make install
-#mv /usr/sbin/dropbear /usr/sbin/dropbear.old
-#ln /usr/local/sbin/dropbear /usr/sbin/dropbear
-#cd && rm -rf dropbear-2018.76 && rm -rf dropbear-2016.74.tar.bz2
+apt-get install zlib1g-dev
+wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2016.74.tar.bz2
+bzip2 -cd dropbear-2016.74.tar.bz2 | tar xvf -
+cd dropbear-2016.74
+./configure
+make && make install
+mv /usr/sbin/dropbear /usr/sbin/dropbear.old
+ln /usr/local/sbin/dropbear /usr/sbin/dropbear
+cd && rm -rf dropbear-2018.76 && rm -rf dropbear-2016.74.tar.bz2
 
 # bannerssh
 wget https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh
