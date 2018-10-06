@@ -309,9 +309,9 @@ rm -f /root/webmin-current.deb
 service webmin restart
 
 # install pptp vpn
-wget -O /root/pptp.sh https://raw.githubusercontent.com/brantbell/cream/mei/pptp.sh
-chmod +x pptp.sh
-./pptp.sh
+#wget -O /root/pptp.sh https://raw.githubusercontent.com/brantbell/cream/mei/pptp.sh
+#chmod +x pptp.sh
+#./pptp.sh
 
 # download script
 cd
