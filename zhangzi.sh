@@ -120,7 +120,7 @@ apt-file update
 
 # setting vnstat
 vnstat -u -i eth0
-service vnstat restart
+sudo service vnstat restart
 cd
 
 # text wrn
@@ -188,7 +188,7 @@ service ssh restart
 apt-get -y update
 apt-get install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=80/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=777/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 443"/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 echo "/usr/sbin/nologin" >> /etc/shells
@@ -197,15 +197,15 @@ sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="bannerssh"/g' /etc/default/dropbea
 service ssh restart
 
 # upgade dropbear 2016.74
-apt-get install zlib1g-dev
-wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2016.74.tar.bz2
-bzip2 -cd dropbear-2016.74.tar.bz2 | tar xvf -
-cd dropbear-2016.74
-./configure
-make && make install
-mv /usr/sbin/dropbear /usr/sbin/dropbear.old
-ln /usr/local/sbin/dropbear /usr/sbin/dropbear
-cd && rm -rf dropbear-2018.76 && rm -rf dropbear-2016.74.tar.bz2
+#apt-get install zlib1g-dev
+#wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2016.74.tar.bz2
+#bzip2 -cd dropbear-2016.74.tar.bz2 | tar xvf -
+#cd dropbear-2016.74
+#./configure
+#make && make install
+#mv /usr/sbin/dropbear /usr/sbin/dropbear.old
+#ln /usr/local/sbin/dropbear /usr/sbin/dropbear
+#cd && rm -rf dropbear-2018.76 && rm -rf dropbear-2016.74.tar.bz2
 
 # bannerssh
 wget https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh
@@ -283,6 +283,7 @@ http_access deny manager
 http_access allow localhost
 http_access deny all
 http_port 8080
+http_port 8000
 http_port 80
 http_port 3128
 coredump_dir /var/spool/squid3
@@ -309,9 +310,9 @@ rm -f /root/webmin-current.deb
 service webmin restart
 
 # install pptp vpn
-#wget -O /root/pptp.sh https://raw.githubusercontent.com/brantbell/cream/mei/pptp.sh
-#chmod +x pptp.sh
-#./pptp.sh
+wget -O /root/pptp.sh https://raw.githubusercontent.com/brantbell/cream/mei/pptp.sh
+chmod +x pptp.sh
+./pptp.sh
 
 # download script
 cd
@@ -377,10 +378,10 @@ chmod +x /usr/bin/menu-update-script-vps.sh
 chmod 777 /usr/bin/vpnmon
 cd
 
-wget https://raw.githubusercontent.com/brantbell/cream/mei/instalshc.sh
-chmod +x /root/instalshc.sh
-/root/instalshc.sh
-rm /root/instalshc.sh
+#wget https://raw.githubusercontent.com/brantbell/cream/mei/instalshc.sh
+#chmod +x /root/instalshc.sh
+#/root/instalshc.sh
+#rm /root/instalshc.sh
 
 # swap ram
 dd if=/dev/zero of=/swapfile bs=1024 count=4096k
