@@ -109,7 +109,7 @@ cp /etc/openvpn/easy-rsa/keys/server.key /etc/openvpn/server.key
 cp /etc/openvpn/easy-rsa/keys/ca.crt /etc/openvpn/ca.crt
 # Setting Server
 cat > /etc/openvpn/server.conf <<-END
-port 1194
+port 55
 proto tcp
 dev tun
 ca ca.crt
@@ -148,7 +148,7 @@ cat > /home/vps/public_html/client.ovpn <<-END
 client
 dev tun
 proto tcp
-remote $MYIP 1194
+remote $MYIP 55
 persist-key
 persist-tun
 dev tun
