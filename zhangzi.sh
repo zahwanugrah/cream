@@ -73,8 +73,8 @@ sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 # install wget and curl
 apt-get update;apt-get -y install wget curl;
 apt-get install gem
-# set time GMT +8
-ln -fs /usr/share/zoneinfo/Asia/Malaysia /etc/localtime
+# set time GMT +7
+ln -fs /usr/share/zoneinfo/Asia/Indonesia /etc/localtime
 
 # set locale
 sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
@@ -105,7 +105,7 @@ apt-get install python
 cd
 
 # install essential package
-#echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
+echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
 #apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
 apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs less screen psmisc apt-file whois ptunnel ngrep mtr git zsh unzip unrar rsyslog debsums rkhunter
 apt-get -y install build-essential
