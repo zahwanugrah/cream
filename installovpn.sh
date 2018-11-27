@@ -109,7 +109,7 @@ cp /etc/openvpn/easy-rsa/keys/server.key /etc/openvpn/server.key
 cp /etc/openvpn/easy-rsa/keys/ca.crt /etc/openvpn/ca.crt
 # Setting Server
 cat > /etc/openvpn/server.conf <<-END
-port 55
+port 1194
 proto tcp
 dev tun
 ca ca.crt
