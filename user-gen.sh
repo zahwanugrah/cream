@@ -37,7 +37,7 @@ useradd -e `date -d "$masaaktif days" +"%Y-%m-%d"` -s /bin/false -M $uname
 exp="$(chage -l $uname | grep "Account expires" | awk -F": " '{print $2}')"
 echo -e "$pass\n$pass\n"|passwd $uname &> /dev/null
 echo -e ""
-echo -e "|       Informasi Akun Baru SSH      |" | boxes -d dog 
+echo -e "|       Informasi Akun Baru SSH      |" 
 echo -e "============[[-SERVER-PREMIUM-]]===========" 
 echo -e "     Host: $MYIP                           " 
 echo -e "     Username: $username                   " 
