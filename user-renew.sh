@@ -21,7 +21,7 @@ echo ""
 
 # begin of user-list
 echo "-----------------------------------"
-echo "USERNAME              EXP DATE     " | lolcat
+echo "USERNAME              EXP DATE     " 
 echo "-----------------------------------"
 
 while read expired
@@ -53,24 +53,24 @@ if [ $? -eq 0 ]; then
 clear
 	
 echo -e ""| lolcat
-echo -e "|       Informasi Akun Baru SSH      |" | boxes -d cat | lolcat
-echo -e "============[[-SERVER-PREMIUM-]]===========" | lolcat
-echo -e "     Host: $MYIP                           " | lolcat
-echo -e "     Username: $username                   " | lolcat
-echo -e "     Password: $password                   " | lolcat
-echo -e "     Port default dropbear: 442,777        " | lolcat
-echo -e "     Port default SSL/TLS : 443            " | lolcat
-echo -e "     Port default openSSH : 22,80          " | lolcat
-echo -e "     Port default squid   : 8080,3128      " | lolcat
-echo -e "     Auto kill user maximal login 2        " | lolcat
-echo -e "-------------------------------------------" | lolcat
-echo -e "     Aktif Sampai: $(date -d "$AKTIF days" +"%d-%m-%Y")" | lolcat
-echo -e "===========================================" | lolcat
-echo -e "     NO-CRIMINAL - CYBER,,,                " | lolcat
-echo -e "===========================================" | lolcat
-echo -e "   http://$MYIP:81/client.ovpn             " | lolcat
-echo -e "   Script by ZHANG-ZI (60146309176)        " | lolcat
-echo -e "-------------------------------------------" | lolcat
+echo -e "|       Informasi Akun Baru SSH      |" 
+echo -e "============[[-SERVER-PREMIUM-]]===========" 
+echo -e "     Host: $MYIP                           " 
+echo -e "     Username: $username                   " 
+echo -e "     Password: $password                   " 
+echo -e "     Port default dropbear: 442,777        " 
+echo -e "     Port default SSL/TLS : 443            " 
+echo -e "     Port default openSSH : 22,80          " 
+echo -e "     Port default squid   : 8080,3128      " 
+echo -e "     Auto kill user maximal login 2        " 
+echo -e "-------------------------------------------" 
+echo -e "     Aktif Sampai: $(date -d "$AKTIF days" +"%d-%m-%Y")" 
+echo -e "===========================================" 
+echo -e "     NO-CRIMINAL - CYBER,,,                "
+echo -e "===========================================" 
+echo -e "   http://$MYIP:81/client.ovpn             " 
+echo -e "   Script by ZHANG-ZI (60146309176)        "
+echo -e "-------------------------------------------" 
 echo -e ""
 echo -e ""
 else
