@@ -52,7 +52,7 @@ if [ $? -eq 0 ]; then
 	#useradd -M -N -s /bin/false -e $expire $username
 clear
 	
-echo -e ""| lolcat
+echo -e ""
 echo -e "|       Informasi Akun Baru SSH      |" 
 echo -e "============[[-SERVER-PREMIUM-]]===========" 
 echo -e "     Host: $MYIP                           " 
