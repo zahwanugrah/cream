@@ -25,7 +25,7 @@ vps="aneka";
 cd
 
 # check registered ip
-wget -q -O IP $source/cream/mei/IP.txt
+wget -q -O IP $source/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	if [[ $vps = "zvur" ]]; then
