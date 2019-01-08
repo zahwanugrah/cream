@@ -15,9 +15,9 @@ fi
 #MYIP=$(wget -qO- ipv4.icanhazip.com)
 
 
-echo "------------------- MEMBUAT AKUN  PPTP VPN ----------------------" | lolcat
+echo "------------------- MEMBUAT AKUN  PPTP VPN ----------------------" 
 
-	echo "          DEVELOPED BY ZHANG-ZI atau (60146309176)            " | lolcat
+	echo "          DEVELOPED BY ZHANG-ZI atau (60146309176)            " 
 echo ""
 
 read -p "Isikan username baru: " username
@@ -27,9 +27,9 @@ echo "$username pptpd $password *" >> /etc/ppp/chap-secrets
 
 echo ""
 echo "-----------------------------------"
-echo "INFORMASI AKUN PPTP VPN:" | boxes -d peek | lolcat
+echo "INFORMASI AKUN PPTP VPN:" | boxes -d peek 
 echo "-----------------------------------"
-echo "Host/IP: $MYIP" | lolcat
-echo "Username: $username" | lolcat
-echo "Password: $password" | lolcat
+echo "Host/IP: $MYIP" 
+echo "Username: $username" 
+echo "Password: $password" 
 echo "-----------------------------------"
