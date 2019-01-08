@@ -17,9 +17,9 @@ fi
 
 data=( `ps aux | grep -i dropbear | awk '{print $2}'`);
 echo "----------------------------------------------"
-echo "Checking Dropbear login" | lolcat;
+echo "Checking Dropbear login";
 echo "----------------------------------------------"
-echo "   PID.  USERNAME.       IP" | lolcat
+echo "   PID.  USERNAME.       IP" 
 echo "----------------------------------------------"
 
 for PID in "${data[@]}"
@@ -37,7 +37,7 @@ echo "";
 
 data=( `ps aux | grep "\[priv\]" | sort -k 72 | awk '{print $2}'`);
 echo "----------------------------------------------"
-echo "Checking OpenSSH login" | lolcat;
+echo "Checking OpenSSH login" ;
 echo "----------------------------------------------"
 for PID in "${data[@]}"
 do
@@ -53,14 +53,14 @@ done
 #echo "";
 
 #echo "-----------------------------------"
-#echo "Checking OpenVPN login" | lolcat;
+#echo "Checking OpenVPN login";
 #echo "-----------------------------------"
 #tail -f /etc/openvpn/server-vpn.log
 
 echo "";
 
 echo "----------------------------------------------"
-echo "Checking PPTP login" | lolcat;
+echo "Checking PPTP login";
 echo "----------------------------------------------"
 last | grep ppp | grep still
 
@@ -68,18 +68,18 @@ echo "";
 
 #Melihat Riwayat Login User
 echo "----------------------------------------------"
-echo "Checking PPTP Login History" | lolcat;
+echo "Checking PPTP Login History";
 echo "----------------------------------------------"
 last | grep ppp
 
 echo "";
 echo "----------------------------------------------------------------"
-echo " Kalau ada Multi Login Kill Aja " | lolcat
-echo " Tetap Multi Login Ganti Passnya baru Kill Lagi " | lolcat
-echo " Caranya pake Kill nomor PID " | lolcat
+echo " Kalau ada Multi Login Kill Aja "
+echo " Tetap Multi Login Ganti Passnya baru Kill Lagi "
+echo " Caranya pake Kill nomor PID "
 echo "----------------------------------------------------------------"
 
-	echo " DEVELOPED BY YUSUF-ARDIANSYAH atau (082139743432) "| lolcat
+	echo " DEVELOPED BY YUSUF-ARDIANSYAH atau (082139743432) "
 echo "----------------------------------------------------------------"
 echo ""
 
