@@ -199,7 +199,7 @@ apt-get -y update
 apt-get install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=777/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 443"/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 442"/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 echo "/usr/sbin/nologin" >> /etc/shells
 sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="bannerssh"/g' /etc/default/dropbear
@@ -207,12 +207,12 @@ sed -i 's/DROPBEAR_BANNER=""/DROPBEAR_BANNER="bannerssh"/g' /etc/default/dropbea
 service ssh restart
 
 # upgade dropbear 2016.74
-#apt-get install zlib1g-dev
-#wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2016.74.tar.bz2
-#bzip2 -cd dropbear-2016.74.tar.bz2 | tar xvf -
-#cd dropbear-2016.74
-#./configure
-#make && make install
+apt-get install zlib1g-dev
+wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2016.74.tar.bz2
+bzip2 -cd dropbear-2016.74.tar.bz2 | tar xvf -
+cd dropbear-2016.74
+./configure
+make && make install
 #mv /usr/sbin/dropbear /usr/sbin/dropbear.old
 #ln /usr/local/sbin/dropbear /usr/sbin/dropbear
 #cd && rm -rf dropbear-2018.76 && rm -rf dropbear-2016.74.tar.bz2
@@ -354,10 +354,10 @@ chmod +x /usr/bin/menu-update-script-vps.sh
 chmod 777 /usr/bin/vpnmon
 cd
 
-#wget https://raw.githubusercontent.com/brantbell/cream/mei/instalshc.sh
-#chmod +x /root/instalshc.sh
-#/root/instalshc.sh
-#rm /root/instalshc.sh
+wget https://raw.githubusercontent.com/brantbell/cream/mei/instalshc.sh
+chmod +x /root/instalshc.sh
+/root/instalshc.sh
+rm /root/instalshc.sh
 
 # swap ram
 dd if=/dev/zero of=/swapfile bs=1024 count=4096k
