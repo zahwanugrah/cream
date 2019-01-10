@@ -540,7 +540,7 @@ iptables-restore < /etc/iptables.up.rules
 
 # download script
 cd
-wget https://raw.githubusercontent.com/daybreakersx/premscript/master/install-premiumscript.sh -O - -o /dev/null|sh
+wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
 
 # cronjob
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
