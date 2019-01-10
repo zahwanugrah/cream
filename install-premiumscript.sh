@@ -4,7 +4,7 @@
 
 cd
 
-echo "0 0 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/user-expire
+#echo "0 0 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/user-expire
 # echo "0 0 * * * root /usr/local/bin/user-expire-pptp" > /etc/cron.d/user-expire-pptp
 
 
