@@ -385,10 +385,7 @@ chmod +x /usr/bin/menu-update-script-vps.sh
 chmod 777 /usr/bin/vpnmon
 cd
 
-wget https://raw.githubusercontent.com/brantbell/cream/mei/instalshc.sh
-chmod +x /root/instalshc.sh
-/root/instalshc.sh
-rm /root/instalshc.sh
+
 
 # swap ram
 dd if=/dev/zero of=/swapfile bs=1024 count=4096k
