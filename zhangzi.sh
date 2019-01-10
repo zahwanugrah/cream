@@ -565,6 +565,15 @@ ufw disable
 echo 1 > /proc/sys/net/ipv4/ip_forward
 sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
 
+wget -O /etc/iptables.conf https://raw.githubusercontent.com/brantbell/cream/mei/cream/mei/iptables.conf
+sed -i '$ i\iptables-restore < /etc/iptables.conf' /etc/rc.local
+
+
+sed -i 's/ipserver/$MYIP/g' /etc/iptables.conf
+
+iptables-restore < /etc/iptables.conf
+service openvpn restart
+
 # finishing
 chown -R www-data:www-data /home/vps/public_html
 service cron restart
