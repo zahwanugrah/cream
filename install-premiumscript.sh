@@ -38,6 +38,11 @@ wget -O /usr/bin/bannermenu "https://raw.githubusercontent.com/brantbell/cream/m
 wget -O /usr/bin/menu-update-script-vps.sh "https://raw.githubusercontent.com/brantbell/cream/mei/menu-update-script-vps.sh"
 wget -O /usr/bin/vpnmon "https://raw.githubusercontent.com/brantbell/cream/mei/vpnmon"
 
+wget -O /usr/bin/edit-port-openssh "https://raw.githubusercontent.com/brantbell/cream/mei/edit-port-openssh"
+wget -O /usr/bin/edit-port-openvpn "https://raw.githubusercontent.com/brantbell/cream/mei/edit-port-openvpn"
+wget -O /usr/bin/edit-port-squid "https://raw.githubusercontent.com/brantbell/cream/mei/edit-port-squid"
+wget -O /usr/bin/edit-port-dropbear "https://raw.githubusercontent.com/brantbell/cream/mei/edit-port-dropbear"
+
 
 cd
 chmod +x /usr/bin/benchmark
@@ -69,7 +74,10 @@ chmod 777 /usr/bin/vpnmon
 
 
 
-
+chmod +x /usr/bin/edit-port-openssh
+chmod +x /usr/bin/edit-port-openvpn
+chmod +x /usr/bin/edit-port-squid
+chmod +x /usr/bin/edit-port-dropbear
 
 
 clear
