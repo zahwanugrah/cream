@@ -527,10 +527,7 @@ tar -czf /home/vps/public_html/openvpn.tar.gz client.ovpn
 tar -czf /home/vps/public_html/client.tar.gz client.ovpn
 cd
 
-# Restart openvpn
-/etc/init.d/openvpn restart
-service openvpn start
-service openvpn status
+
 
 echo "kopet" > /etc/openvpn/pass.txt
 
