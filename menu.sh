@@ -296,50 +296,18 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy
 	 ;;
 	 "Ganti Port OpenSSH")
 	 clear
-	 echo ""
-            echo "Silahkan ganti port Openssh anda lalu klik enter."
-            echo "Port default dan Port 2 tidak boleh sama !!!" 
-	    echo "Port default: 22"
-	    read -p "Port 2: " -e -i 143 PORT
-	    service dropbear stop
-	    service ssh stop
-	    service openvpn stop
-	    sed -i "6s/Port [0-9]*/Port $PORT/" /etc/ssh/sshd_config
-           service ssh start 
-	   service dropbear start
-	   service openvpn start
-            echo "Openssh Updated Port: $PORT"
+	 
+		edit-port-openssh
 	 break
          ;;
 	 "Ganti Port Dropbear")
 	 clear
-            echo "Silahkan ganti port Dropbear anda lalu klik ENTER!!!
-Port dropbear tidak boleh sama dengan port openVPN/openSSH/squid3 !!!"
-           echo "Port1: 443 (Default)"
-	    read -p "Port2: " -e -i 80 PORT
-	    service dropbear stop
-	    service ssh stop
-	    service openvpn stop
-            sed -i "s/DROPBEAR_PORT=[0-9]*/DROPBEAR_PORT=$PORT/g" /etc/default/dropbear
-	    #sed -i 's/DROPBEAR_EXTRA_ARGS="-p [0-9]*"/DROPBEAR_EXTRA_ARGS="-p 109"/g' /etc/default/dropbear	
-            service dropbear start
-	    service ssh start
-	    service openvpn start
-            echo "Dropbear Updated Port2 : $PORT"
-	    #echo "Dropbear Updated : Port2 $PORT2"
-	    #echo "Dropbear Updated : Port3 $PORT3" 
+		edit-port-dropbear
 	 break
 	 ;;
 	 "Ganti Port Squid3")
 	 clear
-	 echo "Silahkan ganti port Squid3 anda lalu klik enter"
-	    echo "Isi dengan angka tidak boleh huruf !!!"
-	    echo -e "Port Squid3 1: 8080"
-	    read -p "Port Squid3 2: " -e -i 3128 PORT
-            #sed -i 's/http_port [0-9]*\nhttp_port [0-9]*/http_port $PORT1\nhttp_port $PORT2/g' /etc/squid3/squid.conf
-            sed -i "23s/http_port [0-9]*/http_port $PORT/" /etc/squid3/squid.conf
-	   service squid3 restart
-            echo "Squid3 Updated Port: $PORT"
+		edit-port-squid
 			break
 			;;
 			"Speedtest")
@@ -349,19 +317,7 @@ Port dropbear tidak boleh sama dengan port openVPN/openSSH/squid3 !!!"
 	 ;;
 	 "Ganti Port OpenVPN")
 	 clear
-	 echo ""
-	           echo "Silahkan ganti port OpenVPN anda lalu klik enter?"
-            read -p "Port: " -e -i 55 PORT
-	    service dropbear stop
-	    service ssh stop
-	    service openvpn stop
-            sed -i "s/port [0-9]*/port $PORT/g" /etc/openvpn/1194.conf
-	   # cp /etc/openvpn/client.ovpn /home/vps/public_html/client.ovpn
-           # sed -i "s/ipserver ports/$MYIP $PORT/g" /home/vps/public_html/client.ovpn
-	   # sed -i "s/ipserver/$MYIP/g" /home/vps/public_html/client.ovpn
-	   service openvpn start
-	    service dropbear start
-	    service ssh start
+		edit-port-openvpn
 	 break
 	 ;;
 	 "Update Script VPS")
