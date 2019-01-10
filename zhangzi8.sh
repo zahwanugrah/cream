@@ -601,14 +601,14 @@ echo " "
 echo "Installation has been completed!!"
 echo " "
 echo "--------------------------- Configuration Setup Server -------------------------"
-echo "                         Copyright HostingTermurah.net                          "
-echo "                        https://www.hostingtermurah.net                         "
-echo "               Created By Steven Indarto(fb.com/stevenindarto2)                 "
+echo "                         Copyright Sshfast.us                        "
+echo "                        https://sshfast.us                         "
+echo "               Created By Deny(fb.com/elang.overdosis)                 "
 echo "                                Modified by 0123456                             "
 echo "--------------------------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
-echo "   - Timezone    : Asia/Manila (GMT +8)"  | tee -a log-install.txt
+echo "   - Timezone    : Asia/Jakarta (GMT +8)"  | tee -a log-install.txt
 echo "   - Fail2Ban    : [ON]"  | tee -a log-install.txt
 echo "   - Dflate      : [ON]"  | tee -a log-install.txt
 echo "   - IPtables    : [ON]"  | tee -a log-install.txt
@@ -646,5 +646,5 @@ echo "   - Vnstat                  : http://$MYIP:85/vnstat/"  | tee -a log-inst
 echo "   - MRTG                    : http://$MYIP:85/mrtg/"  | tee -a log-install.txt
 echo "   - Installation Log        : cat /root/log-install.txt"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
-echo "----------- Script Created By Steven Indarto(fb.com/stevenindarto2) ------------"
+echo "----------- Script Created By Deny (fb.com/elang.overdosis) ------------"
 echo "------------------------------ Modified by DENBAGUSS -----------------------------"
