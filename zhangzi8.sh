@@ -29,7 +29,7 @@ sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 apt-get update;apt-get -y install wget curl cat;
 
 # set time GMT +8
-ln -fs /usr/share/zoneinfo/Asia/Manila /etc/localtime
+ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 
 # set repo
 cat > /etc/apt/sources.list <<END2
@@ -181,6 +181,13 @@ sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 109 -p 110"/g' /etc/defau
 echo "/bin/false" >> /etc/shells
 /etc/init.d/dropbear restart
 
+apt-get install zlib1g-dev
+wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2016.74.tar.bz2
+bzip2 -cd dropbear-2016.74.tar.bz2 | tar xvf -
+cd dropbear-2016.74
+./configure
+make && make install
+
 # install vnstat gui
 cd /home/vps/public_html/
 wget https://raw.githubusercontent.com/daybreakersx/premscript/master/vnstat_php_frontend-1.5.1.tar.gz
@@ -243,13 +250,16 @@ service squid3 restart
 
 # install webmin
 cd
-wget "http://script.hostingtermurah.net/repo/webmin_1.801_all.deb"
-dpkg --install webmin_1.801_all.deb;
+apt-get -y update && apt-get -y upgrade
+apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
+wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.890_all.deb
+#wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
+dpkg -i --force-all webmin-current.deb
 apt-get -y -f install;
 sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-rm /root/webmin_1.801_all.deb
+rm -f /root/webmin-current.deb
+#apt-get -y --force-yes -f install libxml-parser-perl
 service webmin restart
-service vnstat restart
 
 #install PPTP
 apt-get -y install pptpd
