@@ -3,75 +3,75 @@
 # Modified by DENBAGUSS
 
 cd
-sed -i '$ i\screen -AmdS limit /root/limit.sh' /etc/rc.local
-sed -i '$ i\screen -AmdS ban /root/ban.sh' /etc/rc.local
-sed -i '$ i\screen -AmdS limit /root/limit.sh' /etc/rc.d/rc.local
-sed -i '$ i\screen -AmdS ban /root/ban.sh' /etc/rc.d/rc.local
-echo "0 0 * * * root /usr/local/bin/user-expire" > /etc/cron.d/user-expire
-echo "0 0 * * * root /usr/local/bin/user-expire-pptp" > /etc/cron.d/user-expire-pptp
 
-cat > /root/ban.sh <<END3
-#!/bin/bash
-#/usr/local/bin/user-ban
-END3
+echo "0 0 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/user-expire
+# echo "0 0 * * * root /usr/local/bin/user-expire-pptp" > /etc/cron.d/user-expire-pptp
 
-cat > /root/limit.sh <<END3
-#!/bin/bash
-#/usr/local/bin/user-limit
-END3
 
-cd /usr/local/bin
-wget -O premium-script.tar.gz "https://raw.githubusercontent.com/daybreakersx/premscript/master/menu/premium-script.tar.gz"
-tar -xvf premium-script.tar.gz
-rm -f premium-script.tar.gz
 
-cp /usr/local/bin/premium-script /usr/local/bin/menu
 
-chmod +x /usr/local/bin/trial
-chmod +x /usr/local/bin/user-add
-chmod +x /usr/local/bin/user-aktif
-chmod +x /usr/local/bin/user-ban
-chmod +x /usr/local/bin/user-delete
-chmod +x /usr/local/bin/user-detail
-chmod +x /usr/local/bin/user-expire
-chmod +x /usr/local/bin/user-limit
-chmod +x /usr/local/bin/user-lock
-chmod +x /usr/local/bin/user-login
-chmod +x /usr/local/bin/user-unban
-chmod +x /usr/local/bin/user-unlock
-chmod +x /usr/local/bin/user-password
-chmod +x /usr/local/bin/user-log
-chmod +x /usr/local/bin/user-add-pptp
-chmod +x /usr/local/bin/user-delete-pptp
-chmod +x /usr/local/bin/alluser-pptp
-chmod +x /usr/local/bin/user-login-pptp
-chmod +x /usr/local/bin/user-expire-pptp
-chmod +x /usr/local/bin/user-detail-pptp
-chmod +x /usr/local/bin/bench-network
-chmod +x /usr/local/bin/speedtest
-chmod +x /usr/local/bin/ram
-chmod +x /usr/local/bin/log-limit
-chmod +x /usr/local/bin/log-ban
-chmod +x /usr/local/bin/user-generate
-chmod +x /usr/local/bin/user-list
-chmod +x /usr/local/bin/diagnosa
-chmod +x /usr/local/bin/premium-script
-chmod +x /usr/local/bin/user-delete-expired
-chmod +x /usr/local/bin/auto-reboot
-chmod +x /usr/local/bin/log-install
-chmod +x /usr/local/bin/menu
-chmod +x /usr/local/bin/user-auto-limit
-chmod +x /usr/local/bin/user-auto-limit-script
-chmod +x /usr/local/bin/edit-port
-chmod +x /usr/local/bin/edit-port-squid
-chmod +x /usr/local/bin/edit-port-openvpn
-chmod +x /usr/local/bin/edit-port-openssh
-chmod +x /usr/local/bin/edit-port-dropbear
-chmod +x /usr/local/bin/autokill
-chmod +x /root/limit.sh
-chmod +x /root/ban.sh
-screen -AmdS limit /root/limit.sh
-screen -AmdS ban /root/ban.sh
+# download script
+cd
+wget -O /usr/bin/benchmark "https://raw.githubusercontent.com/brantbell/cream/mei/benchmark.sh"
+wget -O /usr/bin/speedtest "https://raw.githubusercontent.com/brantbell/cream/mei/speedtest_cli.py"
+wget -O /usr/bin/ps-mem "https://raw.githubusercontent.com/brantbell/cream/mei/ps_mem.py"
+wget -O /usr/bin/dropmon "https://raw.githubusercontent.com/brantbell/cream/mei/dropmon.sh"
+wget -O /usr/bin/menu "https://raw.githubusercontent.com/brantbell/cream/mei/menu.sh"
+wget -O /usr/bin/user-active-list "https://raw.githubusercontent.com/brantbell/cream/mei/user-active-list.sh"
+wget -O /usr/bin/user-add "https://raw.githubusercontent.com/brantbell/cream/mei/user-add.sh"
+wget -O /usr/bin/user-add-pptp "https://raw.githubusercontent.com/brantbell/cream/mei/user-add-pptp.sh"
+wget -O /usr/bin/user-del "https://raw.githubusercontent.com/brantbell/cream/mei/user-del.sh"
+wget -O /usr/bin/disable-user-expire "https://raw.githubusercontent.com/brantbell/cream/mei/disable-user-expire.sh"
+wget -O /usr/bin/delete-user-expire "https://raw.githubusercontent.com/brantbell/cream/mei/delete-user-expire.sh"
+wget -O /usr/bin/banned-user "https://raw.githubusercontent.com/brantbell/cream/mei/banned-user.sh"
+wget -O /usr/bin/unbanned-user "https://raw.githubusercontent.com/brantbell/cream/mei/unbanned-user.sh"
+wget -O /usr/bin/user-expire-list "https://raw.githubusercontent.com/brantbell/cream/mei/user-expire-list.sh"
+wget -O /usr/bin/user-gen "https://raw.githubusercontent.com/brantbell/cream/mei/user-gen.sh"
+wget -O /usr/bin/userlimit.sh "https://raw.githubusercontent.com/brantbell/cream/mei/userlimit.sh"
+#wget -O /usr/bin/userlimitssh.sh "https://raw.githubusercontent.com/brantbell/cream/mei/userlimitssh.sh"
+wget -O /usr/bin/user-list "https://raw.githubusercontent.com/brantbell/cream/mei/user-list.sh"
+wget -O /usr/bin/user-login "https://raw.githubusercontent.com/brantbell/cream/mei/user-login.sh"
+wget -O /usr/bin/user-pass "https://raw.githubusercontent.com/brantbell/cream/mei/user-pass.sh"
+wget -O /usr/bin/user-renew "https://raw.githubusercontent.com/brantbell/cream/mei/user-renew.sh"
+wget -O /usr/bin/clearcache.sh "https://raw.githubusercontent.com/brantbell/cream/mei/clearcache.sh"
+wget -O /usr/bin/bannermenu "https://raw.githubusercontent.com/brantbell/cream/mei/bannermenu"
+wget -O /usr/bin/menu-update-script-vps.sh "https://raw.githubusercontent.com/brantbell/cream/mei/menu-update-script-vps.sh"
+wget -O /usr/bin/vpnmon "https://raw.githubusercontent.com/brantbell/cream/mei/vpnmon"
+
+
+cd
+chmod +x /usr/bin/benchmark
+chmod +x /usr/bin/speedtest
+chmod +x /usr/bin/ps-mem
+#chmod +x /usr/bin/autokill
+chmod +x /usr/bin/dropmon
+chmod +x /usr/bin/menu
+chmod +x /usr/bin/user-active-list
+chmod +x /usr/bin/user-add
+chmod +x /usr/bin/user-add-pptp
+chmod +x /usr/bin/user-del
+chmod +x /usr/bin/disable-user-expire
+chmod +x /usr/bin/delete-user-expire
+chmod +x /usr/bin/banned-user
+chmod +x /usr/bin/unbanned-user
+chmod +x /usr/bin/user-expire-list
+chmod +x /usr/bin/user-gen
+chmod +x /usr/bin/userlimit.sh
+#chmod +x /usr/bin/userlimitssh.sh
+chmod +x /usr/bin/user-list
+chmod +x /usr/bin/user-login
+chmod +x /usr/bin/user-pass
+chmod +x /usr/bin/user-renew
+chmod +x /usr/bin/clearcache.sh
+chmod +x /usr/bin/bannermenu
+chmod +x /usr/bin/menu-update-script-vps.sh
+chmod 777 /usr/bin/vpnmon
+
+
+
+
+
+
 clear
 cd
 echo " "
