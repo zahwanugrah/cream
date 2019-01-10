@@ -415,10 +415,122 @@ sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 /etc/init.d/stunnel4 restart
 
 #ovpn
-wget -O ovpn.sh https://raw.githubusercontent.com/brantbell/cream/mei/installovpn.sh
-chmod +x ovpn.sh
-./ovpn.sh
-rm ./ovpn.sh
+#wget -O ovpn.sh https://raw.githubusercontent.com/brantbell/cream/mei/installovpn.sh
+#chmod +x ovpn.sh
+#./ovpn.sh
+#rm ./ovpn.sh
+
+cd
+
+#install OpenVPN
+apt-get -y install openvpn easy-rsa openssl iptables
+cp -r /usr/share/easy-rsa/ /etc/openvpn
+mkdir /etc/openvpn/easy-rsa/keys
+# replace bits
+sed -i 's|export KEY_COUNTRY="US"|export KEY_COUNTRY="PH"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_PROVINCE="CA"|export KEY_PROVINCE="Albay"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_CITY="SanFrancisco"|export KEY_CITY="Legazpi"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_ORG="Fort-Funston"|export KEY_ORG="IIEE"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_EMAIL="me@myhost.mydomain"|export KEY_EMAIL="rdbtx123@gmail.com"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="daybreakersx"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_NAME="EasyRSA"|export KEY_NAME="daybreakersx"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_OU=changeme|export KEY_OU=daybreakersx|' /etc/openvpn/easy-rsa/vars
+#Create Diffie-Helman Pem
+openssl dhparam -out /etc/openvpn/dh2048.pem 2048
+# Create PKI
+cd /etc/openvpn/easy-rsa
+. ./vars
+./clean-all
+export EASY_RSA="${EASY_RSA:-.}"
+"$EASY_RSA/pkitool" --initca $*
+# create key server
+export EASY_RSA="${EASY_RSA:-.}"
+"$EASY_RSA/pkitool" --server server
+# setting KEY CN
+export EASY_RSA="${EASY_RSA:-.}"
+"$EASY_RSA/pkitool" client
+cd
+#cp /etc/openvpn/easy-rsa/keys/{server.crt,server.key,ca.crt} /etc/openvpn
+cp /etc/openvpn/easy-rsa/keys/server.crt /etc/openvpn/server.crt
+cp /etc/openvpn/easy-rsa/keys/server.key /etc/openvpn/server.key
+cp /etc/openvpn/easy-rsa/keys/ca.crt /etc/openvpn/ca.crt
+# Setting Server
+cat > /etc/openvpn/server.conf <<-END
+port 55
+proto tcp
+dev tun
+ca ca.crt
+cert server.crt
+key server.key
+dh dh2048.pem
+client-cert-not-required
+username-as-common-name
+plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
+server 192.168.100.0 255.255.255.0
+ifconfig-pool-persist ipp.txt
+push "redirect-gateway def1 bypass-dhcp"
+push "dhcp-option DNS 8.8.8.8"
+push "dhcp-option DNS 8.8.4.4"
+push "route-method exe"
+push "route-delay 2"
+duplicate-cn
+push "route-method exe"
+push "route-delay 2"
+keepalive 10 120
+comp-lzo
+user nobody
+group nogroup
+persist-key
+persist-tun
+status openvpn-status.log
+log         openvpn.log
+verb 3
+cipher AES-128-CBC
+END
+
+#Create OpenVPN Config
+mkdir -p /home/vps/public_html
+cat > /home/vps/public_html/client.ovpn <<-END
+# OpenVPN Configuration by HostingTermurah.net
+client
+dev tun
+proto tcp
+remote $MYIP 55
+persist-key
+persist-tun
+dev tun
+pull
+resolv-retry infinite
+nobind
+user nobody
+group nogroup
+comp-lzo
+ns-cert-type server
+verb 3
+mute 2
+mute-replay-warnings
+auth-user-pass
+redirect-gateway def1
+script-security 2
+route 0.0.0.0 0.0.0.0
+route-method exe
+route-delay 2
+cipher AES-128-CBC
+http-proxy $MYIP 8080
+http-proxy-retry
+END
+echo '<ca>' >> /home/vps/public_html/client.ovpn
+cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
+echo '</ca>' >> /home/vps/public_html/client.ovpn
+cd /home/vps/public_html/
+tar -czf /home/vps/public_html/openvpn.tar.gz client.ovpn
+tar -czf /home/vps/public_html/client.tar.gz client.ovpn
+cd
+
+# Restart openvpn
+/etc/init.d/openvpn restart
+service openvpn start
+service openvpn status
 
 echo "kopet" > /etc/openvpn/pass.txt
 
