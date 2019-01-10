@@ -121,6 +121,8 @@ apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-co
 apt-get -y install build-essential
 apt-get -y install libio-pty-perl libauthen-pam-perl apt-show-versions
 
+
+
 # disable exim
 service exim4 stop
 sysv-rc-conf exim4 off
@@ -130,8 +132,8 @@ apt-file update
 
 # setting vnstat
 vnstat -u -i eth0
-sudo service vnstat restart
-cd
+service vnstat restart
+
 
 # text wrn
 cd
