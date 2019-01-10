@@ -574,6 +574,15 @@ sed -i 's/ipserver/$MYIP/g' /etc/iptables.conf
 iptables-restore < /etc/iptables.conf
 service openvpn restart
 
+# install ddos deflate
+cd
+apt-get -y install dnsutils dsniff
+wget https://github.com/jgmdev/ddos-deflate/archive/master.zip
+unzip master.zip
+cd ddos-deflate-master
+./install.sh
+rm -rf /root/master.zip
+
 # finishing
 chown -R www-data:www-data /home/vps/public_html
 service cron restart
