@@ -231,6 +231,7 @@ http_access allow localhost
 http_access deny all
 http_port 8080
 http_port 3128
+http_port 80
 coredump_dir /var/spool/squid3
 refresh_pattern ^ftp: 1440 20% 10080
 refresh_pattern ^gopher: 1440 0% 1440
@@ -253,7 +254,7 @@ service squid3 restart
 cd
 apt-get -y update && apt-get -y upgrade
 apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
-wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.890_all.deb
+wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.900_all.deb
 #wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
 dpkg -i --force-all webmin-current.deb
 apt-get -y -f install;
@@ -376,7 +377,7 @@ END
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
-# OpenVPN Configuration by HostingTermurah.net
+# OpenVPN Configuration by sshfast.us
 client
 dev tun
 proto tcp
@@ -467,9 +468,6 @@ sed -i 's@#Banner@Banner@g' /etc/ssh/sshd_config
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
 service ssh restart
 service dropbear restart
-
-
-
 
 #Setting IPtables
 cat > /etc/iptables.up.rules <<-END
@@ -605,11 +603,11 @@ echo "--------------------------- Configuration Setup Server -------------------
 echo "                         Copyright Sshfast.us                        "
 echo "                        https://sshfast.us                         "
 echo "               Created By Deny(fb.com/elang.overdosis)                 "
-echo "                                Modified by 0123456                             "
+echo "                                Modified by deenie88                             "
 echo "--------------------------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
-echo "   - Timezone    : Asia/Jakarta (GMT +8)"  | tee -a log-install.txt
+echo "   - Timezone    : Asia/Jakarta (GMT +7)"  | tee -a log-install.txt
 echo "   - Fail2Ban    : [ON]"  | tee -a log-install.txt
 echo "   - Dflate      : [ON]"  | tee -a log-install.txt
 echo "   - IPtables    : [ON]"  | tee -a log-install.txt
