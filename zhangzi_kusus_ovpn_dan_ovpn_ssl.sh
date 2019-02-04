@@ -406,6 +406,50 @@ tar -czf /home/vps/public_html/openvpn.tar.gz client.ovpn
 tar -czf /home/vps/public_html/client.tar.gz client.ovpn
 cd
 
+#Create OpenVPN Config
+mkdir -p /home/vps/public_html
+cat > /home/vps/public_html/clientssl.ovpn <<-END
+# OpenVPN Configuration by sshfast.us
+# by zhangzi
+
+
+
+client
+dev tun
+proto tcp
+persist-key
+persist-tun
+dev tun
+pull
+resolv-retry infinite
+nobind
+user nobody
+group nogroup
+comp-lzo
+ns-cert-type server
+verb 3
+mute 2
+mute-replay-warnings
+auth-user-pass
+redirect-gateway def1
+script-security 2
+route-method exe
+setenv opt block-outside-dns
+route-delay 2
+remote $MYIP 443
+cipher AES-128-CBC
+up /etc/openvpn/update-resolv-conf
+down /etc/openvpn/update-resolv-conf
+route $MYIP 255.255.255.255 net_gateway
+
+END
+echo '<ca>' >> /home/vps/public_html/clientssl.ovpn
+cat /etc/openvpn/ca.crt >> /home/vps/public_html/clientssl.ovpn
+echo '</ca>' >> /home/vps/public_html/clientssl.ovpn
+cd /home/vps/public_html/
+tar -czf /home/vps/public_html/openvpn.tar.gz clientssl.ovpn
+tar -czf /home/vps/public_html/client.tar.gz clientssl.ovpn
+cd
 # Restart openvpn
 /etc/init.d/openvpn restart
 service openvpn start
