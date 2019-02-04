@@ -447,8 +447,8 @@ echo '<ca>' >> /home/vps/public_html/clientssl.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/clientssl.ovpn
 echo '</ca>' >> /home/vps/public_html/clientssl.ovpn
 cd /home/vps/public_html/
-tar -czf /home/vps/public_html/openvpn.tar.gz clientssl.ovpn
-tar -czf /home/vps/public_html/client.tar.gz clientssl.ovpn
+tar -czf /home/vps/public_html/openvpnssl.tar.gz clientssl.ovpn
+tar -czf /home/vps/public_html/clientssl.tar.gz clientssl.ovpn
 cd
 # Restart openvpn
 /etc/init.d/openvpn restart
