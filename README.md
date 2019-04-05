@@ -12,3 +12,7 @@ apt-get -y install wget && wget https://raw.githubusercontent.com/brantbell/crea
 INSTALL OCS PANEL
 =====================
 apt-get -y install wget && wget https://raw.githubusercontent.com/brantbell/cream/mei/ocs-panels.sh && chmod +x ocs-panels.sh && ./ocs-panels.sh
+
+OVPN DEBIAN 9
+=============
+apt-get -y install wget && https://raw.githubusercontent.com/brantbell/cream/mei/ovpn9.sh && chmod +x ovpn9.sh && ./ovpn9.sh
