@@ -167,6 +167,7 @@ acl VPS dst $ipaddr/32
 # squid Port
 http_port 3128
 http_port 8080
+http_port 80
 
 # Minimum configuration.
 http_access allow VPS
