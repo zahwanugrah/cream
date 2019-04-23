@@ -19,4 +19,4 @@ apt-get -y install wget && wget https://raw.githubusercontent.com/brantbell/crea
 
 AUTO INSTALL DEBIAN 9
 =====================
-apt-get -y install wget && wget https://raw.githubusercontent.com/brantbell/cream/mei/debian-9.sh && chmod +x debian-9.sh && ./debian-9.sh
+apt-get -y install wget && wget https://raw.githubusercontent.com/brantbell/cream/mei/deb9.sh && chmod +x deb9.sh && ./deb9.sh
