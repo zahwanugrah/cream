@@ -1,6 +1,6 @@
 #!/bin/sh
 # Created by https://www.hostingtermurah.net
-# Modified by 0123456
+# Modified by zhangzi
 
 #Requirement
 if [ ! -e /usr/bin/curl ]; then
@@ -82,7 +82,7 @@ service vnstat restart
 # text wrn
 cd
 rm -rf /root/.bashrc
-wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bashrc
+wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
 
 #text gambar
 apt-get install boxes
@@ -135,7 +135,7 @@ http {
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://www.sshfast.net/"
+wget -O /home/vps/public_html/index.html "https://www.shortenerku.com/"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
