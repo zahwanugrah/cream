@@ -74,11 +74,6 @@ vnstat -u -i eth0
 service vnstat restart
 
 # install screenfetch
-cd
-wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/daybreakersx/premscript/master/screenfetch"
-chmod +x /usr/bin/screenfetch
-echo "clear" >> .profile
-echo "screenfetch" >> .profile
 # text wrn
 #cd
 #rm -rf /root/.bashrc
@@ -212,11 +207,11 @@ vnstat -u -i eth0
 service vnstat restart
 
 # install screenfetch
-#cd
-#wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/daybreakersx/premscript/master/screenfetch"
-#chmod +x /usr/bin/screenfetch
-#echo "clear" >> .profile
-#echo "screenfetch" >> .profile
+cd
+wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/daybreakersx/premscript/master/screenfetch"
+chmod +x /usr/bin/screenfetch
+echo "clear" >> .profile
+echo "screenfetch" >> .profile
 # text wrn
 cd
 #rm -rf /root/.bashrc
@@ -361,8 +356,6 @@ http_access deny manager
 http_access allow localhost
 http_access deny all
 http_port 8080
-http_port 8000
-http_port 80
 http_port 3128
 coredump_dir /var/spool/squid3
 refresh_pattern ^ftp: 1440 20% 10080
@@ -386,7 +379,7 @@ service squid3 restart
 cd
 apt-get -y update && apt-get -y upgrade
 apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
-wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.900_all.deb
+wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
 #wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
 dpkg -i --force-all webmin-current.deb
 apt-get -y -f install;
