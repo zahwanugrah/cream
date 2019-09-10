@@ -74,21 +74,21 @@ vnstat -u -i eth0
 service vnstat restart
 
 # install screenfetch
-#cd
-#wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/daybreakersx/premscript/master/screenfetch"
-#chmod +x /usr/bin/screenfetch
-#echo "clear" >> .profile
-#echo "screenfetch" >> .profile
-# text wrn
 cd
-rm -rf /root/.bashrc
-wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
+wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/daybreakersx/premscript/master/screenfetch"
+chmod +x /usr/bin/screenfetch
+echo "clear" >> .profile
+echo "screenfetch" >> .profile
+# text wrn
+#cd
+#rm -rf /root/.bashrc
+#wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
 
 #text gambar
-apt-get install boxes
+#apt-get install boxes
 # text pelangi
-sudo apt-get install ruby -y
-sudo gem install lolcat
+#sudo apt-get install ruby -y
+#sudo gem install lolcat
 
 # install webserver
 cd
@@ -138,7 +138,7 @@ mkdir -p /home/vps/public_html
 wget -O /home/vps/public_html/index.html "
 #!/bin/sh
 # Created by https://www.hostingtermurah.net
-# Modified by 0123456
+# Modified by kopet
 
 #Requirement
 if [ ! -e /usr/bin/curl ]; then
@@ -219,14 +219,14 @@ service vnstat restart
 #echo "screenfetch" >> .profile
 # text wrn
 cd
-rm -rf /root/.bashrc
-wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bashrc
+#rm -rf /root/.bashrc
+#wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bashrc
 
 #text gambar
-apt-get install boxes
+#apt-get install boxes
 # text pelangi
-sudo apt-get install ruby -y
-sudo gem install lolcat
+#sudo apt-get install ruby -y
+#sudo gem install lolcat
 
 # install webserver
 cd
@@ -369,7 +369,7 @@ refresh_pattern ^ftp: 1440 20% 10080
 refresh_pattern ^gopher: 1440 0% 1440
 refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
 refresh_pattern . 0 20% 4320
-visible_hostname daybreakersx
+visible_hostname kopet
 END
 sed -i $MYIP2 /etc/squid3/squid.conf;
 service squid3 restart
@@ -509,7 +509,7 @@ END
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
-# OpenVPN Configuration by sshfast.us
+# OpenVPN Configuration by sshfast.net
 client
 dev tun
 proto tcp
@@ -732,10 +732,10 @@ echo " "
 echo "Installation has been completed!!"
 echo " "
 echo "--------------------------- Configuration Setup Server -------------------------"
-echo "                         Copyright Sshfast.us                        "
-echo "                        https://sshfast.us                         "
-echo "               Created By Deny(fb.com/elang.overdosis)                 "
-echo "                                Modified by deenie88                             "
+echo "                              Copyright sshfast.net                             "
+echo "                               https://sshfast.net                              "
+echo "                       Created By Deny(fb.com/elang.overdosis)                  "
+echo "                               Modified by deenie88                             "
 echo "--------------------------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
