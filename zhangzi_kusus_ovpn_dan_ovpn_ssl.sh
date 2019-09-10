@@ -611,9 +611,9 @@ cd
 #sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 #/etc/init.d/stunnel4 restart
 
-sudo apt update
-sudo apt full-upgrade
-sudo apt install -y stunnel4
+sudo apt-get update
+sudo apt-get full-upgrade
+sudo apt-get install -y stunnel4
 cd /etc/stunnel/
 openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
 sudo touch stunnel.conf
