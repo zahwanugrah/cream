@@ -19,4 +19,4 @@ apt-get -y install wget && wget https://raw.githubusercontent.com/brantbell/crea
 
 DEB8
 ====
-apt-get -y install wget && https://raw.githubusercontent.com/emue25/cream/mei/deb8.sh && chmod +x deb8.sh && ./deb8.sh
+apt-get -y install wget && wget https://raw.githubusercontent.com/emue25/cream/mei/deb8.sh && chmod +x deb8.sh && ./deb8.sh
