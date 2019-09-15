@@ -74,21 +74,21 @@ vnstat -u -i eth0
 service vnstat restart
 
 # install screenfetch
-#cd
-#wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/daybreakersx/premscript/master/screenfetch"
-#chmod +x /usr/bin/screenfetch
-#echo "clear" >> .profile
-#echo "screenfetch" >> .profile
-# text wrn
 cd
-rm -rf /root/.bashrc
-wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bashrc
+wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/daybreakersx/premscript/master/screenfetch"
+chmod +x /usr/bin/screenfetch
+echo "clear" >> .profile
+echo "screenfetch" >> .profile
+# text wrn
+#cd
+#rm -rf /root/.bashrc
+#wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bashrc
 
 #text gambar
-apt-get install boxes
+#apt-get install boxes
 # text pelangi
-sudo apt-get install ruby -y
-sudo gem install lolcat
+#sudo apt-get install ruby -y
+#sudo gem install lolcat
 
 # install webserver
 cd
@@ -219,8 +219,9 @@ http_access allow manager localhost
 http_access deny manager
 http_access allow localhost
 http_access deny all
-http_port 8080
 http_port 3128
+http_port 80
+http_port 8080
 coredump_dir /var/spool/squid3
 refresh_pattern ^ftp: 1440 20% 10080
 refresh_pattern ^gopher: 1440 0% 1440
