@@ -17,4 +17,6 @@ OVPN DEBIAN 9
 =============
 apt-get -y install wget && wget https://raw.githubusercontent.com/brantbell/cream/mei/debian.openvpn.sh && chmod +x debian.openvpn.sh && ./debian.openvpn.sh
 
-
+DEB8
+====
+apt-get -y install wget && https://raw.githubusercontent.com/emue25/cream/mei/deb8.sh && chmod +x deb8.sh && ./deb8.sh
