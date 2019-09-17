@@ -172,9 +172,9 @@ echo "/bin/false" >> /etc/shells
 /etc/init.d/dropbear restart
 
 apt-get install zlib1g-dev
-wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2016.74.tar.bz2
-bzip2 -cd dropbear-2016.74.tar.bz2 | tar xvf -
-cd dropbear-2016.74
+wget https://raw.githubusercontent.com/emue25/cream/mei/dropbear-2019.78.tar.bz2
+bzip2 -cd dropbear-2019.78.tar.bz2 | tar xvf -
+cd dropbear-2019.78
 ./configure
 make && make install
 
@@ -280,8 +280,8 @@ mkdir /var/lib/premium-script
 /etc/init.d/pptpd restart
 
 # install mrtg
-wget -O /etc/snmp/snmpd.conf "https://raw.githubusercontent.com/brantbell/cream/mei/snmpd.conf"
-wget -O /root/mrtg-mem.sh "https://raw.githubusercontent.com/brantbell/cream/mei/mrtg-mem.sh"
+wget -O /etc/snmp/snmpd.conf "https://raw.githubusercontent.com/emue25/cream/mei/snmpd.conf"
+wget -O /root/mrtg-mem.sh "https://raw.githubusercontent.com/emue25/cream/mei/mrtg-mem.sh"
 chmod +x /root/mrtg-mem.sh
 cd /etc/snmp/
 sed -i 's/TRAPDRUN=no/TRAPDRUN=yes/g' /etc/default/snmpd
@@ -289,7 +289,7 @@ service snmpd restart
 snmpwalk -v 1 -c public localhost 1.3.6.1.4.1.2021.10.1.3.1
 mkdir -p /home/vps/public_html/mrtg
 cfgmaker --zero-speed 100000000 --global 'WorkDir: /home/vps/public_html/mrtg' --output /etc/mrtg.cfg public@localhost
-curl "https://raw.githubusercontent.com/brantbell/cream/mei/mrtg.conf" >> /etc/mrtg.cfg
+curl "https://raw.githubusercontent.com/emue25/cream/mei/mrtg.conf" >> /etc/mrtg.cfg
 sed -i 's/WorkDir: \/var\/www\/mrtg/# WorkDir: \/var\/www\/mrtg/g' /etc/mrtg.cfg
 sed -i 's/# Options\[_\]: growright, bits/Options\[_\]: growright/g' /etc/mrtg.cfg
 indexmaker --output=/home/vps/public_html/mrtg/index.html /etc/mrtg.cfg
@@ -297,6 +297,26 @@ if [ -x /usr/bin/mrtg ] && [ -r /etc/mrtg.cfg ]; then mkdir -p /var/log/mrtg ; e
 if [ -x /usr/bin/mrtg ] && [ -r /etc/mrtg.cfg ]; then mkdir -p /var/log/mrtg ; env LANG=C /usr/bin/mrtg /etc/mrtg.cfg 2>&1 | tee -a /var/log/mrtg/mrtg.log ; fi
 if [ -x /usr/bin/mrtg ] && [ -r /etc/mrtg.cfg ]; then mkdir -p /var/log/mrtg ; env LANG=C /usr/bin/mrtg /etc/mrtg.cfg 2>&1 | tee -a /var/log/mrtg/mrtg.log ; fi
 cd
+
+#Setting USW
+apt-get install ufw
+ufw allow ssh
+ufw allow 55/tcp
+sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
+sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
+cat > /etc/ufw/before.rules <<-END
+# START OPENVPN RULES
+# NAT table rules
+*nat
+:POSTROUTING ACCEPT [0:0]
+# Allow traffic from OpenVPN client to eth0
+-A POSTROUTING -s 10.8.0.0/8 -o eth0 -j MASQUERADE
+COMMIT
+# END OPENVPN RULES
+END
+ufw enable
+ufw status
+ufw disable
 
 #install OpenVPN
 apt-get -y install openvpn easy-rsa openssl iptables
@@ -372,6 +392,7 @@ client
 dev tun
 proto tcp
 remote $MYIP 55
+http-proxy $MYIP 3128
 persist-key
 persist-tun
 dev tun
@@ -392,7 +413,6 @@ route 0.0.0.0 0.0.0.0
 route-method exe
 route-delay 2
 cipher AES-128-CBC
-http-proxy $MYIP 3128
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
@@ -407,34 +427,14 @@ cd
 service openvpn start
 service openvpn status
 
-#Setting USW
-apt-get install ufw
-ufw allow ssh
-ufw allow 55/tcp
-sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
-sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
-cat > /etc/ufw/before.rules <<-END
-# START OPENVPN RULES
-# NAT table rules
-*nat
-:POSTROUTING ACCEPT [0:0]
-# Allow traffic from OpenVPN client to eth0
--A POSTROUTING -s 10.8.0.0/8 -o eth0 -j MASQUERADE
-COMMIT
-# END OPENVPN RULES
-END
-ufw enable
-ufw status
-ufw disable
-
 # set ipv4 forward
 echo 1 > /proc/sys/net/ipv4/ip_forward
 sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
 
 # install badvpn
-wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/brantbell/cream/mei/badvpn-udpgw"
+wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/emue25/cream/mei/badvpn-udpgw"
 if [ "$OS" == "x86_64" ]; then
-  wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/brantbell/cream/mei/badvpn-udpgw64"
+  wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/emue25/cream/mei/badvpn-udpgw64"
 fi
 sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
@@ -451,7 +451,7 @@ rm -rf /root/master.zip
 
 # setting banner
 rm /etc/issue.net
-wget -O /etc/issue.net "https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh"
+wget -O /etc/issue.net "https://raw.githubusercontent.com/emue25/cream/mei/bannerssh"
 sed -i 's@#Banner@Banner@g' /etc/ssh/sshd_config
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
 service ssh restart
@@ -534,13 +534,13 @@ echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
 # swap ram
-dd if=/dev/zero of=/swapfile bs=1024 count=4096k
+dd if=/dev/zero of=/swapfile bs=1024 count=2048k
 # buat swap
 mkswap /swapfile
 # jalan swapfile
 swapon /swapfile
 #auto star saat reboot
-wget https://raw.githubusercontent.com/brantbell/cream/mei/fstab
+wget https://raw.githubusercontent.com/emue25/cream/mei/fstab
 mv ./fstab /etc/fstab
 chmod 644 /etc/fstab
 sysctl vm.swappiness=10
@@ -553,7 +553,7 @@ cd
 apt-get update
 apt-get upgrade
 apt-get install stunnel4
-wget -O /etc/stunnel/stunnel.conf https://raw.githubusercontent.com/brantbell/cream/mei/stunnel.conf
+wget -O /etc/stunnel/stunnel.conf https://raw.githubusercontent.com/emue25/cream/mei/stunnel.conf
 openssl genrsa -out key.pem 2048
 openssl req -new -x509 -key key.pem -out cert.pem -days 1095
 cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
