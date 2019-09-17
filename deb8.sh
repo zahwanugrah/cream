@@ -172,26 +172,26 @@ echo "/bin/false" >> /etc/shells
 /etc/init.d/dropbear restart
 
 #dropbear upgrade
-apt-get install zlib1g-dev
-wget https://raw.githubusercontent.com/emue25/cream/mei/dropbear-2019.78.tar.bz2
-bzip2 -cd dropbear-2019.78.tar.bz2 | tar xvf -
-cd dropbear-2019.78
-./configure
-make && make install
+#apt-get install zlib1g-dev
+#wget https://raw.githubusercontent.com/emue25/cream/mei/dropbear-2019.78.tar.bz2
+#bzip2 -cd dropbear-2019.78.tar.bz2 | tar xvf -
+#cd dropbear-2019.78
+#./configure
+#make && make install
 
 # install vnstat gui
-cd /home/vps/public_html/
-wget https://raw.githubusercontent.com/brantbell/cream/mei/vnstat_php_frontend-1.5.1.tar.gz
+#cd /home/vps/public_html/
+#wget https://raw.githubusercontent.com/brantbell/cream/mei/vnstat_php_frontend-1.5.1.tar.gz
 
-tar xf vnstat_php_frontend-1.5.1.tar.gz
-rm vnstat_php_frontend-1.5.1.tar.gz
-mv vnstat_php_frontend-1.5.1 vnstat
-cd vnstat
-sed -i "s/\$iface_list = array('eth0', 'sixxs');/\$iface_list = array('eth0');/g" config.php
-sed -i "s/\$language = 'nl';/\$language = 'en';/g" config.php
-sed -i 's/Internal/Internet/g' config.php
-sed -i '/SixXS IPv6/d' config.php
-cd
+#tar xf vnstat_php_frontend-1.5.1.tar.gz
+#rm vnstat_php_frontend-1.5.1.tar.gz
+#mv vnstat_php_frontend-1.5.1 vnstat
+#cd vnstat
+#sed -i "s/\$iface_list = array('eth0', 'sixxs');/\$iface_list = array('eth0');/g" config.php
+#sed -i "s/\$language = 'nl';/\$language = 'en';/g" config.php
+#sed -i 's/Internal/Internet/g' config.php
+#sed -i '/SixXS IPv6/d' config.php
+#cd
 
 # install fail2ban
 apt-get -y install fail2ban
@@ -221,7 +221,6 @@ http_access deny manager
 http_access allow localhost
 http_access deny all
 http_port 3128
-http_port 80
 http_port 8080
 coredump_dir /var/spool/squid3
 refresh_pattern ^ftp: 1440 20% 10080
@@ -263,30 +262,30 @@ service webmin restart
 #service webmin restart
 
 #install PPTP
-#apt-get -y install pptpd
-#cat > /etc/ppp/pptpd-options <<END
-#name pptpd
-#refuse-pap
-#refuse-chap
-#refuse-mschap
-#require-mschap-v2
-#require-mppe-128
-#ms-dns 8.8.8.8
-#ms-dns 8.8.4.4
-#proxyarp
-#nodefaultroute
-#lock
-#nobsdcomp
-#END
-#echo "option /etc/ppp/pptpd-options" > /etc/pptpd.conf
-#echo "logwtmp" >> /etc/pptpd.conf
-#echo "localip 10.1.0.1" >> /etc/pptpd.conf
-#echo "remoteip 10.1.0.5-100" >> /etc/pptpd.conf
-#cat >> /etc/ppp/ip-up <<END
-#ifconfig ppp0 mtu 1400
-#END
-#mkdir /var/lib/premium-script
-#/etc/init.d/pptpd restart
+apt-get -y install pptpd
+cat > /etc/ppp/pptpd-options <<END
+name pptpd
+refuse-pap
+refuse-chap
+refuse-mschap
+require-mschap-v2
+require-mppe-128
+ms-dns 8.8.8.8
+ms-dns 8.8.4.4
+proxyarp
+nodefaultroute
+lock
+nobsdcomp
+END
+echo "option /etc/ppp/pptpd-options" > /etc/pptpd.conf
+echo "logwtmp" >> /etc/pptpd.conf
+echo "localip 10.1.0.1" >> /etc/pptpd.conf
+echo "remoteip 10.1.0.5-100" >> /etc/pptpd.conf
+cat >> /etc/ppp/ip-up <<END
+ifconfig ppp0 mtu 1400
+END
+mkdir /var/lib/premium-script
+/etc/init.d/pptpd restart
 
 # install mrtg
 #wget -O /etc/snmp/snmpd.conf "https://raw.githubusercontent.com/emue25/cream/mei/snmpd.conf"
