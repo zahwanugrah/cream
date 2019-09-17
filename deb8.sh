@@ -233,6 +233,14 @@ END
 sed -i $MYIP2 /etc/squid3/squid.conf;
 service squid3 restart
 
+# install webmin
+cd
+wget "https://raw.githubusercontent.com/brantbell/VPSauto/master/webmin_1.930_all.deb"
+dpkg --install webmin_1.930_all.deb;
+apt-get -y -f install;
+sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
+rm /root/webmin_1.930_all.deb
+service webmin restart
 # install stunnel4
 #apt-get -y install stunnel4
 #wget -O /etc/stunnel/stunnel.pem "https://raw.githubusercontent.com/daybreakersx/premscript/master/updates/stunnel.pem"
@@ -242,17 +250,17 @@ service squid3 restart
 #service stunnel4 restart
 
 # install webmin
-cd
-apt-get -y update && apt-get -y upgrade
-apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
-wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
+#cd
+#apt-get -y update && apt-get -y upgrade
+#apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
+#wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
 #wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
-dpkg -i --force-all webmin-current.deb
-apt-get -y -f install;
-sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-rm -f /root/webmin-current.deb
+#dpkg -i --force-all webmin-current.deb
+#apt-get -y -f install;
+#sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
+#rm -f /root/webmin-current.deb
 #apt-get -y --force-yes -f install libxml-parser-perl
-service webmin restart
+#service webmin restart
 
 #install PPTP
 apt-get -y install pptpd
