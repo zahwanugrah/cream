@@ -70,8 +70,8 @@ sysv-rc-conf exim4 off
 apt-file update
 
 # setting vnstat
-vnstat -u -i eth0
-service vnstat restart
+#vnstat -u -i eth0
+#service vnstat restart
 
 # install screenfetch
 #cd
@@ -582,10 +582,10 @@ service fail2ban restart
 service squid3 restart
 service webmin restart
 service pptpd restart
-sysv-rc-conf rc.local on
+#sysv-rc-conf rc.local on
 
 #clearing history
-history -c
+#history -c
 
 # info
 clear
