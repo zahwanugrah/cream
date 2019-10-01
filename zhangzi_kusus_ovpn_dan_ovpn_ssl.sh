@@ -1,6 +1,6 @@
 #!/bin/sh
 # Created by https://www.hostingtermurah.net
-# Modified by 0123456
+# Modified by kopet
 
 #Requirement
 if [ ! -e /usr/bin/curl ]; then
@@ -173,9 +173,18 @@ sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 service ssh restart
 
-
-
-
+# install webmin
+cd
+apt-get -y update && apt-get -y upgrade
+apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
+wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
+#wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
+dpkg -i --force-all webmin-current.deb
+apt-get -y -f install;
+sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
+rm -f /root/webmin-current.deb
+#apt-get -y --force-yes -f install libxml-parser-perl
+service webmin restart
 
 # install vnstat gui
 cd /home/vps/public_html/
@@ -239,19 +248,6 @@ service squid3 restart
 #sed -i $MYIP2 /etc/stunnel/stunnel.conf
 #sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 #service stunnel4 restart
-
-# install webmin
-cd
-apt-get -y update && apt-get -y upgrade
-apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
-wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
-#wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
-dpkg -i --force-all webmin-current.deb
-apt-get -y -f install;
-sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-rm -f /root/webmin-current.deb
-#apt-get -y --force-yes -f install libxml-parser-perl
-service webmin restart
 
 #install PPTP
 apt-get -y install pptpd
