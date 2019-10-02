@@ -39,8 +39,12 @@ deb http://http.us.debian.org/debian jessie main contrib non-free
 deb http://packages.dotdeb.org jessie all
 deb-src http://packages.dotdeb.org jessie all
 END2
-wget "http://www.dotdeb.org/dotdeb.gpg"
+#wget "http://www.dotdeb.org/dotdeb.gpg"
+#cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
+wget http://www.webmin.com/jcameron-key.asc
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
+cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
+
 
 # remove unused
 apt-get -y --purge remove samba*;
@@ -571,7 +575,8 @@ iptables-restore < /etc/iptables.up.rules
 
 # download script
 cd
-wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
+#wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
+wget https://raw.githubusercontent.com/daybreakersx/premscript/master/install-premiumscript.sh -O - -o /dev/null|sh
 
 # cronjob
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
