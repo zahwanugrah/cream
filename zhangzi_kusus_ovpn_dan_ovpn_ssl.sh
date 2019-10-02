@@ -1,6 +1,6 @@
 #!/bin/sh
 # Created by https://www.hostingtermurah.net
-# Modified by kopet
+# Modified by 0123456
 
 #Requirement
 if [ ! -e /usr/bin/curl ]; then
@@ -41,10 +41,10 @@ deb-src http://packages.dotdeb.org jessie all
 END2
 #wget "http://www.dotdeb.org/dotdeb.gpg"
 #cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
+wget http://www.dotdeb.org/dotdeb.gpg
 wget http://www.webmin.com/jcameron-key.asc
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
 cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
-
 
 # remove unused
 apt-get -y --purge remove samba*;
@@ -61,8 +61,8 @@ apt-get update; apt-get -y upgrade;
 apt-get -y install nginx php5-fpm php5-cli
 
 # install essential package
-echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
-apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
+#echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
+#apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
 apt-get -y install build-essential
 apt-get -y install libio-pty-perl libauthen-pam-perl apt-show-versions
 
@@ -100,21 +100,17 @@ rm /etc/nginx/sites-enabled/default
 rm /etc/nginx/sites-available/default
 cat > /etc/nginx/nginx.conf <<END3
 user www-data;
-
 worker_processes 1;
 pid /var/run/nginx.pid;
-
 events {
 	multi_accept on;
   worker_connections 1024;
 }
-
 http {
 	gzip on;
 	gzip_vary on;
 	gzip_comp_level 5;
 	gzip_types    text/plain application/x-javascript text/xml text/css;
-
 	autoindex on;
   sendfile on;
   tcp_nopush on;
@@ -129,17 +125,14 @@ http {
   client_max_body_size 32M;
 	client_header_buffer_size 8m;
 	large_client_header_buffers 8 8m;
-
 	fastcgi_buffer_size 8m;
 	fastcgi_buffers 8 8m;
-
 	fastcgi_read_timeout 600;
-
   include /etc/nginx/conf.d/*.conf;
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://sshfast.net/"
+wget -O /home/vps/public_html/index.html "https://shortenerku.com/"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
@@ -152,12 +145,10 @@ server {
   access_log /var/log/nginx/vps-access.log;
   error_log /var/log/nginx/vps-error.log error;
   root   /home/vps/public_html;
-
   location / {
     index  index.html index.htm index.php;
     try_files $uri $uri/ /index.php?$args;
   }
-
   location ~ \.php$ {
     include /etc/nginx/fastcgi_params;
     fastcgi_pass  127.0.0.1:9000;
@@ -165,7 +156,6 @@ server {
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
   }
 }
-
 END4
 sed -i 's/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php5/fpm/pool.d/www.conf
 service php5-fpm restart
@@ -176,19 +166,6 @@ sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
 sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 service ssh restart
-
-# install webmin
-cd
-apt-get -y update && apt-get -y upgrade
-apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
-wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
-#wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
-dpkg -i --force-all webmin-current.deb
-apt-get -y -f install;
-sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-rm -f /root/webmin-current.deb
-#apt-get -y --force-yes -f install libxml-parser-perl
-service webmin restart
 
 # install vnstat gui
 cd /home/vps/public_html/
@@ -253,6 +230,19 @@ service squid3 restart
 #sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 #service stunnel4 restart
 
+# install webmin
+cd
+apt-get -y update && apt-get -y upgrade
+apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
+wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.900_all.deb
+#wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
+dpkg -i --force-all webmin-current.deb
+apt-get -y -f install;
+sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
+rm -f /root/webmin-current.deb
+#apt-get -y --force-yes -f install libxml-parser-perl
+service webmin restart
+
 #install PPTP
 apt-get -y install pptpd
 cat > /etc/ppp/pptpd-options <<END
@@ -280,23 +270,23 @@ mkdir /var/lib/premium-script
 /etc/init.d/pptpd restart
 
 # install mrtg
-#wget -O /etc/snmp/snmpd.conf "https://raw.githubusercontent.com/brantbell/cream/mei/snmpd.conf"
-#wget -O /root/mrtg-mem.sh "https://raw.githubusercontent.com/brantbell/cream/mei/mrtg-mem.sh"
-#chmod +x /root/mrtg-mem.sh
-#cd /etc/snmp/
-#sed -i 's/TRAPDRUN=no/TRAPDRUN=yes/g' /etc/default/snmpd
-#service snmpd restart
-#snmpwalk -v 1 -c public localhost 1.3.6.1.4.1.2021.10.1.3.1
-#mkdir -p /home/vps/public_html/mrtg
-#cfgmaker --zero-speed 100000000 --global 'WorkDir: /home/vps/public_html/mrtg' --output /etc/mrtg.cfg public@localhost
-#curl "https://raw.githubusercontent.com/brantbell/cream/mei/mrtg.conf" >> /etc/mrtg.cfg
-#sed -i 's/WorkDir: \/var\/www\/mrtg/# WorkDir: \/var\/www\/mrtg/g' /etc/mrtg.cfg
-#sed -i 's/# Options\[_\]: growright, bits/Options\[_\]: growright/g' /etc/mrtg.cfg
-#indexmaker --output=/home/vps/public_html/mrtg/index.html /etc/mrtg.cfg
-#if [ -x /usr/bin/mrtg ] && [ -r /etc/mrtg.cfg ]; then mkdir -p /var/log/mrtg ; env LANG=C /usr/bin/mrtg /etc/mrtg.cfg 2>&1 | tee -a /var/log/mrtg/mrtg.log ; fi
-#if [ -x /usr/bin/mrtg ] && [ -r /etc/mrtg.cfg ]; then mkdir -p /var/log/mrtg ; env LANG=C /usr/bin/mrtg /etc/mrtg.cfg 2>&1 | tee -a /var/log/mrtg/mrtg.log ; fi
-#if [ -x /usr/bin/mrtg ] && [ -r /etc/mrtg.cfg ]; then mkdir -p /var/log/mrtg ; env LANG=C /usr/bin/mrtg /etc/mrtg.cfg 2>&1 | tee -a /var/log/mrtg/mrtg.log ; fi
-#cd
+wget -O /etc/snmp/snmpd.conf "https://raw.githubusercontent.com/brantbell/cream/mei/snmpd.conf"
+wget -O /root/mrtg-mem.sh "https://raw.githubusercontent.com/brantbell/cream/mei/mrtg-mem.sh"
+chmod +x /root/mrtg-mem.sh
+cd /etc/snmp/
+sed -i 's/TRAPDRUN=no/TRAPDRUN=yes/g' /etc/default/snmpd
+service snmpd restart
+snmpwalk -v 1 -c public localhost 1.3.6.1.4.1.2021.10.1.3.1
+mkdir -p /home/vps/public_html/mrtg
+cfgmaker --zero-speed 100000000 --global 'WorkDir: /home/vps/public_html/mrtg' --output /etc/mrtg.cfg public@localhost
+curl "https://raw.githubusercontent.com/brantbell/cream/mei/mrtg.conf" >> /etc/mrtg.cfg
+sed -i 's/WorkDir: \/var\/www\/mrtg/# WorkDir: \/var\/www\/mrtg/g' /etc/mrtg.cfg
+sed -i 's/# Options\[_\]: growright, bits/Options\[_\]: growright/g' /etc/mrtg.cfg
+indexmaker --output=/home/vps/public_html/mrtg/index.html /etc/mrtg.cfg
+if [ -x /usr/bin/mrtg ] && [ -r /etc/mrtg.cfg ]; then mkdir -p /var/log/mrtg ; env LANG=C /usr/bin/mrtg /etc/mrtg.cfg 2>&1 | tee -a /var/log/mrtg/mrtg.log ; fi
+if [ -x /usr/bin/mrtg ] && [ -r /etc/mrtg.cfg ]; then mkdir -p /var/log/mrtg ; env LANG=C /usr/bin/mrtg /etc/mrtg.cfg 2>&1 | tee -a /var/log/mrtg/mrtg.log ; fi
+if [ -x /usr/bin/mrtg ] && [ -r /etc/mrtg.cfg ]; then mkdir -p /var/log/mrtg ; env LANG=C /usr/bin/mrtg /etc/mrtg.cfg 2>&1 | tee -a /var/log/mrtg/mrtg.log ; fi
+cd
 
 #install OpenVPN
 apt-get -y install openvpn easy-rsa openssl iptables
@@ -369,7 +359,6 @@ mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
 # OpenVPN Configuration by sshfast.us
 # by zhangzi
-
 client
 dev tun
 proto tcp
@@ -396,7 +385,6 @@ route-delay 2
 cipher AES-128-CBC
 #http-proxy $MYIP 8080
 #http-proxy-retry
-
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
@@ -411,9 +399,6 @@ mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/clientssl.ovpn <<-END
 # OpenVPN Configuration by sshfast.us
 # by zhangzi ovpn ssl
-
-
-
 client
 dev tun
 proto tcp
@@ -441,7 +426,6 @@ cipher AES-128-CBC
 up /etc/openvpn/update-resolv-conf
 down /etc/openvpn/update-resolv-conf
 route $MYIP 255.255.255.255 net_gateway
-
 END
 echo '<ca>' >> /home/vps/public_html/clientssl.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/clientssl.ovpn
@@ -516,7 +500,6 @@ cat > /etc/iptables.up.rules <<-END
 -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 10.1.0.0/24 -o eth0 -j MASQUERADE
 COMMIT
-
 *filter
 :INPUT ACCEPT [19406:27313311]
 :FORWARD ACCEPT [0:0]
@@ -555,12 +538,10 @@ COMMIT
 -A INPUT -p tcp --dport 587 -j ACCEPT
 -A fail2ban-ssh -j RETURN
 COMMIT
-
 *raw
 :PREROUTING ACCEPT [158575:227800758]
 :OUTPUT ACCEPT [46145:2312668]
 COMMIT
-
 *mangle
 :PREROUTING ACCEPT [158575:227800758]
 :INPUT ACCEPT [158575:227800758]
@@ -612,9 +593,9 @@ cd
 #sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 #/etc/init.d/stunnel4 restart
 
-sudo apt-get update
-sudo apt-get full-upgrade
-sudo apt-get install -y stunnel4
+sudo apt update
+sudo apt full-upgrade
+sudo apt install -y stunnel4
 cd /etc/stunnel/
 openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
 sudo touch stunnel.conf
@@ -640,7 +621,7 @@ service vnstat restart
 service openvpn restart
 service snmpd restart
 service ssh restart
-#service dropbear restart
+service dropbear restart
 service fail2ban restart
 service squid3 restart
 service webmin restart
