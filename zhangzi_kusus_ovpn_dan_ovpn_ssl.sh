@@ -8,13 +8,13 @@ if [ ! -e /usr/bin/curl ]; then
 	apt-get -y install curl
 fi
 # initializing var
-#export DEBIAN_FRONTEND=noninteractive
-#OS=`uname -m`;
-#MYIP=$(curl -4 icanhazip.com)
-#if [ $MYIP = "" ]; then
-  # MYIP=`ifconfig | grep 'inet addr:' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | cut -d: -f2 | awk '{ print $1}' | head -1`;
-#fi
-#MYIP2="s/xxxxxxxxx/$MYIP/g";
+export DEBIAN_FRONTEND=noninteractive
+OS=`uname -m`;
+MYIP=$(curl -4 icanhazip.com)
+if [ $MYIP = "" ]; then
+   MYIP=`ifconfig | grep 'inet addr:' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | cut -d: -f2 | awk '{ print $1}' | head -1`;
+fi
+MYIP2="s/xxxxxxxxx/$MYIP/g";
 
 # go to root
 cd
@@ -132,7 +132,7 @@ http {
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://shortenerku.com/"
+wget -O /home/vps/public_html/index.html "https://sshfast.net/"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
@@ -168,18 +168,17 @@ sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 service ssh restart
 
 # install vnstat gui
-#cd /home/vps/public_html/
-#wget https://raw.githubusercontent.com/brantbell/cream/mei/vnstat_php_frontend-1.5.1.tar.gz
-
-#tar xf vnstat_php_frontend-1.5.1.tar.gz
-#rm vnstat_php_frontend-1.5.1.tar.gz
-#mv vnstat_php_frontend-1.5.1 vnstat
-#cd vnstat
-#sed -i "s/\$iface_list = array('eth0', 'sixxs');/\$iface_list = array('eth0');/g" config.php
-#sed -i "s/\$language = 'nl';/\$language = 'en';/g" config.php
-#sed -i 's/Internal/Internet/g' config.php
-#sed -i '/SixXS IPv6/d' config.php
-#cd
+cd /home/vps/public_html/
+wget https://raw.githubusercontent.com/brantbell/cream/mei/vnstat_php_frontend-1.5.1.tar.gz
+tar xf vnstat_php_frontend-1.5.1.tar.gz
+rm vnstat_php_frontend-1.5.1.tar.gz
+mv vnstat_php_frontend-1.5.1 vnstat
+cd vnstat
+sed -i "s/\$iface_list = array('eth0', 'sixxs');/\$iface_list = array('eth0');/g" config.php
+sed -i "s/\$language = 'nl';/\$language = 'en';/g" config.php
+sed -i 's/Internal/Internet/g' config.php
+sed -i '/SixXS IPv6/d' config.php
+cd
 
 # install fail2ban
 apt-get -y install fail2ban
@@ -357,7 +356,7 @@ END
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
-# OpenVPN Configuration by sshfast.us
+# OpenVPN Configuration by sshfast.net
 # by zhangzi
 client
 dev tun
@@ -617,7 +616,7 @@ apt-get -y autoremove
 chown -R www-data:www-data /home/vps/public_html
 service nginx start
 service php5-fpm start
-#service vnstat restart
+service vnstat restart
 service openvpn restart
 #service snmpd restart
 service ssh restart
@@ -626,10 +625,10 @@ service fail2ban restart
 service squid3 restart
 service webmin restart
 service pptpd restart
-#sysv-rc-conf rc.local on
+sysv-rc-conf rc.local on
 
 #clearing history
-#history -c
+history -c
 
 # info
 clear
@@ -638,7 +637,7 @@ echo "Installation has been completed!!"
 echo " "
 echo "--------------------------- Configuration Setup Server -------------------------"
 echo "                         Copyright Sshfast.us                        "
-echo "                        https://sshfast.us                         "
+echo "                        https://sshfast.net                         "
 echo "               Created By Deny(fb.com/elang.overdosis)                 "
 echo "                                Modified by deenie88                             "
 echo "--------------------------------------------------------------------------------"
