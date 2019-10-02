@@ -39,12 +39,8 @@ deb http://http.us.debian.org/debian jessie main contrib non-free
 deb http://packages.dotdeb.org jessie all
 deb-src http://packages.dotdeb.org jessie all
 END2
-#wget "http://www.dotdeb.org/dotdeb.gpg"
-#cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
-wget http://www.dotdeb.org/dotdeb.gpg
-wget http://www.webmin.com/jcameron-key.asc
+wget "http://www.dotdeb.org/dotdeb.gpg"
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
-cat jcameron-key.asc | apt-key add -;rm jcameron-key.asc
 
 # remove unused
 apt-get -y --purge remove samba*;
@@ -61,8 +57,8 @@ apt-get update; apt-get -y upgrade;
 apt-get -y install nginx php5-fpm php5-cli
 
 # install essential package
-#echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
-#apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
+echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
+apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
 apt-get -y install build-essential
 apt-get -y install libio-pty-perl libauthen-pam-perl apt-show-versions
 
@@ -132,7 +128,7 @@ http {
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://sshfast.net/"
+wget -O /home/vps/public_html/index.html "https://script.hostingtermurah.net/"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
@@ -170,6 +166,7 @@ service ssh restart
 # install vnstat gui
 cd /home/vps/public_html/
 wget https://raw.githubusercontent.com/brantbell/cream/mei/vnstat_php_frontend-1.5.1.tar.gz
+
 tar xf vnstat_php_frontend-1.5.1.tar.gz
 rm vnstat_php_frontend-1.5.1.tar.gz
 mv vnstat_php_frontend-1.5.1 vnstat
@@ -356,7 +353,7 @@ END
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
-# OpenVPN Configuration by sshfast.net
+# OpenVPN Configuration by sshfast.us
 # by zhangzi
 client
 dev tun
@@ -472,13 +469,13 @@ chmod +x /usr/bin/badvpn-udpgw
 screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
 
 # install ddos deflate
-#cd
-#apt-get -y install dnsutils dsniff
-#wget https://github.com/jgmdev/ddos-deflate/archive/master.zip
-#unzip master.zip
-#cd ddos-deflate-master
-#./install.sh
-#rm -rf /root/master.zip
+cd
+apt-get -y install dnsutils dsniff
+wget https://github.com/jgmdev/ddos-deflate/archive/master.zip
+unzip master.zip
+cd ddos-deflate-master
+./install.sh
+rm -rf /root/master.zip
 
 # setting banner
 rm /etc/issue.net
@@ -555,8 +552,7 @@ iptables-restore < /etc/iptables.up.rules
 
 # download script
 cd
-#wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
-wget https://raw.githubusercontent.com/daybreakersx/premscript/master/install-premiumscript.sh -O - -o /dev/null|sh
+wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
 
 # cronjob
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
@@ -618,9 +614,9 @@ service nginx start
 service php5-fpm start
 service vnstat restart
 service openvpn restart
-#service snmpd restart
+service snmpd restart
 service ssh restart
-#service dropbear restart
+service dropbear restart
 service fail2ban restart
 service squid3 restart
 service webmin restart
@@ -637,7 +633,7 @@ echo "Installation has been completed!!"
 echo " "
 echo "--------------------------- Configuration Setup Server -------------------------"
 echo "                         Copyright Sshfast.us                        "
-echo "                        https://sshfast.net                         "
+echo "                        https://sshfast.us                         "
 echo "               Created By Deny(fb.com/elang.overdosis)                 "
 echo "                                Modified by deenie88                             "
 echo "--------------------------------------------------------------------------------"
