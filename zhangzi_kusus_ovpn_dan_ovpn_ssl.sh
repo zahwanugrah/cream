@@ -1,6 +1,6 @@
 #!/bin/sh
 # Created by https://www.hostingtermurah.net
-# Modified by kopet
+# Modified by 0123456
 
 #Requirement
 if [ ! -e /usr/bin/curl ]; then
@@ -43,12 +43,12 @@ wget "http://www.dotdeb.org/dotdeb.gpg"
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
 
 # remove unused
-apt-get -y --purge remove samba*;
-apt-get -y --purge remove apache2*;
-apt-get -y --purge remove sendmail*;
-apt-get -y --purge remove bind9*;
-apt-get -y purge sendmail*
-apt-get -y remove sendmail*
+#apt-get -y --purge remove samba*;
+#apt-get -y --purge remove apache2*;
+#apt-get -y --purge remove sendmail*;
+#apt-get -y --purge remove bind9*;
+#apt-get -y purge sendmail*
+#apt-get -y remove sendmail*
 
 # update
 apt-get update; apt-get -y upgrade;
@@ -57,10 +57,10 @@ apt-get update; apt-get -y upgrade;
 apt-get -y install nginx php5-fpm php5-cli
 
 # install essential package
-echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
-apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
-apt-get -y install build-essential
-apt-get -y install libio-pty-perl libauthen-pam-perl apt-show-versions
+#echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
+#apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
+#apt-get -y install build-essential
+#apt-get -y install libio-pty-perl libauthen-pam-perl apt-show-versions
 
 # disable exim
 service exim4 stop
@@ -128,7 +128,7 @@ http {
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://sshfast.net/"
+wget -O /home/vps/public_html/index.html "https://script.hostingtermurah.net/"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
@@ -183,7 +183,7 @@ service fail2ban restart
 
 # install squid3
 apt-get -y install squid3
-cat > /etc/squid3/squid.conf.bak <<-END
+cat > /etc/squid3/squid.conf <<-END
 acl localhost src 127.0.0.1/32 ::1
 acl to_localhost dst 127.0.0.0/8 0.0.0.0/32 ::1
 acl SSL_ports port 443
@@ -213,7 +213,7 @@ refresh_pattern ^ftp: 1440 20% 10080
 refresh_pattern ^gopher: 1440 0% 1440
 refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
 refresh_pattern . 0 20% 4320
-visible_hostname kopet
+visible_hostname daybreakersx
 END
 sed -i $MYIP2 /etc/squid3/squid.conf;
 service squid3 restart
@@ -380,7 +380,6 @@ route-method exe
 route-delay 2
 cipher AES-128-CBC
 http-proxy $MYIP 8080
-http-proxy-retry
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
@@ -562,20 +561,20 @@ echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
 # swap ram
-dd if=/dev/zero of=/swapfile bs=1024 count=4096k
+#dd if=/dev/zero of=/swapfile bs=1024 count=4096k
 # buat swap
-mkswap /swapfile
+#mkswap /swapfile
 # jalan swapfile
-swapon /swapfile
+#swapon /swapfile
 #auto star saat reboot
 wget https://raw.githubusercontent.com/brantbell/cream/mei/fstab
 mv ./fstab /etc/fstab
 chmod 644 /etc/fstab
 sysctl vm.swappiness=10
 #permission swapfile
-chown root:root /swapfile 
-chmod 0600 /swapfile
-cd
+#chown root:root /swapfile 
+#chmod 0600 /swapfile
+#cd
 
 #install stunnel4
 #apt-get update
@@ -612,11 +611,11 @@ apt-get -y autoremove
 chown -R www-data:www-data /home/vps/public_html
 service nginx start
 service php5-fpm start
-service vnstat restart
+#service vnstat restart
 service openvpn restart
 service snmpd restart
 service ssh restart
-service dropbear restart
+#service dropbear restart
 service fail2ban restart
 service squid3 restart
 service webmin restart
