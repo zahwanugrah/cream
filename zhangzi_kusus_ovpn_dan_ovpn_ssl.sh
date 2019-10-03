@@ -183,7 +183,7 @@ service fail2ban restart
 
 # install squid3
 apt-get -y install squid3
-cat > /etc/squid3/squid.conf <<-END
+cat > /etc/squid3/squid.conf.bak <<-END
 acl localhost src 127.0.0.1/32 ::1
 acl to_localhost dst 127.0.0.0/8 0.0.0.0/32 ::1
 acl SSL_ports port 443
@@ -215,8 +215,8 @@ refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
 refresh_pattern . 0 20% 4320
 visible_hostname daybreakersx
 END
-sed -i $MYIP2 /etc/squid3/squid.conf;
-service squid3 restart
+sed -i $MYIP2 /etc/squid3/squid.conf.bak;
+/etc/init.d/squid3 restart
 
 # install stunnel4
 #apt-get -y install stunnel4
