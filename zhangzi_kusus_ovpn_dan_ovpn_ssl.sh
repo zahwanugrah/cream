@@ -47,12 +47,12 @@ wget http://www.webmin.com/jcameron-key.asc
 sudo apt-key add jcameron-key.asc
 
 # remove unused
-#apt-get -y --purge remove samba*;
-#apt-get -y --purge remove apache2*;
-#apt-get -y --purge remove sendmail*;
-#apt-get -y --purge remove bind9*;
-#apt-get -y purge sendmail*
-#apt-get -y remove sendmail*
+apt-get -y --purge remove samba*;
+apt-get -y --purge remove apache2*;
+apt-get -y --purge remove sendmail*;
+apt-get -y --purge remove bind9*;
+apt-get -y purge sendmail*
+apt-get -y remove sendmail*
 
 # update
 apt-get update; apt-get -y upgrade;
@@ -61,10 +61,10 @@ apt-get update; apt-get -y upgrade;
 apt-get -y install nginx php5-fpm php5-cli
 
 # install essential package
-#echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
-#apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
-#apt-get -y install build-essential
-#apt-get -y install libio-pty-perl libauthen-pam-perl apt-show-versions
+echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
+apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
+apt-get -y install build-essential
+apt-get -y install libio-pty-perl libauthen-pam-perl apt-show-versions
 
 # disable exim
 service exim4 stop
@@ -565,20 +565,20 @@ echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
 # swap ram
-#dd if=/dev/zero of=/swapfile bs=1024 count=4096k
+dd if=/dev/zero of=/swapfile bs=1024 count=4096k
 # buat swap
-#mkswap /swapfile
+mkswap /swapfile
 # jalan swapfile
-#swapon /swapfile
+swapon /swapfile
 #auto star saat reboot
 wget https://raw.githubusercontent.com/brantbell/cream/mei/fstab
 mv ./fstab /etc/fstab
 chmod 644 /etc/fstab
 sysctl vm.swappiness=10
 #permission swapfile
-#chown root:root /swapfile 
-#chmod 0600 /swapfile
-#cd
+chown root:root /swapfile 
+chmod 0600 /swapfile
+cd
 
 #install stunnel4
 #apt-get update
