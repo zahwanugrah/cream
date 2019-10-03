@@ -1,6 +1,6 @@
 #!/bin/sh
 # Created by https://www.hostingtermurah.net
-# Modified by 0123456
+# Modified by kopet
 
 #Requirement
 if [ ! -e /usr/bin/curl ]; then
@@ -216,7 +216,7 @@ refresh_pattern . 0 20% 4320
 visible_hostname kopet
 END
 sed -i $MYIP2 /etc/squid3/squid.conf;
-/etc/init.d/squid3 restart
+service squid3 restart
 
 # install stunnel4
 #apt-get -y install stunnel4
@@ -353,7 +353,7 @@ END
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
-# OpenVPN Configuration by sshfast.us
+# OpenVPN Configuration by sshfast.net
 # by zhangzi
 client
 dev tun
@@ -379,8 +379,8 @@ route 0.0.0.0 0.0.0.0
 route-method exe
 route-delay 2
 cipher AES-128-CBC
-#http-proxy $MYIP 8080
-#http-proxy-retry
+http-proxy $MYIP 8080
+http-proxy-retry
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
@@ -393,7 +393,7 @@ cd
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/clientssl.ovpn <<-END
-# OpenVPN Configuration by sshfast.us
+# OpenVPN Configuration by sshfast.net
 # by zhangzi ovpn ssl
 client
 dev tun
