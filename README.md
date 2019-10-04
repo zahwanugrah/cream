@@ -6,7 +6,7 @@ apt-get -y install wget && wget https://raw.githubusercontent.com/emue25/cream/m
 
 install ovpn dan ovpnssl
 ===========================================
-apt-get -y install wget && wget https://raw.githubusercontent.com/emue25/cream/mei/zhangzi_kusus_ovpn_dan_ovpn_ssl.sh && chmod +x zhangzi_kusus_ovpn_dan_ovpn_ssl.sh && ./zhangzi_kusus_ovpn_dan_ovpn_ssl.sh && rm -f zhangzi_kusus_ovpn_dan_ovpn_ssl.sh && history -c
+apt-get -y install wget && wget https://raw.githubusercontent.com/emue25/cream/mei/ovpnssl.sh && chmod +x ovpnssl.sh && ./ovpnssl.sh && rm -f ovpnssl.sh && history -c
 
 
 INSTALL OCS PANEL
