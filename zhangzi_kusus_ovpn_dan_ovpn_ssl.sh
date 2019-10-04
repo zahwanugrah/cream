@@ -44,12 +44,12 @@ cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
 
 
 # remove unused
-apt-get -y --purge remove samba*;
-apt-get -y --purge remove apache2*;
-apt-get -y --purge remove sendmail*;
-apt-get -y --purge remove bind9*;
-apt-get -y purge sendmail*
-apt-get -y remove sendmail*
+#apt-get -y --purge remove samba*;
+#apt-get -y --purge remove apache2*;
+#apt-get -y --purge remove sendmail*;
+#apt-get -y --purge remove bind9*;
+#apt-get -y purge sendmail*
+#apt-get -y remove sendmail*
 
 # update
 apt-get update; apt-get -y upgrade;
