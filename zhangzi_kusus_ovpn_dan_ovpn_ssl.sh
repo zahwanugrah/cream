@@ -231,11 +231,7 @@ service squid3 restart
 cd
 apt-get -y update && apt-get -y upgrade
 #apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
-echo 'deb http://download.webmin.com/download/repository sarge contrib' >> /etc/apt/sources.list
-echo 'deb http://webmin.mirror.somersettechsolutions.co.uk/repository sarge contrib' >> /etc/apt/sources.list
-wget http://www.webmin.com/jcameron-key.asc
-sudo apt-key add jcameron-key.asc
-wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
+wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.801_all.deb
 #wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
 dpkg -i --force-all webmin-current.deb
 apt-get -y -f install;
