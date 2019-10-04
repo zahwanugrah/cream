@@ -42,14 +42,13 @@ END2
 wget "http://www.dotdeb.org/dotdeb.gpg"
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
 
-
 # remove unused
-#apt-get -y --purge remove samba*;
-#apt-get -y --purge remove apache2*;
-#apt-get -y --purge remove sendmail*;
-#apt-get -y --purge remove bind9*;
-#apt-get -y purge sendmail*
-#apt-get -y remove sendmail*
+apt-get -y --purge remove samba*;
+apt-get -y --purge remove apache2*;
+apt-get -y --purge remove sendmail*;
+apt-get -y --purge remove bind9*;
+apt-get -y purge sendmail*
+apt-get -y remove sendmail*
 
 # update
 apt-get update; apt-get -y upgrade;
@@ -129,7 +128,7 @@ http {
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://script.hostingtermurah.net/"
+wget -O /home/vps/public_html/index.html "https://shortenerku.com/"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
@@ -163,6 +162,10 @@ sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
 sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 service ssh restart
+
+
+
+
 
 # install vnstat gui
 cd /home/vps/public_html/
@@ -230,8 +233,8 @@ service squid3 restart
 # install webmin
 cd
 apt-get -y update && apt-get -y upgrade
-#apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
-wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.801_all.deb
+apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
+wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
 #wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
 dpkg -i --force-all webmin-current.deb
 apt-get -y -f install;
@@ -354,7 +357,7 @@ END
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
-# OpenVPN Configuration by sshfast.net
+# OpenVPN Configuration by sshfast.us
 # by zhangzi
 client
 dev tun
@@ -380,7 +383,8 @@ route 0.0.0.0 0.0.0.0
 route-method exe
 route-delay 2
 cipher AES-128-CBC
-http-proxy $MYIP 8080
+#http-proxy $MYIP 8080
+#http-proxy-retry
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
@@ -393,7 +397,7 @@ cd
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/clientssl.ovpn <<-END
-# OpenVPN Configuration by sshfast.net
+# OpenVPN Configuration by sshfast.us
 # by zhangzi ovpn ssl
 client
 dev tun
@@ -464,9 +468,9 @@ wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/brantbell/cream
 if [ "$OS" == "x86_64" ]; then
   wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/brantbell/cream/mei/badvpn-udpgw64"
 fi
-sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
+sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
-screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200
 
 # install ddos deflate
 cd
@@ -612,11 +616,11 @@ apt-get -y autoremove
 chown -R www-data:www-data /home/vps/public_html
 service nginx start
 service php5-fpm start
-#service vnstat restart
+service vnstat restart
 service openvpn restart
 service snmpd restart
 service ssh restart
-#service dropbear restart
+service dropbear restart
 service fail2ban restart
 service squid3 restart
 service webmin restart
