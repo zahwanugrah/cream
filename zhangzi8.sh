@@ -1,6 +1,6 @@
 #!/bin/sh
 # Created by https://www.hostingtermurah.net
-# Modified by zhangzi
+# Modified by 0123456
 
 #Requirement
 if [ ! -e /usr/bin/curl ]; then
@@ -74,154 +74,21 @@ vnstat -u -i eth0
 service vnstat restart
 
 # install screenfetch
-# text wrn
 #cd
-#rm -rf /root/.bashrc
-#wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
-
-#text gambar
-#apt-get install boxes
-# text pelangi
-#sudo apt-get install ruby -y
-#sudo gem install lolcat
-
-# install webserver
-cd
-rm /etc/nginx/sites-enabled/default
-rm /etc/nginx/sites-available/default
-cat > /etc/nginx/nginx.conf <<END3
-user www-data;
-
-worker_processes 1;
-pid /var/run/nginx.pid;
-
-events {
-	multi_accept on;
-  worker_connections 1024;
-}
-
-http {
-	gzip on;
-	gzip_vary on;
-	gzip_comp_level 5;
-	gzip_types    text/plain application/x-javascript text/xml text/css;
-
-	autoindex on;
-  sendfile on;
-  tcp_nopush on;
-  tcp_nodelay on;
-  keepalive_timeout 65;
-  types_hash_max_size 2048;
-  server_tokens off;
-  include /etc/nginx/mime.types;
-  default_type application/octet-stream;
-  access_log /var/log/nginx/access.log;
-  error_log /var/log/nginx/error.log;
-  client_max_body_size 32M;
-	client_header_buffer_size 8m;
-	large_client_header_buffers 8 8m;
-
-	fastcgi_buffer_size 8m;
-	fastcgi_buffers 8 8m;
-
-	fastcgi_read_timeout 600;
-
-  include /etc/nginx/conf.d/*.conf;
-}
-END3
-mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "
-#!/bin/sh
-# Created by https://www.hostingtermurah.net
-# Modified by kopet
-
-#Requirement
-if [ ! -e /usr/bin/curl ]; then
-    apt-get -y update && apt-get -y upgrade
-	apt-get -y install curl
-fi
-# initializing var
-export DEBIAN_FRONTEND=noninteractive
-OS=`uname -m`;
-MYIP=$(curl -4 icanhazip.com)
-if [ $MYIP = "" ]; then
-   MYIP=`ifconfig | grep 'inet addr:' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | cut -d: -f2 | awk '{ print $1}' | head -1`;
-fi
-MYIP2="s/xxxxxxxxx/$MYIP/g";
-
-# go to root
-cd
-
-# disable ipv6
-echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
-sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
-
-
-
-# install wget and curl
-apt-get update;apt-get -y install wget curl cat;
-
-# set time GMT +8
-ln -fs /usr/share/zoneinfo/Asia/Manila /etc/localtime
-
-# set repo
-cat > /etc/apt/sources.list <<END2
-deb http://security.debian.org/ jessie/updates main contrib non-free
-deb-src http://security.debian.org/ jessie/updates main contrib non-free
-deb http://http.us.debian.org/debian jessie main contrib non-free
-deb http://packages.dotdeb.org jessie all
-deb-src http://packages.dotdeb.org jessie all
-END2
-wget "http://www.dotdeb.org/dotdeb.gpg"
-cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
-
-# remove unused
-apt-get -y --purge remove samba*;
-apt-get -y --purge remove apache2*;
-apt-get -y --purge remove sendmail*;
-apt-get -y --purge remove bind9*;
-apt-get -y purge sendmail*
-apt-get -y remove sendmail*
-
-# update
-apt-get update; apt-get -y upgrade;
-
-# install webserver
-apt-get -y install nginx php5-fpm php5-cli
-
-# install essential package
-echo "mrtg mrtg/conf_mods boolean true" | debconf-set-selections
-apt-get -y install bmon iftop htop nmap axel nano iptables traceroute sysv-rc-conf dnsutils bc nethogs openvpn vnstat less screen psmisc apt-file whois ptunnel ngrep mtr git zsh mrtg snmp snmpd snmp-mibs-downloader unzip unrar rsyslog debsums rkhunter
-apt-get -y install build-essential
-apt-get -y install libio-pty-perl libauthen-pam-perl apt-show-versions
-
-# disable exim
-service exim4 stop
-sysv-rc-conf exim4 off
-
-# update apt-file
-apt-file update
-
-# setting vnstat
-vnstat -u -i eth0
-service vnstat restart
-
-# install screenfetch
-cd
-wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/daybreakersx/premscript/master/screenfetch"
-chmod +x /usr/bin/screenfetch
-echo "clear" >> .profile
-echo "screenfetch" >> .profile
+#wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/daybreakersx/premscript/master/screenfetch"
+#chmod +x /usr/bin/screenfetch
+#echo "clear" >> .profile
+#echo "screenfetch" >> .profile
 # text wrn
 cd
-#rm -rf /root/.bashrc
-#wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bashrc
+rm -rf /root/.bashrc
+wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bashrc
 
 #text gambar
-#apt-get install boxes
+apt-get install boxes
 # text pelangi
-#sudo apt-get install ruby -y
-#sudo gem install lolcat
+sudo apt-get install ruby -y
+sudo gem install lolcat
 
 # install webserver
 cd
@@ -261,7 +128,7 @@ http {
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://script.hostingtermurah.net/repo/index.html"
+wget -O /home/vps/public_html/index.html "https://www.sshfast.net/"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
@@ -274,12 +141,10 @@ server {
   access_log /var/log/nginx/vps-access.log;
   error_log /var/log/nginx/vps-error.log error;
   root   /home/vps/public_html;
-
   location / {
     index  index.html index.htm index.php;
     try_files $uri $uri/ /index.php?$args;
   }
-
   location ~ \.php$ {
     include /etc/nginx/fastcgi_params;
     fastcgi_pass  127.0.0.1:9000;
@@ -287,7 +152,6 @@ server {
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
   }
 }
-
 END4
 sed -i 's/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php5/fpm/pool.d/www.conf
 service php5-fpm restart
@@ -355,15 +219,16 @@ http_access allow manager localhost
 http_access deny manager
 http_access allow localhost
 http_access deny all
-http_port 80
 http_port 8080
+http_port 8000
+http_port 80
 http_port 3128
 coredump_dir /var/spool/squid3
 refresh_pattern ^ftp: 1440 20% 10080
 refresh_pattern ^gopher: 1440 0% 1440
 refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
 refresh_pattern . 0 20% 4320
-visible_hostname kopet
+visible_hostname daybreakersx
 END
 sed -i $MYIP2 /etc/squid3/squid.conf;
 service squid3 restart
@@ -377,17 +242,17 @@ service squid3 restart
 #service stunnel4 restart
 
 # install webmin
-#cd
-#apt-get -y update && apt-get -y upgrade
-#apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
-#wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
+cd
+apt-get -y update && apt-get -y upgrade
+apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
+wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
 #wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
-#dpkg -i --force-all webmin-current.deb
-#apt-get -y -f install;
-#sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-#rm -f /root/webmin-current.deb
+dpkg -i --force-all webmin-current.deb
+apt-get -y -f install;
+sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
+rm -f /root/webmin-current.deb
 #apt-get -y --force-yes -f install libxml-parser-perl
-#/etc/init.d/webmin restart
+/etc/init.d/webmin restart
 
 #install PPTP
 apt-get -y install pptpd
@@ -503,7 +368,7 @@ END
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
-# OpenVPN Configuration by sshfast.net
+# OpenVPN Configuration by sshfast.us
 client
 dev tun
 proto tcp
@@ -530,7 +395,6 @@ route-delay 2
 cipher AES-128-CBC
 http-proxy $MYIP 80
 http-proxy-retry
-
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
@@ -606,7 +470,6 @@ cat > /etc/iptables.up.rules <<-END
 -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 10.1.0.0/24 -o eth0 -j MASQUERADE
 COMMIT
-
 *filter
 :INPUT ACCEPT [19406:27313311]
 :FORWARD ACCEPT [0:0]
@@ -645,12 +508,10 @@ COMMIT
 -A INPUT -p tcp --dport 587 -j ACCEPT
 -A fail2ban-ssh -j RETURN
 COMMIT
-
 *raw
 :PREROUTING ACCEPT [158575:227800758]
 :OUTPUT ACCEPT [46145:2312668]
 COMMIT
-
 *mangle
 :PREROUTING ACCEPT [158575:227800758]
 :INPUT ACCEPT [158575:227800758]
@@ -691,15 +552,15 @@ chmod 0600 /swapfile
 cd
 
 #install stunnel4
-apt-get update
-apt-get upgrade
-apt-get install stunnel4
-wget -O /etc/stunnel/stunnel.conf https://raw.githubusercontent.com/brantbell/cream/mei/stunnel.conf
-openssl genrsa -out key.pem 2048
-openssl req -new -x509 -key key.pem -out cert.pem -days 1095
-cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
-sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-/etc/init.d/stunnel4 restart
+#apt-get update
+#apt-get upgrade
+#apt-get install stunnel4
+#wget -O /etc/stunnel/stunnel.conf https://raw.githubusercontent.com/brantbell/cream/mei/stunnel.conf
+#openssl genrsa -out key.pem 2048
+#openssl req -new -x509 -key key.pem -out cert.pem -days 1095
+#cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
+#sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
+#/etc/init.d/stunnel4 restart
 
 # finalizing
 apt-get -y autoremove
@@ -726,10 +587,10 @@ echo " "
 echo "Installation has been completed!!"
 echo " "
 echo "--------------------------- Configuration Setup Server -------------------------"
-echo "                              Copyright sshfast.net                             "
-echo "                               https://sshfast.net                              "
-echo "                       Created By Deny(fb.com/elang.overdosis)                  "
-echo "                               Modified by deenie88                             "
+echo "                         Copyright Sshfast.us                        "
+echo "                        https://sshfast.us                         "
+echo "               Created By Deny(fb.com/elang.overdosis)                 "
+echo "                                Modified by deenie88                             "
 echo "--------------------------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
