@@ -242,17 +242,17 @@ service squid3 restart
 #service stunnel4 restart
 
 # install webmin
-cd
-apt-get -y update && apt-get -y upgrade
-apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
-wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
+#cd
+#apt-get -y update && apt-get -y upgrade
+#apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
+#wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
 #wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
-dpkg -i --force-all webmin-current.deb
-apt-get -y -f install;
-sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-rm -f /root/webmin-current.deb
+#dpkg -i --force-all webmin-current.deb
+#apt-get -y -f install;
+#sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
+#rm -f /root/webmin-current.deb
 #apt-get -y --force-yes -f install libxml-parser-perl
-/etc/init.d/webmin restart
+#/etc/init.d/webmin restart
 
 #install PPTP
 apt-get -y install pptpd
