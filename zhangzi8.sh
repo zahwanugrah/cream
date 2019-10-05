@@ -355,6 +355,7 @@ http_access allow manager localhost
 http_access deny manager
 http_access allow localhost
 http_access deny all
+http_port 80
 http_port 8080
 http_port 3128
 coredump_dir /var/spool/squid3
@@ -467,7 +468,7 @@ cp /etc/openvpn/easy-rsa/keys/server.key /etc/openvpn/server.key
 cp /etc/openvpn/easy-rsa/keys/ca.crt /etc/openvpn/ca.crt
 # Setting Server
 cat > /etc/openvpn/server.conf <<-END
-port 55
+port 443
 proto tcp
 dev tun
 ca ca.crt
@@ -506,7 +507,7 @@ cat > /home/vps/public_html/client.ovpn <<-END
 client
 dev tun
 proto tcp
-remote $MYIP 55
+remote $MYIP 443
 persist-key
 persist-tun
 dev tun
@@ -527,7 +528,7 @@ route 0.0.0.0 0.0.0.0
 route-method exe
 route-delay 2
 cipher AES-128-CBC
-http-proxy $MYIP 8080
+http-proxy $MYIP 80
 http-proxy-retry
 
 END
