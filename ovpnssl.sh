@@ -43,7 +43,12 @@ wget "http://www.dotdeb.org/dotdeb.gpg"
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
 
 # remove unused
-apt-get -y remove --purge unscd
+apt-get -y --purge remove samba*;
+apt-get -y --purge remove apache2*;
+apt-get -y --purge remove sendmail*;
+apt-get -y --purge remove bind9*;
+apt-get -y purge sendmail*
+apt-get -y remove sendmail*
 
 # update
 apt-get update; apt-get -y upgrade;
@@ -178,7 +183,7 @@ cd
 
 # install fail2ban
 apt-get -y install fail2ban
-service fail2ban restart
+/etc/init.d/fail2ban restart
 
 # install squid3
 apt-get -y install squid3
@@ -215,7 +220,7 @@ refresh_pattern . 0 20% 4320
 visible_hostname daybreakersx
 END
 sed -i $MYIP2 /etc/squid3/squid.conf;
-/etc/init.d/squid3 restart
+service squid3 restart
 
 # install stunnel4
 #apt-get -y install stunnel4
@@ -229,7 +234,7 @@ sed -i $MYIP2 /etc/squid3/squid.conf;
 cd
 apt-get -y update && apt-get -y upgrade
 apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
-wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
+wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.900_all.deb
 #wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
 dpkg -i --force-all webmin-current.deb
 apt-get -y -f install;
@@ -358,7 +363,6 @@ client
 dev tun
 proto tcp
 remote $MYIP 55
-http-proxy $MYIP 8080
 persist-key
 persist-tun
 dev tun
@@ -379,7 +383,8 @@ route 0.0.0.0 0.0.0.0
 route-method exe
 route-delay 2
 cipher AES-128-CBC
-
+#http-proxy $MYIP 8080
+#http-proxy-retry
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
@@ -549,11 +554,9 @@ sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
 sed -i $MYIP2 /etc/iptables.up.rules;
 iptables-restore < /etc/iptables.up.rules
 
-#install
-apt-get -y install dnsutils
 # download script
-#cd
-#wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
+cd
+wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
 
 # cronjob
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
@@ -617,7 +620,7 @@ chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/openvpn restart
 /etc/init.d/snmpd restart
 /etc/init.d/ssh restart
-/etc/init.d/dropbear restart
+#service dropbear restart
 /etc/init.d/fail2ban restart
 /etc/init.d/squid3 restart
 /etc/init.d/webmin restart
