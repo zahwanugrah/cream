@@ -28,7 +28,7 @@ sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 # install wget and curl
 apt-get update;apt-get -y install wget curl cat;
 
-# set time GMT +8
+# set time GMT +7
 ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 
 # set repo
@@ -43,12 +43,12 @@ wget "http://www.dotdeb.org/dotdeb.gpg"
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
 
 # remove unused
-apt-get -y --purge remove samba*;
-apt-get -y --purge remove apache2*;
-apt-get -y --purge remove sendmail*;
-apt-get -y --purge remove bind9*;
-apt-get -y purge sendmail*
-apt-get -y remove sendmail*
+#apt-get -y --purge remove samba*;
+#apt-get -y --purge remove apache2*;
+#apt-get -y --purge remove sendmail*;
+#apt-get -y --purge remove bind9*;
+#apt-get -y purge sendmail*
+#apt-get -y remove sendmail*
 
 # update
 apt-get update; apt-get -y upgrade;
@@ -63,8 +63,8 @@ apt-get -y install build-essential
 apt-get -y install libio-pty-perl libauthen-pam-perl apt-show-versions
 
 # disable exim
-service exim4 stop
-sysv-rc-conf exim4 off
+#service exim4 stop
+#sysv-rc-conf exim4 off
 
 # update apt-file
 apt-file update
