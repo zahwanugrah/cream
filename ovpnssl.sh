@@ -43,12 +43,7 @@ wget "http://www.dotdeb.org/dotdeb.gpg"
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
 
 # remove unused
-apt-get -y --purge remove samba*;
-apt-get -y --purge remove apache2*;
-apt-get -y --purge remove sendmail*;
-apt-get -y --purge remove bind9*;
-apt-get -y purge sendmail*
-apt-get -y remove sendmail*
+apt-get -y remove --purge unscd
 
 # update
 apt-get update; apt-get -y upgrade;
@@ -161,7 +156,7 @@ service nginx restart
 sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
 sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
-service ssh restart
+/etc/init.d/ssh restart
 
 
 
@@ -220,7 +215,7 @@ refresh_pattern . 0 20% 4320
 visible_hostname daybreakersx
 END
 sed -i $MYIP2 /etc/squid3/squid.conf;
-service squid3 restart
+/etc/init.d/squid3 restart
 
 # install stunnel4
 #apt-get -y install stunnel4
@@ -241,7 +236,7 @@ apt-get -y -f install;
 sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
 rm -f /root/webmin-current.deb
 #apt-get -y --force-yes -f install libxml-parser-perl
-service webmin restart
+/etc/init.d/webmin restart
 
 #install PPTP
 apt-get -y install pptpd
@@ -363,6 +358,7 @@ client
 dev tun
 proto tcp
 remote $MYIP 55
+http-proxy $MYIP 8080
 persist-key
 persist-tun
 dev tun
@@ -383,8 +379,7 @@ route 0.0.0.0 0.0.0.0
 route-method exe
 route-delay 2
 cipher AES-128-CBC
-#http-proxy $MYIP 8080
-#http-proxy-retry
+
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
@@ -468,9 +463,9 @@ wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/brantbell/cream
 if [ "$OS" == "x86_64" ]; then
   wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/brantbell/cream/mei/badvpn-udpgw64"
 fi
-sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200' /etc/rc.local
+sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
-screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
 
 # install ddos deflate
 cd
@@ -554,6 +549,8 @@ sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
 sed -i $MYIP2 /etc/iptables.up.rules;
 iptables-restore < /etc/iptables.up.rules
 
+#install
+apt-get -y install dnsutils
 # download script
 cd
 wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
@@ -614,17 +611,17 @@ sudo cp /etc/stunnel/stunnel.pem ~
 # finalizing
 apt-get -y autoremove
 chown -R www-data:www-data /home/vps/public_html
-service nginx start
-service php5-fpm start
-service vnstat restart
-service openvpn restart
-service snmpd restart
-service ssh restart
-service dropbear restart
-service fail2ban restart
-service squid3 restart
-service webmin restart
-service pptpd restart
+/etc/init.d/nginx start
+/etc/init.d/php5-fpm start
+/etc/init.d/vnstat restart
+/etc/init.d/openvpn restart
+/etc/init.d/snmpd restart
+/etc/init.d/ssh restart
+/etc/init.d/dropbear restart
+/etc/init.d/fail2ban restart
+/etc/init.d/squid3 restart
+/etc/init.d/webmin restart
+/etc/init.d/pptpd restart
 sysv-rc-conf rc.local on
 
 #clearing history
