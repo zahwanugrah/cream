@@ -552,8 +552,8 @@ iptables-restore < /etc/iptables.up.rules
 #install
 apt-get -y install dnsutils
 # download script
-cd
-wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
+#cd
+#wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
 
 # cronjob
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
