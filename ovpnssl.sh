@@ -1,6 +1,6 @@
 #!/bin/sh
 # Created by https://www.hostingtermurah.net
-# Modified by 0123456
+# Modified by kopet
 
 #Requirement
 if [ ! -e /usr/bin/curl ]; then
@@ -234,7 +234,7 @@ service squid3 restart
 cd
 apt-get -y update && apt-get -y upgrade
 apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
-wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.900_all.deb
+wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
 #wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
 dpkg -i --force-all webmin-current.deb
 apt-get -y -f install;
@@ -357,7 +357,7 @@ END
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
-# OpenVPN Configuration by sshfast.us
+# OpenVPN Configuration by sshfast.net
 # by zhangzi
 client
 dev tun
@@ -397,7 +397,7 @@ cd
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/clientssl.ovpn <<-END
-# OpenVPN Configuration by sshfast.us
+# OpenVPN Configuration by sshfast.net
 # by zhangzi ovpn ssl
 client
 dev tun
@@ -482,12 +482,12 @@ cd ddos-deflate-master
 rm -rf /root/master.zip
 
 # setting banner
-rm /etc/issue.net
-wget -O /etc/issue.net "https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh"
-sed -i 's@#Banner@Banner@g' /etc/ssh/sshd_config
-sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
-service ssh restart
-service dropbear restart
+#rm /etc/issue.net
+#wget -O /etc/issue.net "https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh"
+#sed -i 's@#Banner@Banner@g' /etc/ssh/sshd_config
+#sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
+#service ssh restart
+#service dropbear restart
 
 #Setting IPtables
 cat > /etc/iptables.up.rules <<-END
@@ -565,11 +565,11 @@ chmod +x fix-debian-useradd.sh
 ./fix-debian-useradd.sh
 
 # cronjob
-echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
-echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
-echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
-echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
-echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
+#echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
+#echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
+#echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
+#echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
+#echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
 # swap ram
 dd if=/dev/zero of=/swapfile bs=1024 count=4096k
