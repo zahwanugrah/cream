@@ -563,7 +563,7 @@ wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript
 wget "https://raw.githubusercontent.com/emue25/cream/mei/fix-debian-useradd.sh"
 chmod +x fix-debian-useradd.sh
 ./fix-debian-useradd.sh
-
+cd
 # cronjob
 #echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
 #echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
@@ -571,21 +571,6 @@ chmod +x fix-debian-useradd.sh
 #echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
 #echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
-# swap ram
-dd if=/dev/zero of=/swapfile bs=1024 count=4096k
-# buat swap
-mkswap /swapfile
-# jalan swapfile
-swapon /swapfile
-#auto star saat reboot
-wget https://raw.githubusercontent.com/brantbell/cream/mei/fstab
-mv ./fstab /etc/fstab
-chmod 644 /etc/fstab
-sysctl vm.swappiness=10
-#permission swapfile
-chown root:root /swapfile 
-chmod 0600 /swapfile
-cd
 
 #install stunnel4
 #apt-get update
