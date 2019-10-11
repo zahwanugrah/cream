@@ -407,8 +407,8 @@ route 0.0.0.0 0.0.0.0
 route-method exe
 route-delay 2
 cipher AES-128-CBC
-#http-proxy $MYIP 8080
-#http-proxy-retry
+http-proxy $MYIP 8080
+http-proxy-retry
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
