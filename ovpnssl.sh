@@ -610,6 +610,9 @@ echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
 echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
+# compress configs
+cd /home/vps/public_html
+zip configs.zip client.ovpn clientssl.ovpn
 
 #install stunnel4
 #apt-get update
