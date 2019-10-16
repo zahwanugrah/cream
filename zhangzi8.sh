@@ -29,7 +29,7 @@ sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 apt-get update;apt-get -y install wget curl cat;
 
 # set time GMT +8
-ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 
 # set repo
 cat > /etc/apt/sources.list <<END2
@@ -242,17 +242,17 @@ service squid3 restart
 #service stunnel4 restart
 
 # install webmin
-#cd
-#apt-get -y update && apt-get -y upgrade
-#apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
-#wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
+cd
+apt-get -y update && apt-get -y upgrade
+apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
+wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
 #wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
-#dpkg -i --force-all webmin-current.deb
-#apt-get -y -f install;
-#sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-#rm -f /root/webmin-current.deb
+dpkg -i --force-all webmin-current.deb
+apt-get -y -f install;
+sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
+rm -f /root/webmin-current.deb
 #apt-get -y --force-yes -f install libxml-parser-perl
-#/etc/init.d/webmin restart
+/etc/init.d/webmin restart
 
 #install PPTP
 apt-get -y install pptpd
@@ -333,7 +333,7 @@ cp /etc/openvpn/easy-rsa/keys/server.key /etc/openvpn/server.key
 cp /etc/openvpn/easy-rsa/keys/ca.crt /etc/openvpn/ca.crt
 # Setting Server
 cat > /etc/openvpn/server.conf <<-END
-port 443
+port 55
 proto tcp
 dev tun
 ca ca.crt
@@ -372,7 +372,7 @@ cat > /home/vps/public_html/client.ovpn <<-END
 client
 dev tun
 proto tcp
-remote $MYIP 443
+remote $MYIP 55
 persist-key
 persist-tun
 dev tun
@@ -438,9 +438,9 @@ wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/brantbell/cream
 if [ "$OS" == "x86_64" ]; then
   wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/brantbell/cream/mei/badvpn-udpgw64"
 fi
-sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
+sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
-screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200
 
 # install ddos deflate
 cd
@@ -453,7 +453,7 @@ rm -rf /root/master.zip
 
 # setting banner
 rm /etc/issue.net
-wget -O /etc/issue.net "https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh"
+wget -O /etc/issue.net "https://raw.githubusercontent.com/emue25/cream/mei/bannerssh"
 sed -i 's@#Banner@Banner@g' /etc/ssh/sshd_config
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
 service ssh restart
@@ -536,31 +536,31 @@ echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
 # swap ram
-dd if=/dev/zero of=/swapfile bs=1024 count=4096k
+#dd if=/dev/zero of=/swapfile bs=1024 count=4096k
 # buat swap
-mkswap /swapfile
+#mkswap /swapfile
 # jalan swapfile
-swapon /swapfile
+#swapon /swapfile
 #auto star saat reboot
-wget https://raw.githubusercontent.com/brantbell/cream/mei/fstab
-mv ./fstab /etc/fstab
-chmod 644 /etc/fstab
-sysctl vm.swappiness=10
+#wget https://raw.githubusercontent.com/brantbell/cream/mei/fstab
+#mv ./fstab /etc/fstab
+#chmod 644 /etc/fstab
+#sysctl vm.swappiness=10
 #permission swapfile
-chown root:root /swapfile 
-chmod 0600 /swapfile
+#hown root:root /swapfile 
+#chmod 0600 /swapfile
 cd
-
-#install stunnel4
-#apt-get update
-#apt-get upgrade
-#apt-get install stunnel4
-#wget -O /etc/stunnel/stunnel.conf https://raw.githubusercontent.com/brantbell/cream/mei/stunnel.conf
-#openssl genrsa -out key.pem 2048
-#openssl req -new -x509 -key key.pem -out cert.pem -days 1095
-#cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
-#sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-#/etc/init.d/stunnel4 restart
+#stunnel4
+install stunnel4
+apt-get update
+apt-get upgrade
+apt-get install stunnel4
+wget -O /etc/stunnel/stunnel.conf https://raw.githubusercontent.com/brantbell/cream/mei/stunnel.conf
+openssl genrsa -out key.pem 2048
+openssl req -new -x509 -key key.pem -out cert.pem -days 1095
+cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
+sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
+/etc/init.d/stunnel4 restart
 
 # finalizing
 apt-get -y autoremove
@@ -576,6 +576,7 @@ service fail2ban restart
 service squid3 restart
 service webmin restart
 service pptpd restart
+/etc/init.d/stunnel4 restart
 sysv-rc-conf rc.local on
 
 #clearing history
@@ -587,8 +588,8 @@ echo " "
 echo "Installation has been completed!!"
 echo " "
 echo "--------------------------- Configuration Setup Server -------------------------"
-echo "                         Copyright Sshfast.us                        "
-echo "                        https://sshfast.us                         "
+echo "                         Copyright Sshfast.net                        "
+echo "                        https://sshfast.net                         "
 echo "               Created By Deny(fb.com/elang.overdosis)                 "
 echo "                                Modified by deenie88                             "
 echo "--------------------------------------------------------------------------------"
