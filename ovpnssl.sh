@@ -43,12 +43,12 @@ wget "http://www.dotdeb.org/dotdeb.gpg"
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
 
 # remove unused
-#apt-get -y --purge remove samba*;
-#apt-get -y --purge remove apache2*;
-#apt-get -y --purge remove sendmail*;
-#apt-get -y --purge remove bind9*;
-#apt-get -y purge sendmail*
-#apt-get -y remove sendmail*
+apt-get -y --purge remove samba*;
+apt-get -y --purge remove apache2*;
+apt-get -y --purge remove sendmail*;
+apt-get -y --purge remove bind9*;
+apt-get -y purge sendmail*
+apt-get -y remove sendmail*
 
 # update
 apt-get update; apt-get -y upgrade;
@@ -63,8 +63,8 @@ apt-get -y install build-essential
 apt-get -y install libio-pty-perl libauthen-pam-perl apt-show-versions
 
 # disable exim
-#service exim4 stop
-#sysv-rc-conf exim4 off
+service exim4 stop
+sysv-rc-conf exim4 off
 
 # update apt-file
 apt-file update
@@ -128,7 +128,7 @@ http {
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://sshfast.net/"
+wget -O /home/vps/public_html/index.html "https://vpnstunnel.com/"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
@@ -161,33 +161,9 @@ service nginx restart
 sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
 sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
-/etc/init.d/ssh restart
+service ssh restart
 
-# install privoxy
-cat > /etc/privoxy/config <<-END
-user-manual /usr/share/doc/privoxy/user-manual
-confdir /etc/privoxy
-logdir /var/log/privoxy
-filterfile default.filter
-logfile logfile
-listen-address  0.0.0.0:80
-listen-address  0.0.0.0:8080
-toggle  1
-enable-remote-toggle  0
-enable-remote-http-toggle  0
-enable-edit-actions 0
-enforce-blocks 0
-buffer-limit 4096
-enable-proxy-authentication-forwarding 1
-forwarded-connect-retries  1
-accept-intercepted-requests 1
-allow-cgi-request-crunching 1
-split-large-forms 0
-keep-alive-timeout 5
-tolerate-pipelining 1
-socket-timeout 300
-permit-access 0.0.0.0/0 xxxxxxxxx
-END
+
 
 
 
@@ -207,7 +183,7 @@ cd
 
 # install fail2ban
 apt-get -y install fail2ban
-/etc/init.d/fail2ban restart
+service fail2ban restart
 
 # install squid3
 apt-get -y install squid3
@@ -265,7 +241,7 @@ apt-get -y -f install;
 sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
 rm -f /root/webmin-current.deb
 #apt-get -y --force-yes -f install libxml-parser-perl
-/etc/init.d/webmin restart
+service webmin restart
 
 #install PPTP
 apt-get -y install pptpd
@@ -381,7 +357,7 @@ END
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
-# OpenVPN Configuration by sshfast.net
+# OpenVPN Configuration by sshfast.us
 # by zhangzi
 client
 dev tun
@@ -408,7 +384,6 @@ route-method exe
 route-delay 2
 cipher AES-128-CBC
 http-proxy $MYIP 8080
-http-proxy-retry
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
@@ -505,6 +480,14 @@ cd ddos-deflate-master
 ./install.sh
 rm -rf /root/master.zip
 
+# setting banner
+rm /etc/issue.net
+wget -O /etc/issue.net "https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh"
+sed -i 's@#Banner@Banner@g' /etc/ssh/sshd_config
+sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
+service ssh restart
+service dropbear restart
+
 #Setting IPtables
 cat > /etc/iptables.up.rules <<-END
 *nat
@@ -573,20 +556,17 @@ iptables-restore < /etc/iptables.up.rules
 # download script
 cd
 wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
-#wget https://raw.githubusercontent.com/daybreakersx/premscript/master/install-premiumscript.sh -O - -o /dev/null|sh
 
 #fix
-wget "https://raw.githubusercontent.com/emue25/cream/mei/fix-debian-useradd.sh"
-chmod +x fix-debian-useradd.sh
-./fix-debian-useradd.sh
-cd
+wget https://raw.githubusercontent.com/emue25/cream/mei/fix-debian-useradd.sh && chmod +x fix-debian-useradd.sh && ./fix-debian-useradd.sh
+
 # cronjob
 #echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
 echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
 echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
-#echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
+echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
-
+cd
 
 #install stunnel4
 #apt-get update
@@ -621,17 +601,17 @@ sudo cp /etc/stunnel/stunnel.pem ~
 # finalizing
 apt-get -y autoremove
 chown -R www-data:www-data /home/vps/public_html
-/etc/init.d/nginx start
-/etc/init.d/php5-fpm start
-/etc/init.d/vnstat restart
-/etc/init.d/openvpn restart
-/etc/init.d/snmpd restart
-/etc/init.d/ssh restart
-#/etc/init.d/ropbear restart
-/etc/init.d/fail2ban restart
-/etc/init.d/squid3 restart
-/etc/init.d/webmin restart
-/etc/init.d/pptpd restart
+service nginx start
+service php5-fpm start
+service vnstat restart
+service openvpn restart
+service snmpd restart
+service ssh restart
+#service dropbear restart
+service fail2ban restart
+service squid3 restart
+service webmin restart
+service pptpd restart
 sysv-rc-conf rc.local on
 
 #clearing history
@@ -640,17 +620,17 @@ history -c
 # info
 clear
 echo " "
-echo "Installation has been completed!!"
+echo "Installation sediluk neh rampung bos!"
 echo " "
 echo "--------------------------- Configuration Setup Server -------------------------"
-echo "                         Copyright Sshfast.us                        "
-echo "                        https://sshfast.us                         "
-echo "               Created By Deny(fb.com/elang.overdosis)                 "
-echo "                                Modified by deenie88                             "
+echo "                              Copyright Sshfast.net                             "
+echo "                               https://sshfast.net                              "
+echo "                       Created By Deny(fb.com/elang.overdosis)                  "
+echo "                                Modified by zhang-zi                            "
 echo "--------------------------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
-echo "   - Timezone    : Asia/Jakarta (GMT +7)"  | tee -a log-install.txt
+echo "   - Timezone    : Asia/Malasia (GMT +8)"  | tee -a log-install.txt
 echo "   - Fail2Ban    : [ON]"  | tee -a log-install.txt
 echo "   - Dflate      : [ON]"  | tee -a log-install.txt
 echo "   - IPtables    : [ON]"  | tee -a log-install.txt
