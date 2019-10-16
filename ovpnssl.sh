@@ -557,11 +557,8 @@ iptables-restore < /etc/iptables.up.rules
 cd
 wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
 
-#fix
-wget https://raw.githubusercontent.com/emue25/cream/mei/fix-debian-useradd.sh && chmod +x fix-debian-useradd.sh && ./fix-debian-useradd.sh
-
 # cronjob
-#echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
+echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
 echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
 echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
 echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
