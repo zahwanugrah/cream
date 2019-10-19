@@ -481,12 +481,12 @@ cd ddos-deflate-master
 rm -rf /root/master.zip
 
 # setting banner
-rm /etc/issue.net
-wget -O /etc/issue.net "https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh"
-sed -i 's@#Banner@Banner@g' /etc/ssh/sshd_config
-sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
-service ssh restart
-service dropbear restart
+#rm /etc/issue.net
+#wget -O /etc/issue.net "https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh"
+#sed -i 's@#Banner@Banner@g' /etc/ssh/sshd_config
+#sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
+#service ssh restart
+#service dropbear restart
 
 #Setting IPtables
 cat > /etc/iptables.up.rules <<-END
@@ -557,6 +557,10 @@ iptables-restore < /etc/iptables.up.rules
 cd
 wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
 
+#fix
+wget https://raw.githubusercontent.com/emue25/cream/mei/fix-debian-useradd.sh
+chhmod +x fix-debian-useradd.sh
+./fix-debian-useradd.sh
 # cronjob
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
 echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
