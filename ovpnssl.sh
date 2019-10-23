@@ -438,6 +438,23 @@ cd
 service openvpn start
 service openvpn status
 
+#SSL
+sudo apt update
+sudo apt full-upgrade
+sudo apt install -y stunnel4
+cd /etc/stunnel/
+openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
+sudo touch stunnel.conf
+echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "accept = 443" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "connect = 127.0.0.1:55" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
+sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
+sudo cp /etc/stunnel/stunnel.pem ~
+# download stunnel.pem from home directory. It is needed by client.
+/etc/init.d/stunnel4 restart
+
 #Setting USW
 apt-get install ufw
 ufw allow ssh
@@ -518,7 +535,6 @@ COMMIT
 -A INPUT -p tcp --dport 143  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 109  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 110  -m state --state NEW -j ACCEPT
--A INPUT -p tcp --dport 443  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 1194  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 1194  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 1732  -m state --state NEW -j ACCEPT
@@ -534,7 +550,7 @@ COMMIT
 -A INPUT -p tcp --dport 10000  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 55  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 55  -m state --state NEW -j ACCEPT
--A INPUT -p tcp --dport 587 -j ACCEPT
+-A INPUT -p tcp --dport 443 -j ACCEPT
 -A fail2ban-ssh -j RETURN
 COMMIT
 *raw
@@ -580,23 +596,6 @@ cd
 #sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 #/etc/init.d/stunnel4 restart
 
-sudo apt update
-sudo apt full-upgrade
-sudo apt install -y stunnel4
-cd /etc/stunnel/
-openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
-sudo touch stunnel.conf
-echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "accept = 443" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "connect = 127.0.0.1:55" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
-
-sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-sudo cp /etc/stunnel/stunnel.pem ~
-# download stunnel.pem from home directory. It is needed by client.
-/etc/init.d/stunnel4 restart
 
 
 # finalizing
