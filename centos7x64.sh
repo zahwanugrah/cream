@@ -251,8 +251,8 @@ END
 cd
 
 # create openvpn config
-cat > openvpn.ovpn <<-END
-#modified by tacome9
+cat > client.ovpn <<-END
+#modified by kopet
 client
 dev tun
 proto tcp
@@ -280,16 +280,13 @@ setenv CLIENT_CERT 0
 dhcp-option DOMAIN 1dot1dot1dot1.cloudflare-dns.com
 
 END
-#echo '<ca>' >> vpn.ovpn
-#cat /etc/openvpn/ca.crt >> openvpn.ovpn
-#echo '</ca>' >> openvpn.ovpn
-#sed -i $MYIP2 openvpn.ovpn;
+echo '<ca>' >> vpn.ovpn
+cat /etc/openvpn/ca.crt >> client.ovpn
+echo '</ca>' >> client.ovpn
+sed -i $MYIP2 client.ovpn;
 echo '<ca>' >> /home/vps/public_html/client.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
 echo '</ca>' >> /home/vps/public_html/client.ovpn
-cd /home/vps/public_html/
-tar -czf /home/vps/public_html/openvpn.tar.gz client.ovpn
-tar -czf /home/vps/public_html/client.tar.gz client.ovpn
 cd
 #setup firewall
 firewall-cmd --get-active-zones
