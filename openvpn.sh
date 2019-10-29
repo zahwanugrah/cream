@@ -25,20 +25,7 @@ apt-get clean
 apt-get update
 # install needs
 apt-get -y install stunnel4 apache2 openvpn easy-rsa ufw
-# stunnel
-cd /etc/stunnel/
-openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
-sudo touch stunnel.conf
-echo "client = no" > /etc/stunnel/stunnel.conf
-echo "pid = /var/run/stunnel.pid" >> /etc/stunnel/stunnel.conf
-echo "[openvpn]" >> /etc/stunnel/stunnel.conf
-echo "accept = 442" >> /etc/stunnel/stunnel.conf
-echo "connect = 127.0.0.1:443" >> /etc/stunnel/stunnel.conf
-echo "cert = /etc/stunnel/stunnel.pem" >> /etc/stunnel/stunnel.conf
-sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-iptables -A INPUT -p tcp --dport 442 -j ACCEPT
-sudo cp /etc/stunnel/stunnel.pem ~
-echo "client = yes\ndebug = 6\n[openvpn]\naccept = 127.0.0.1:1194\nconnect = $IPADDRESS:443\nTIMEOUTclose = 0\nverify = 0\nsni = $1" > /var/www/html/stunnel.conf
+
 # openvpn
 cp -r /usr/share/easy-rsa/ /etc/openvpn
 mkdir /etc/openvpn/easy-rsa/keys
@@ -104,7 +91,7 @@ cat > /var/www/html/openvpn.ovpn <<-END
 client
 dev tun
 proto tcp
-remote $IPADDRESS:443@$1 443
+remote $IPADDRESS 443
 persist-key
 persist-tun
 dev tun
@@ -123,13 +110,12 @@ route-method exe
 route-delay 2
 cipher none
 http-proxy $IPADDRESS 8080
-http-proxy-option CUSTOM-HEADER CONNECT HTTP/1.0
+http-proxy-option CUSTOM-HEADER CONNECT HTTP/1.1
 http-proxy-option CUSTOM-HEADER Host $1
 http-proxy-option CUSTOM-HEADER X-Online-Host $1
 http-proxy-option CUSTOM-HEADER X-Forward-Host $1
 http-proxy-option CUSTOM-HEADER Connection keep-alive
 http-proxy-option CUSTOM-HEADER Proxy-Connection keep-alive
-http-proxy-retry
 
 END
 echo '<ca>' >> /var/www/html/openvpn.ovpn
@@ -275,7 +261,7 @@ echo "nameserver 8.8.4.4" >> /etc/resolv.conf
 sed -i '$ i\echo "nameserver 8.8.8.8" > /etc/resolv.conf' /etc/rc.local
 sed -i '$ i\echo "nameserver 8.8.4.4" >> /etc/resolv.conf' /etc/rc.local
 # set time GMT +8
-ln -fs /usr/share/zoneinfo/Asia/Manila /etc/localtime
+ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 # setting ufw
 ufw allow ssh
 ufw allow 443/tcp
@@ -298,14 +284,6 @@ ufw disable
 echo 1 > /proc/sys/net/ipv4/ip_forward
 sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
 
-# install ddos deflate
-cd
-apt-get -y install dnsutils dsniff
-wget https://github.com/jgmdev/ddos-deflate/archive/master.zip
-unzip master.zip
-cd ddos-deflate-master
-./install.sh
-rm -rf /root/master.zip
 
 # download script
 cd
@@ -318,21 +296,25 @@ echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
 echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
-# swap ram
-dd if=/dev/zero of=/swapfile bs=1024 count=4096k
-# buat swap
-mkswap /swapfile
-# jalan swapfile
-swapon /swapfile
-#auto star saat reboot
-wget https://raw.githubusercontent.com/brantbell/cream/mei/fstab
-mv ./fstab /etc/fstab
-chmod 644 /etc/fstab
-#sysctl vm.swappiness=10
-#permission swapfile
-chown root:root /swapfile 
-chmod 0600 /swapfile
-cd
+# clean repo
+apt-get clean
+# update repo
+apt-get update
+# stunnel
+cd /etc/stunnel/
+openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
+sudo touch stunnel.conf
+echo "client = no" > /etc/stunnel/stunnel.conf
+echo "pid = /var/run/stunnel.pid" >> /etc/stunnel/stunnel.conf
+echo "[openvpn]" >> /etc/stunnel/stunnel.conf
+echo "accept = 442" >> /etc/stunnel/stunnel.conf
+echo "connect = 127.0.0.1:443" >> /etc/stunnel/stunnel.conf
+echo "cert = /etc/stunnel/stunnel.pem" >> /etc/stunnel/stunnel.conf
+sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
+iptables -A INPUT -p tcp --dport 442 -j ACCEPT
+sudo cp /etc/stunnel/stunnel.pem ~
+echo "client = yes\ndebug = 6\n[openvpn]\naccept = 127.0.0.1:442\nconnect = $IPADDRESS:443\nTIMEOUTclose = 0\nverify = 0\nsni = $1" > /var/www/html/stunnel.conf
+
 # restart apps
 service squid stop
 service squid3 stop
