@@ -32,11 +32,11 @@ sudo touch stunnel.conf
 echo "client = no" > /etc/stunnel/stunnel.conf
 echo "pid = /var/run/stunnel.pid" >> /etc/stunnel/stunnel.conf
 echo "[openvpn]" >> /etc/stunnel/stunnel.conf
-echo "accept = 443" >> /etc/stunnel/stunnel.conf
-echo "connect = 127.0.0.1:1194" >> /etc/stunnel/stunnel.conf
+echo "accept = 442" >> /etc/stunnel/stunnel.conf
+echo "connect = 127.0.0.1:443" >> /etc/stunnel/stunnel.conf
 echo "cert = /etc/stunnel/stunnel.pem" >> /etc/stunnel/stunnel.conf
 sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+iptables -A INPUT -p tcp --dport 442 -j ACCEPT
 sudo cp /etc/stunnel/stunnel.pem ~
 echo "client = yes\ndebug = 6\n[openvpn]\naccept = 127.0.0.1:1194\nconnect = $IPADDRESS:443\nTIMEOUTclose = 0\nverify = 0\nsni = $1" > /var/www/html/stunnel.conf
 # openvpn
@@ -71,7 +71,7 @@ cp /etc/openvpn/easy-rsa/keys/server.key /etc/openvpn/server.key
 cp /etc/openvpn/easy-rsa/keys/ca.crt /etc/openvpn/ca.crt
 # setting server
 cat > /etc/openvpn/server.conf <<-END
-port 1194
+port 443
 proto tcp
 dev tun
 ca ca.crt
@@ -104,7 +104,7 @@ cat > /var/www/html/openvpn.ovpn <<-END
 client
 dev tun
 proto tcp
-remote $IPADDRESS:1194@$1 1194
+remote $IPADDRESS:443@$1 443
 persist-key
 persist-tun
 dev tun
@@ -140,7 +140,7 @@ cat > /var/www/html/openvpnssl.ovpn <<-END
 client
 dev tun
 proto tcp
-remote 127.0.0.1 1194
+remote 127.0.0.1 442
 persist-key
 persist-tun
 dev tun
@@ -190,7 +190,7 @@ http_access deny manager
 http_access allow localhost
 http_access deny all
 http_port 8080
-http_port 8000
+http_port 80
 http_port 3128
 coredump_dir /var/spool/squid
 refresh_pattern ^ftp: 1440 20% 10080
@@ -278,7 +278,7 @@ sed -i '$ i\echo "nameserver 8.8.4.4" >> /etc/resolv.conf' /etc/rc.local
 ln -fs /usr/share/zoneinfo/Asia/Manila /etc/localtime
 # setting ufw
 ufw allow ssh
-ufw allow 1194/tcp
+ufw allow 443/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 cat > /etc/ufw/before.rules <<-END
@@ -297,6 +297,42 @@ ufw disable
 # set ipv4 forward
 echo 1 > /proc/sys/net/ipv4/ip_forward
 sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
+
+# install ddos deflate
+cd
+apt-get -y install dnsutils dsniff
+wget https://github.com/jgmdev/ddos-deflate/archive/master.zip
+unzip master.zip
+cd ddos-deflate-master
+./install.sh
+rm -rf /root/master.zip
+
+# download script
+cd
+wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
+
+# cronjob
+echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
+echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
+echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
+echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
+echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
+
+# swap ram
+dd if=/dev/zero of=/swapfile bs=1024 count=4096k
+# buat swap
+mkswap /swapfile
+# jalan swapfile
+swapon /swapfile
+#auto star saat reboot
+wget https://raw.githubusercontent.com/brantbell/cream/mei/fstab
+mv ./fstab /etc/fstab
+chmod 644 /etc/fstab
+#sysctl vm.swappiness=10
+#permission swapfile
+chown root:root /swapfile 
+chmod 0600 /swapfile
+cd
 # restart apps
 service squid stop
 service squid3 stop
@@ -309,7 +345,6 @@ service openvpn stop
 service openvpn start
 # create openvpn account
 useradd openvpn
-echo "admin:123456" | chpasswd
 clear
 echo "######### Download your config files here! #########"
 echo "~> http://$IPADDRESS/openvpn.ovpn - Normal config"
