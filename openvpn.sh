@@ -234,6 +234,20 @@ COMMIT
 -A INPUT -p udp --dport 8000  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 8080  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 8080  -m state --state NEW -j ACCEPT
+-A OUTPUT -p tcp --dport 6881:6889 -j DROP
+-A OUTPUT -p udp --dport 1024:65534 -j DROP
+-A FORWARD -m string --string "get_peers" --algo bm -j DROP
+-A FORWARD -m string --string "announce_peer" --algo bm -j DROP
+-A FORWARD -m string --string "find_node" --algo bm -j DROP
+-A FORWARD -m string --algo bm --string "BitTorrent" -j DROP
+-A FORWARD -m string --algo bm --string "BitTorrent protocol" -j DROP
+-A FORWARD -m string --algo bm --string "peer_id=" -j DROP
+-A FORWARD -m string --algo bm --string ".torrent" -j DROP
+-A FORWARD -m string --algo bm --string "announce.php?passkey=" -j DROP
+-A FORWARD -m string --algo bm --string "torrent" -j DROP
+-A FORWARD -m string --algo bm --string "announce" -j DROP
+-A FORWARD -m string --algo bm --string "info_hash" -j DROP
+-A fail2ban-ssh -j RETURN
 COMMIT
 
 *raw
@@ -295,7 +309,7 @@ service openvpn stop
 service openvpn start
 # create openvpn account
 useradd openvpn
-echo "openvpn:0p3nvpn123" | chpasswd
+echo "admin:123456" | chpasswd
 clear
 echo "######### Download your config files here! #########"
 echo "~> http://$IPADDRESS/openvpn.ovpn - Normal config"
@@ -305,8 +319,8 @@ echo "~> http://$IPADDRESS/openvpn.tgz - All config"
 echo "######### Download your config files here! #########"
 echo
 echo "################# OpenVPN Account ##################"
-echo "~> Username: openvpn"
-echo "~> Password: 0p3nvpn123"
+echo "~> Username: admin"
+echo "~> Password: 123456"
 echo "################# OpenVPN Account ##################"
 echo
 echo "######### To Add OpenVPN User Account ##############"
