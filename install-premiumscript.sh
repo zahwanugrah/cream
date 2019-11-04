@@ -1,5 +1,5 @@
 #!/bin/bash
-# Created by http://www.vps-murah.net
+# Created by http://vpnstunnel.com
 # Modified by DENBAGUSS
 
 cd
@@ -13,7 +13,7 @@ cd
 # download script
 cd
 wget -O /usr/bin/benchmark "https://raw.githubusercontent.com/brantbell/cream/mei/benchmark.sh"
-wget -O /usr/bin/speedtest "https://raw.githubusercontent.com/brantbell/cream/mei/speedtest_cli.py"
+wget -O /usr/bin/speedtest "https://raw.githubusercontent.com/emue25/VPSauto/master/speedtest_cli.py"
 wget -O /usr/bin/ps-mem "https://raw.githubusercontent.com/brantbell/cream/mei/ps_mem.py"
 wget -O /usr/bin/dropmon "https://raw.githubusercontent.com/brantbell/cream/mei/dropmon.sh"
 wget -O /usr/bin/menu "https://raw.githubusercontent.com/brantbell/cream/mei/menu.sh"
@@ -35,7 +35,7 @@ wget -O /usr/bin/user-pass "https://raw.githubusercontent.com/brantbell/cream/me
 wget -O /usr/bin/user-renew "https://raw.githubusercontent.com/brantbell/cream/mei/user-renew.sh"
 wget -O /usr/bin/clearcache.sh "https://raw.githubusercontent.com/brantbell/cream/mei/clearcache.sh"
 wget -O /usr/bin/bannermenu "https://raw.githubusercontent.com/brantbell/cream/mei/bannermenu"
-wget -O /usr/bin/menu-update-script-vps.sh "https://raw.githubusercontent.com/brantbell/cream/mei/menu-update-script-vps.sh"
+wget -O /usr/bin/menu-update-script-vps.sh "https://raw.githubusercontent.com/emue25/cream/mei/menu-update-script-vps.sh"
 wget -O /usr/bin/vpnmon "https://raw.githubusercontent.com/brantbell/cream/mei/vpnmon"
 
 wget -O /usr/bin/edit-port-openssh "https://raw.githubusercontent.com/brantbell/cream/mei/edit-port-openssh"
@@ -88,4 +88,4 @@ echo "Premium Script Successfully Installed!"
 echo "Restarting all services..."
 echo "Wait for a few minutes..."
 echo "Modified by DENBAGUSS"
-echo " "
+echo "Create by https://vpnstunnel.com"
