@@ -217,7 +217,7 @@ systemctl start openvpn@server
 
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
-cat > /home/vps/public_html/client.ovpn <<-END
+cat > /home/vps/public_html/zhangzi.ovpn <<-END
 # Created by kopet
 # Ovpn sshfast.net & vpnstunnel.com
 auth-user-pass
@@ -244,9 +244,9 @@ script-security 2
 cipher none
 auth none
 END
-echo '<ca>' >> /home/vps/public_html/client.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
-echo '</ca>' >> /home/vps/public_html/client.ovpn
+echo '<ca>' >> /home/vps/public_html/zhangzi.ovpn
+cat /etc/openvpn/ca.crt >> /home/vps/public_html/zhangzi.ovpn
+echo '</ca>' >> /home/vps/public_html/zhangzi.ovpn
 
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
