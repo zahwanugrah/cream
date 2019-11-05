@@ -18,7 +18,7 @@ wget -O /usr/bin/ps-mem "https://raw.githubusercontent.com/brantbell/cream/mei/p
 wget -O /usr/bin/dropmon "https://raw.githubusercontent.com/brantbell/cream/mei/dropmon.sh"
 wget -O /usr/bin/menu "https://raw.githubusercontent.com/brantbell/cream/mei/menu.sh"
 wget -O /usr/bin/user-active-list "https://raw.githubusercontent.com/brantbell/cream/mei/user-active-list.sh"
-wget -O /usr/bin/user-add "https://raw.githubusercontent.com/brantbell/cream/mei/user-add.sh"
+wget -O /usr/bin/user-add "https://raw.githubusercontent.com/emue25/cream/mei/user-add.sh"
 wget -O /usr/bin/user-add-pptp "https://raw.githubusercontent.com/brantbell/cream/mei/user-add-pptp.sh"
 wget -O /usr/bin/user-del "https://raw.githubusercontent.com/brantbell/cream/mei/user-del.sh"
 wget -O /usr/bin/disable-user-expire "https://raw.githubusercontent.com/brantbell/cream/mei/disable-user-expire.sh"
