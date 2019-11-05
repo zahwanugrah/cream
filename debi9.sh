@@ -310,7 +310,6 @@ END
 /etc/init.d/stunnel4 restart
 
 ufw allow ssh
-ufw allow stunnel4
 ufw allow 443/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
@@ -575,23 +574,7 @@ vnstat -u -i eth0
 
 # compress configs
 cd /home/vps/public_html
-zip configs.zip client.ovpn
-
-# swap ram
-dd if=/dev/zero of=/swapfile bs=1024 count=4096k
-# buat swap
-mkswap /swapfile
-# jalan swapfile
-swapon /swapfile
-#auto star saat reboot
-wget https://raw.githubusercontent.com/brantbell/cream/mei/fstab
-mv ./fstab /etc/fstab
-chmod 644 /etc/fstab
-sysctl vm.swappiness=10
-#permission swapfile
-chown root:root /swapfile 
-chmod 0600 /swapfile
-cd
+zip configz.zip zhangzi.ovpn
 
 # install libxml-parser
 apt-get install libxml-parser-perl -y -f
@@ -645,7 +628,7 @@ echo "   To display list of commands: menu"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Important Information"  | tee -a log-install.txt
-echo "   - Download Config OpenVPN : http://$MYIP/configs.zip"  | tee -a log-install.txt
+echo "   - Download Config OpenVPN : http://$MYIP/configz.zip"  | tee -a log-install.txt
 echo "   - Installation Log        : cat /root/log-install.txt"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "   - Webmin                  : http://$MYIP:10000/"  | tee -a log-install.txt
