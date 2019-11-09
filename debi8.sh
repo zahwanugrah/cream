@@ -29,7 +29,7 @@ sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 apt-get update;apt-get -y install wget curl cat;
 
 # set time GMT +8
-ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 
 # set repo
 cat > /etc/apt/sources.list <<END2
@@ -163,10 +163,6 @@ sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 service ssh restart
 
-
-
-
-
 # install vnstat gui
 cd /home/vps/public_html/
 wget https://raw.githubusercontent.com/brantbell/cream/mei/vnstat_php_frontend-1.5.1.tar.gz
@@ -221,14 +217,6 @@ visible_hostname daybreakersx
 END
 sed -i $MYIP2 /etc/squid3/squid.conf;
 service squid3 restart
-
-# install stunnel4
-#apt-get -y install stunnel4
-#wget -O /etc/stunnel/stunnel.pem "https://raw.githubusercontent.com/daybreakersx/premscript/master/updates/stunnel.pem"
-#wget -O /etc/stunnel/stunnel.conf "https://raw.githubusercontent.com/daybreakersx/premscript/master/req/stunnel.conf"
-#sed -i $MYIP2 /etc/stunnel/stunnel.conf
-#sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-#service stunnel4 restart
 
 # install webmin
 cd
@@ -357,7 +345,7 @@ END
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
-# OpenVPN Configuration by sshfast.us
+# OpenVPN Configuration by sshfast.net
 # by zhangzi
 client
 dev tun
@@ -383,8 +371,8 @@ route 0.0.0.0 0.0.0.0
 route-method exe
 route-delay 2
 cipher AES-128-CBC
-#http-proxy $MYIP 8080
-#http-proxy-retry
+http-proxy $MYIP 8080
+
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
