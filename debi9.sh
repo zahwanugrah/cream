@@ -312,10 +312,10 @@ ncp-disable
 cipher none
 auth none
 END
-systemctl start openvpn@server
-systemctl start openvpn@server2
-systemctl start openvpn@server3
-systemctl start openvpn@server4
+systemctl start openvpn@server.service
+systemctl start openvpn@server2.service
+systemctl start openvpn@server3.service
+systemctl start openvpn@server4.service
 
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
@@ -430,6 +430,8 @@ cat > /etc/iptables.up.rules <<-END
 -A POSTROUTING -j SNAT --to-source xxxxxxxxx
 -A POSTROUTING -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 10.1.1.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 10.1.2.0/24 -o eth0 -j MASQUERADE
 COMMIT
 *filter
 :INPUT ACCEPT [0:0]
