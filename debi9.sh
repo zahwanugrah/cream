@@ -120,7 +120,7 @@ refresh_pattern ^ftp: 1440 20% 10080
 refresh_pattern ^gopher: 1440 0% 1440
 refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
 refresh_pattern . 0 20% 4320
-visible_hostname FordSenpai
+visible_hostname ZhangZi
 END
 sed -i $MYIP2 /etc/squid/squid.conf;
 /etc/init.d/squid.restart
@@ -181,7 +181,9 @@ chmod +x /etc/openvpn/ca.crt
 tar -xzvf /root/plugin.tgz -C /usr/lib/openvpn/
 chmod +x /usr/lib/openvpn/*
 cat > /etc/openvpn/server.conf <<-END
+port 55
 port 443
+port 1194
 proto tcp
 dev tun
 ca ca.crt
@@ -311,6 +313,8 @@ END
 
 ufw allow ssh
 ufw allow 443/tcp
+ufw allow 55/tcp
+ufw allow 1194/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 
@@ -524,11 +528,11 @@ echo "   - Auto-Reboot : [OFF]"  | tee -a log-install.txt
 echo "   - IPv6        : [OFF]"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Application & Port Information"  | tee -a log-install.txt
-echo "   - OpenVPN		: TCP 443 "  | tee -a log-install.txt
+echo "   - OpenVPN		: TCP 443 55 1194"  | tee -a log-install.txt
 echo "   - OpenVPN-SSL   	: 444 "  | tee -a log-install.txt
 echo "   - Dropbear		: 442"  | tee -a log-install.txt
 echo "   - Stunnel		: 444"  | tee -a log-install.txt
-echo "   - BadVPN  	: 7200"  | tee -a log-install.txt
+echo "   - BadVPN  	        : 7200"  | tee -a log-install.txt
 echo "   - Squid Proxy	: 8080, 8000, 3128, 80 (limit to IP Server)"  | tee -a log-install.txt
 echo "   - Nginx		: 85"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
