@@ -46,8 +46,8 @@ wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bas
 #text gambar
 apt-get install boxes
 # text pelangi
-sudo apt-get install ruby -y
-sudo gem install lolcat
+apt-get install ruby -y
+gem install lolcat
 
 # install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
@@ -214,7 +214,43 @@ cipher none
 auth none
 END
 systemctl start openvpn@server.service
-
+#server2
+#tar -xzvf /root/plugin.tgz -C /usr/lib/openvpn/
+#chmod +x /usr/lib/openvpn/*
+cat > /etc/openvpn/server2.conf <<-END
+port 55
+proto tcp
+dev tun
+ca ca.crt
+cert server.crt
+key server.key
+dh dh1024.pem
+verify-client-cert none
+username-as-common-name
+plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
+server 192.168.10.0 255.255.255.0
+ifconfig-pool-persist ipp.txt
+push "redirect-gateway def1 bypass-dhcp"
+push "dhcp-option DNS 8.8.8.8"
+push "dhcp-option DNS 8.8.4.4"
+push "route-method exe"
+push "route-delay 2"
+socket-flags TCP_NODELAY
+push "socket-flags TCP_NODELAY"
+keepalive 10 120
+comp-lzo
+user nobody
+group nogroup
+persist-key
+persist-tun
+status openvpn-status.log
+log openvpn.log
+verb 3
+ncp-disable
+cipher none
+auth none
+END
+systemctl start openvpn@server2.service
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/zhangzi.ovpn <<-END
@@ -253,18 +289,16 @@ mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/clientssl.ovpn <<-END
 # OpenVPN Configuration by sshfast.net
 # by zhangzi ovpn ssl
-client
+lient
 dev tun
 proto tcp
+remote $MYIP 444
 persist-key
 persist-tun
 dev tun
 pull
 resolv-retry infinite
 nobind
-user nobody
-group nogroup
-comp-lzo
 ns-cert-type server
 verb 3
 mute 2
@@ -272,26 +306,21 @@ mute-replay-warnings
 auth-user-pass
 redirect-gateway def1
 script-security 2
-route-method exe
-setenv opt block-outside-dns
-route-delay 2
-remote $MYIP 444
-cipher AES-128-CBC
-up /etc/openvpn/update-resolv-conf
-down /etc/openvpn/update-resolv-conf
 route $MYIP 255.255.255.255 net_gateway
+route-method exe
+route-delay 2
+cipher none
 END
 echo '<ca>' >> /home/vps/public_html/clientssl.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/clientssl.ovpn
 echo '</ca>' >> /home/vps/public_html/clientssl.ovpn
 cd /home/vps/public_html/
 tar -czf /home/vps/public_html/openvpnssl.tar.gz clientssl.ovpn
-tar -czf /home/vps/public_html/clientssl.tar.gz clientssl.ovpn
 cd
 # Configure Stunnel
-sudo apt update
-sudo apt full-upgrade
-sudo apt install -y stunnel4
+apt update
+apt full-upgrade
+apt install -y stunnel4
 cd /etc/stunnel/
 openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
 sudo touch stunnel.conf
@@ -311,6 +340,7 @@ END
 
 ufw allow ssh
 ufw allow 443/tcp
+ufw allow 55/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 
