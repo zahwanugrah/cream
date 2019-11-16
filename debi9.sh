@@ -217,6 +217,8 @@ systemctl start openvpn@server.service
 #server2
 #tar -xzvf /root/plugin.tgz -C /usr/lib/openvpn/
 #chmod +x /usr/lib/openvpn/*
+cd /etc/openvpn/
+cp server.conf server2.conf
 cat > /etc/openvpn/server2.conf <<-END
 port 55
 proto tcp
