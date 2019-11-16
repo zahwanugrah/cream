@@ -214,45 +214,6 @@ cipher none
 auth none
 END
 systemctl start openvpn@server.service
-#server2
-#tar -xzvf /root/plugin.tgz -C /usr/lib/openvpn/
-#chmod +x /usr/lib/openvpn/*
-cd /etc/openvpn/
-cp server.conf server2.conf
-cat > /etc/openvpn/server2.conf <<-END
-port 55
-proto tcp
-dev tun
-ca ca.crt
-cert server.crt
-key server.key
-dh dh1024.pem
-verify-client-cert none
-username-as-common-name
-plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 192.168.10.0 255.255.255.0
-ifconfig-pool-persist ipp.txt
-push "redirect-gateway def1 bypass-dhcp"
-push "dhcp-option DNS 8.8.8.8"
-push "dhcp-option DNS 8.8.4.4"
-push "route-method exe"
-push "route-delay 2"
-socket-flags TCP_NODELAY
-push "socket-flags TCP_NODELAY"
-keepalive 10 120
-comp-lzo
-user nobody
-group nogroup
-persist-key
-persist-tun
-status openvpn-status.log
-log openvpn.log
-verb 3
-ncp-disable
-cipher none
-auth none
-END
-systemctl start openvpn@server2.service
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/zhangzi.ovpn <<-END
@@ -263,7 +224,7 @@ client
 dev tun
 proto tcp
 remote $MYIP 443
-http-proxy $MYIP 8080
+http-proxy $MYIP 80
 persist-key
 persist-tun
 pull
@@ -342,7 +303,6 @@ END
 
 ufw allow ssh
 ufw allow 443/tcp
-ufw allow 55/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 
