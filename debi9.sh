@@ -91,6 +91,31 @@ permit-access 0.0.0.0/0 xxxxxxxxx
 END
 sed -i $MYIP2 /etc/privoxy/config;
 
+#install PPTP
+apt-get -y install pptpd
+cat > /etc/ppp/pptpd-options <<END
+name pptpd
+refuse-pap
+refuse-chap
+refuse-mschap
+require-mschap-v2
+require-mppe-128
+ms-dns 8.8.8.8
+ms-dns 8.8.4.4
+proxyarp
+nodefaultroute
+lock
+nobsdcomp
+END
+echo "option /etc/ppp/pptpd-options" > /etc/pptpd.conf
+echo "logwtmp" >> /etc/pptpd.conf
+echo "localip 10.1.0.1" >> /etc/pptpd.conf
+echo "remoteip 10.1.0.5-100" >> /etc/pptpd.conf
+cat >> /etc/ppp/ip-up <<END
+ifconfig ppp0 mtu 1400
+END
+mkdir /var/lib/premium-script
+/etc/init.d/pptpd restart
 # install squid3
 cat > /etc/squid/squid.conf <<-END
 acl localhost src 127.0.0.1/32 ::1
@@ -256,16 +281,18 @@ mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/clientssl.ovpn <<-END
 # OpenVPN Configuration by sshfast.net
 # by zhangzi ovpn ssl
-lient
+client
 dev tun
 proto tcp
-remote $MYIP 444
 persist-key
 persist-tun
 dev tun
 pull
 resolv-retry infinite
 nobind
+user nobody
+group nogroup
+comp-lzo
 ns-cert-type server
 verb 3
 mute 2
@@ -273,10 +300,15 @@ mute-replay-warnings
 auth-user-pass
 redirect-gateway def1
 script-security 2
-route $MYIP 255.255.255.255 net_gateway
 route-method exe
+setenv opt block-outside-dns
 route-delay 2
-cipher none
+remote $MYIP 444
+cipher AES-128-CBC
+up /etc/openvpn/update-resolv-conf
+down /etc/openvpn/update-resolv-conf
+route $MYIP 255.255.255.255 net_gateway
+
 END
 echo '<ca>' >> /home/vps/public_html/clientssl.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/clientssl.ovpn
