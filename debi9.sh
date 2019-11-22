@@ -519,6 +519,15 @@ zip configz.zip zhangzi.ovpn
 # install libxml-parser
 apt-get install libxml-parser-perl -y -f
 
+# install ddos deflate
+cd
+apt-get -y install dnsutils dsniff
+wget https://github.com/jgmdev/ddos-deflate/archive/master.zip
+unzip master.zip
+cd ddos-deflate-master
+./install.sh
+rm -rf /root/master.zip
+
 # finalizing
 #vnstat -u -i eth0
 apt-get -y autoremove
