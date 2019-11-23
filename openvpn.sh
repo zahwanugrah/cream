@@ -88,10 +88,13 @@ cipher none
 END
 # create openvpn config
 cat > /var/www/html/openvpn.ovpn <<-END
+#modif by zhangzi
 client
 dev tun
 proto tcp
 remote $IPADDRESS 443
+http-proxy $IPADDRESS 8080
+
 persist-key
 persist-tun
 dev tun
@@ -109,13 +112,6 @@ route 0.0.0.0 0.0.0.0
 route-method exe
 route-delay 2
 cipher none
-http-proxy $IPADDRESS 8080
-http-proxy-option CUSTOM-HEADER CONNECT HTTP/1.1
-http-proxy-option CUSTOM-HEADER Host $1
-http-proxy-option CUSTOM-HEADER X-Online-Host $1
-http-proxy-option CUSTOM-HEADER X-Forward-Host $1
-http-proxy-option CUSTOM-HEADER Connection keep-alive
-http-proxy-option CUSTOM-HEADER Proxy-Connection keep-alive
 
 END
 echo '<ca>' >> /var/www/html/openvpn.ovpn
