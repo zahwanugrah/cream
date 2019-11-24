@@ -23,10 +23,9 @@ cd
 echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 
-
-
 # install wget and curl
-apt-get update;apt-get -y install wget curl cat sudo;
+apt-get update;apt-get -y install wget curl cat;
+apt-get -y install sudo
 
 # set time GMT +8
 ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
@@ -562,7 +561,6 @@ echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "accept = 443" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "connect = 127.0.0.1:55" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
-
 sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 sudo cp /etc/stunnel/stunnel.pem ~
@@ -579,7 +577,7 @@ service vnstat restart
 service openvpn restart
 service snmpd restart
 service ssh restart
-service dropbear restart
+#service dropbear restart
 service fail2ban restart
 service squid3 restart
 service webmin restart
