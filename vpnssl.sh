@@ -1,6 +1,6 @@
 #!/bin/sh
 # Created by https://www.hostingtermurah.net
-# Modified by 0123456
+# Modified by ZhangZi
 
 #Requirement
 if [ ! -e /usr/bin/curl ]; then
@@ -367,9 +367,8 @@ END
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
-# OpenVPN Configuration by sshfast.us
+# OpenVPN Configuration by sshfast.net
 # by zhangzi
-
 client
 dev tun
 proto tcp
@@ -394,8 +393,7 @@ route 0.0.0.0 0.0.0.0
 route-method exe
 route-delay 2
 cipher AES-128-CBC
-#http-proxy $MYIP 8080
-#http-proxy-retry
+http-proxy $MYIP 8080
 
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
@@ -409,11 +407,8 @@ cd
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/clientssl.ovpn <<-END
-# OpenVPN Configuration by sshfast.us
+# OpenVPN Configuration by sshfast.net
 # by zhangzi ovpn ssl
-
-
-
 client
 dev tun
 proto tcp
@@ -596,7 +591,6 @@ echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "accept = 443" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "connect = 127.0.0.1:55" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
-
 sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 sudo cp /etc/stunnel/stunnel.pem ~
