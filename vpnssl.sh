@@ -29,7 +29,7 @@ sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 apt-get update;apt-get -y install wget curl cat;
 
 # set time GMT +8
-ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 
 # set repo
 cat > /etc/apt/sources.list <<END2
@@ -584,33 +584,7 @@ echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
 echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
-# swap ram
-dd if=/dev/zero of=/swapfile bs=1024 count=4096k
-# buat swap
-mkswap /swapfile
-# jalan swapfile
-swapon /swapfile
-#auto star saat reboot
-wget https://raw.githubusercontent.com/brantbell/cream/mei/fstab
-mv ./fstab /etc/fstab
-chmod 644 /etc/fstab
-sysctl vm.swappiness=10
-#permission swapfile
-chown root:root /swapfile 
-chmod 0600 /swapfile
-cd
-
-#install stunnel4
-#apt-get update
-#apt-get upgrade
-#apt-get install stunnel4
-#wget -O /etc/stunnel/stunnel.conf https://raw.githubusercontent.com/brantbell/cream/mei/stunnel.conf
-#openssl genrsa -out key.pem 2048
-#openssl req -new -x509 -key key.pem -out cert.pem -days 1095
-#cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
-#sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-#/etc/init.d/stunnel4 restart
-
+# stunnel
 sudo apt update
 sudo apt full-upgrade
 sudo apt install -y stunnel4
@@ -639,7 +613,7 @@ service vnstat restart
 service openvpn restart
 service snmpd restart
 service ssh restart
-service dropbear restart
+#service dropbear restart
 service fail2ban restart
 service squid3 restart
 service webmin restart
