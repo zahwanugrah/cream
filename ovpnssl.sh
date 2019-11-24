@@ -25,7 +25,6 @@ sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 
 # install wget and curl
 apt-get update;apt-get -y install wget curl cat;
-apt-get -y install sudo
 
 # set time GMT +8
 ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
@@ -86,8 +85,7 @@ wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bas
 #text gambar
 apt-get install boxes
 # text pelangi
-sudo apt-get install ruby -y
-sudo gem install lolcat
+apt-get install ruby -y
 
 # install webserver
 cd
@@ -271,14 +269,14 @@ apt-get -y install openvpn easy-rsa openssl iptables
 cp -r /usr/share/easy-rsa/ /etc/openvpn
 mkdir /etc/openvpn/easy-rsa/keys
 # replace bits
-sed -i 's|export KEY_COUNTRY="US"|export KEY_COUNTRY="PH"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_PROVINCE="CA"|export KEY_PROVINCE="Albay"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_CITY="SanFrancisco"|export KEY_CITY="Legazpi"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_COUNTRY="US"|export KEY_COUNTRY="ID"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_PROVINCE="CA"|export KEY_PROVINCE="jateng"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_CITY="SanFrancisco"|export KEY_CITY="purworejo"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_ORG="Fort-Funston"|export KEY_ORG="IIEE"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_EMAIL="me@myhost.mydomain"|export KEY_EMAIL="rdbtx123@gmail.com"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="daybreakersx"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_NAME="EasyRSA"|export KEY_NAME="daybreakersx"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_OU=changeme|export KEY_OU=daybreakersx|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_EMAIL="me@myhost.mydomain"|export KEY_EMAIL="sshfast@gmail.com"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="denbaguss"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_NAME="EasyRSA"|export KEY_NAME="denbaguss"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_OU=changeme|export KEY_OU=denbaguss|' /etc/openvpn/easy-rsa/vars
 #Create Diffie-Helman Pem
 openssl dhparam -out /etc/openvpn/dh2048.pem 2048
 # Create PKI
