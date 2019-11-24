@@ -1,6 +1,6 @@
 #!/bin/sh
 # Created by https://www.hostingtermurah.net
-# Modified by kopet
+# Modified by ZhangZi
 
 #Requirement
 if [ ! -e /usr/bin/curl ]; then
@@ -43,12 +43,12 @@ wget "http://www.dotdeb.org/dotdeb.gpg"
 cat dotdeb.gpg | apt-key add -;rm dotdeb.gpg
 
 # remove unused
-#apt-get -y --purge remove samba*;
-#apt-get -y --purge remove apache2*;
-#apt-get -y --purge remove sendmail*;
-#apt-get -y --purge remove bind9*;
-#apt-get -y purge sendmail*
-#apt-get -y remove sendmail*
+apt-get -y --purge remove samba*;
+apt-get -y --purge remove apache2*;
+apt-get -y --purge remove sendmail*;
+apt-get -y --purge remove bind9*;
+apt-get -y purge sendmail*
+apt-get -y remove sendmail*
 
 # update
 apt-get update; apt-get -y upgrade;
@@ -96,17 +96,21 @@ rm /etc/nginx/sites-enabled/default
 rm /etc/nginx/sites-available/default
 cat > /etc/nginx/nginx.conf <<END3
 user www-data;
+
 worker_processes 1;
 pid /var/run/nginx.pid;
+
 events {
 	multi_accept on;
   worker_connections 1024;
 }
+
 http {
 	gzip on;
 	gzip_vary on;
 	gzip_comp_level 5;
 	gzip_types    text/plain application/x-javascript text/xml text/css;
+
 	autoindex on;
   sendfile on;
   tcp_nopush on;
@@ -121,14 +125,17 @@ http {
   client_max_body_size 32M;
 	client_header_buffer_size 8m;
 	large_client_header_buffers 8 8m;
+
 	fastcgi_buffer_size 8m;
 	fastcgi_buffers 8 8m;
+
 	fastcgi_read_timeout 600;
+
   include /etc/nginx/conf.d/*.conf;
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://vpnstunnel.com/"
+wget -O /home/vps/public_html/index.html "https://shortenerku.com/"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
@@ -141,10 +148,12 @@ server {
   access_log /var/log/nginx/vps-access.log;
   error_log /var/log/nginx/vps-error.log error;
   root   /home/vps/public_html;
+
   location / {
     index  index.html index.htm index.php;
     try_files $uri $uri/ /index.php?$args;
   }
+
   location ~ \.php$ {
     include /etc/nginx/fastcgi_params;
     fastcgi_pass  127.0.0.1:9000;
@@ -152,6 +161,7 @@ server {
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
   }
 }
+
 END4
 sed -i 's/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php5/fpm/pool.d/www.conf
 service php5-fpm restart
@@ -162,10 +172,6 @@ sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
 sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 service ssh restart
-
-
-
-
 
 # install vnstat gui
 cd /home/vps/public_html/
@@ -270,8 +276,8 @@ mkdir /var/lib/premium-script
 /etc/init.d/pptpd restart
 
 # install mrtg
-wget -O /etc/snmp/snmpd.conf "https://raw.githubusercontent.com/emue25/cream/mei/snmpd.conf"
-wget -O /root/mrtg-mem.sh "https://raw.githubusercontent.com/emue25/cream/mei/mrtg-mem.sh"
+wget -O /etc/snmp/snmpd.conf "https://raw.githubusercontent.com/brantbell/cream/mei/snmpd.conf"
+wget -O /root/mrtg-mem.sh "https://raw.githubusercontent.com/brantbell/cream/mei/mrtg-mem.sh"
 chmod +x /root/mrtg-mem.sh
 cd /etc/snmp/
 sed -i 's/TRAPDRUN=no/TRAPDRUN=yes/g' /etc/default/snmpd
@@ -279,7 +285,7 @@ service snmpd restart
 snmpwalk -v 1 -c public localhost 1.3.6.1.4.1.2021.10.1.3.1
 mkdir -p /home/vps/public_html/mrtg
 cfgmaker --zero-speed 100000000 --global 'WorkDir: /home/vps/public_html/mrtg' --output /etc/mrtg.cfg public@localhost
-curl "https://raw.githubusercontent.com/emue25/cream/mei/mrtg.conf" >> /etc/mrtg.cfg
+curl "https://raw.githubusercontent.com/brantbell/cream/mei/mrtg.conf" >> /etc/mrtg.cfg
 sed -i 's/WorkDir: \/var\/www\/mrtg/# WorkDir: \/var\/www\/mrtg/g' /etc/mrtg.cfg
 sed -i 's/# Options\[_\]: growright, bits/Options\[_\]: growright/g' /etc/mrtg.cfg
 indexmaker --output=/home/vps/public_html/mrtg/index.html /etc/mrtg.cfg
@@ -321,6 +327,39 @@ cp /etc/openvpn/easy-rsa/keys/server.crt /etc/openvpn/server.crt
 cp /etc/openvpn/easy-rsa/keys/server.key /etc/openvpn/server.key
 cp /etc/openvpn/easy-rsa/keys/ca.crt /etc/openvpn/ca.crt
 # Setting Server
+cat > /etc/openvpn/server2.conf <<-END
+port 1194
+proto tcp
+dev tun
+ca ca.crt
+cert server.crt
+key server.key
+dh dh2048.pem
+client-cert-not-required
+username-as-common-name
+plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
+server 192.168.100.0 255.255.255.0
+ifconfig-pool-persist ipp.txt
+push "redirect-gateway def1 bypass-dhcp"
+push "dhcp-option DNS 8.8.8.8"
+push "dhcp-option DNS 8.8.4.4"
+push "route-method exe"
+push "route-delay 2"
+duplicate-cn
+push "route-method exe"
+push "route-delay 2"
+keepalive 10 120
+comp-lzo
+user nobody
+group nogroup
+persist-key
+persist-tun
+status openvpn-status.log
+log         openvpn.log
+verb 3
+cipher AES-128-CBC
+END
+#server2
 cat > /etc/openvpn/server.conf <<-END
 port 55
 proto tcp
@@ -353,11 +392,10 @@ log         openvpn.log
 verb 3
 cipher AES-128-CBC
 END
-
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
-# OpenVPN Configuration by sshfast.us
+# OpenVPN Configuration by sshfast.net
 # by zhangzi
 client
 dev tun
@@ -384,6 +422,8 @@ route-method exe
 route-delay 2
 cipher AES-128-CBC
 http-proxy $MYIP 8080
+http-proxy-retry
+
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/client.ovpn
@@ -422,9 +462,11 @@ setenv opt block-outside-dns
 route-delay 2
 remote $MYIP 443
 cipher AES-128-CBC
+script-security 2
 up /etc/openvpn/update-resolv-conf
 down /etc/openvpn/update-resolv-conf
 route $MYIP 255.255.255.255 net_gateway
+
 END
 echo '<ca>' >> /home/vps/public_html/clientssl.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/clientssl.ovpn
@@ -438,37 +480,11 @@ cd
 service openvpn start
 service openvpn status
 
-#SSL
-sudo apt update
-sudo apt full-upgrade
-sudo apt install -y stunnel4
-cd /etc/stunnel/
-openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
-#sudo touch stunnel.conf
-#echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
-#echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
-#echo "accept = 443" | sudo tee -a /etc/stunnel/stunnel.conf
-#echo "connect = 127.0.0.1:55" | sudo tee -a /etc/stunnel/stunnel.conf
-#echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
-#sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-cert = /etc/stunnel/stunnel.pem
-client = no
-socket = a:SO_REUSEADDR=1
-socket = l:TCP_NODELAY=1
-socket = r:TCP_NODELAY=1
-
-[openvpn]
-accept = 443
-connect = 127.0.0.1:55
-cert = /etc/stunnel/stunnel.pem
-sudo cp /etc/stunnel/stunnel.pem ~
-# download stunnel.pem from home directory. It is needed by client.
-/etc/init.d/stunnel4 restart
-
 #Setting USW
 apt-get install ufw
 ufw allow ssh
 ufw allow 55/tcp
+ufw allow 1194/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 cat > /etc/ufw/before.rules <<-END
@@ -508,12 +524,12 @@ cd ddos-deflate-master
 rm -rf /root/master.zip
 
 # setting banner
-#rm /etc/issue.net
-#wget -O /etc/issue.net "https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh"
-#sed -i 's@#Banner@Banner@g' /etc/ssh/sshd_config
-#sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
-#service ssh restart
-#service dropbear restart
+rm /etc/issue.net
+wget -O /etc/issue.net "https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh"
+sed -i 's@#Banner@Banner@g' /etc/ssh/sshd_config
+sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
+service ssh restart
+service dropbear restart
 
 #Setting IPtables
 cat > /etc/iptables.up.rules <<-END
@@ -526,6 +542,7 @@ cat > /etc/iptables.up.rules <<-END
 -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 10.1.0.0/24 -o eth0 -j MASQUERADE
 COMMIT
+
 *filter
 :INPUT ACCEPT [19406:27313311]
 :FORWARD ACCEPT [0:0]
@@ -545,6 +562,7 @@ COMMIT
 -A INPUT -p tcp --dport 143  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 109  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 110  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 443  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 1194  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 1194  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 1732  -m state --state NEW -j ACCEPT
@@ -560,13 +578,15 @@ COMMIT
 -A INPUT -p tcp --dport 10000  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 55  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 55  -m state --state NEW -j ACCEPT
--A INPUT -p tcp --dport 443 -j ACCEPT
+-A INPUT -p tcp --dport 587 -j ACCEPT
 -A fail2ban-ssh -j RETURN
 COMMIT
+
 *raw
 :PREROUTING ACCEPT [158575:227800758]
 :OUTPUT ACCEPT [46145:2312668]
 COMMIT
+
 *mangle
 :PREROUTING ACCEPT [158575:227800758]
 :INPUT ACCEPT [158575:227800758]
@@ -583,29 +603,31 @@ iptables-restore < /etc/iptables.up.rules
 cd
 wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
 
-#fix
-wget https://raw.githubusercontent.com/emue25/cream/mei/fix-debian-useradd.sh
-chhmod +x fix-debian-useradd.sh
-./fix-debian-useradd.sh
 # cronjob
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
 echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
 echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
 echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
-cd
 
-#install stunnel4
-#apt-get update
-#apt-get upgrade
-#apt-get install stunnel4
-#wget -O /etc/stunnel/stunnel.conf https://raw.githubusercontent.com/brantbell/cream/mei/stunnel.conf
-#openssl genrsa -out key.pem 2048
-#openssl req -new -x509 -key key.pem -out cert.pem -days 1095
-#cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
-#sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-#/etc/init.d/stunnel4 restart
+#install ssl
+sudo apt update
+sudo apt full-upgrade
+sudo apt install -y stunnel4
+cd /etc/stunnel/
+openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
+sudo touch stunnel.conf
+echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "accept = 443" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "connect = 127.0.0.1:55" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
 
+sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+sudo cp /etc/stunnel/stunnel.pem ~
+# download stunnel.pem from home directory. It is needed by client.
+/etc/init.d/stunnel4 restart
 
 
 # finalizing
@@ -617,7 +639,7 @@ service vnstat restart
 service openvpn restart
 service snmpd restart
 service ssh restart
-#service dropbear restart
+service dropbear restart
 service fail2ban restart
 service squid3 restart
 service webmin restart
@@ -630,17 +652,17 @@ history -c
 # info
 clear
 echo " "
-echo "Installation sediluk neh rampung bos!"
+echo "Installation has been completed!!"
 echo " "
 echo "--------------------------- Configuration Setup Server -------------------------"
-echo "                              Copyright Sshfast.net                             "
-echo "                               https://sshfast.net                              "
-echo "                       Created By Deny(fb.com/elang.overdosis)                  "
-echo "                                Modified by zhang-zi                            "
+echo "                         Copyright Sshfast.us                        "
+echo "                        https://sshfast.us                         "
+echo "               Created By Deny(fb.com/elang.overdosis)                 "
+echo "                                Modified by deenie88                             "
 echo "--------------------------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
-echo "   - Timezone    : Asia/Malasia (GMT +8)"  | tee -a log-install.txt
+echo "   - Timezone    : Asia/Jakarta (GMT +7)"  | tee -a log-install.txt
 echo "   - Fail2Ban    : [ON]"  | tee -a log-install.txt
 echo "   - Dflate      : [ON]"  | tee -a log-install.txt
 echo "   - IPtables    : [ON]"  | tee -a log-install.txt
