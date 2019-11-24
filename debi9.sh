@@ -302,6 +302,7 @@ setenv opt block-outside-dns
 route-delay 2
 remote $MYIP 444
 cipher AES-128-CBC
+script-security 2
 up /etc/openvpn/update-resolv-conf
 down /etc/openvpn/update-resolv-conf
 route $MYIP 255.255.255.255 net_gateway
