@@ -26,7 +26,7 @@ sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 
 
 # install wget and curl
-apt-get update;apt-get -y install wget curl cat;
+apt-get update;apt-get -y install wget curl cat sudo;
 
 # set time GMT +8
 ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
@@ -228,14 +228,6 @@ END
 sed -i $MYIP2 /etc/squid3/squid.conf;
 service squid3 restart
 
-# install stunnel4
-#apt-get -y install stunnel4
-#wget -O /etc/stunnel/stunnel.pem "https://raw.githubusercontent.com/daybreakersx/premscript/master/updates/stunnel.pem"
-#wget -O /etc/stunnel/stunnel.conf "https://raw.githubusercontent.com/daybreakersx/premscript/master/req/stunnel.conf"
-#sed -i $MYIP2 /etc/stunnel/stunnel.conf
-#sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-#service stunnel4 restart
-
 # install webmin
 cd
 apt-get -y update && apt-get -y upgrade
@@ -275,25 +267,6 @@ END
 mkdir /var/lib/premium-script
 /etc/init.d/pptpd restart
 
-# install mrtg
-wget -O /etc/snmp/snmpd.conf "https://raw.githubusercontent.com/brantbell/cream/mei/snmpd.conf"
-wget -O /root/mrtg-mem.sh "https://raw.githubusercontent.com/brantbell/cream/mei/mrtg-mem.sh"
-chmod +x /root/mrtg-mem.sh
-cd /etc/snmp/
-sed -i 's/TRAPDRUN=no/TRAPDRUN=yes/g' /etc/default/snmpd
-service snmpd restart
-snmpwalk -v 1 -c public localhost 1.3.6.1.4.1.2021.10.1.3.1
-mkdir -p /home/vps/public_html/mrtg
-cfgmaker --zero-speed 100000000 --global 'WorkDir: /home/vps/public_html/mrtg' --output /etc/mrtg.cfg public@localhost
-curl "https://raw.githubusercontent.com/brantbell/cream/mei/mrtg.conf" >> /etc/mrtg.cfg
-sed -i 's/WorkDir: \/var\/www\/mrtg/# WorkDir: \/var\/www\/mrtg/g' /etc/mrtg.cfg
-sed -i 's/# Options\[_\]: growright, bits/Options\[_\]: growright/g' /etc/mrtg.cfg
-indexmaker --output=/home/vps/public_html/mrtg/index.html /etc/mrtg.cfg
-if [ -x /usr/bin/mrtg ] && [ -r /etc/mrtg.cfg ]; then mkdir -p /var/log/mrtg ; env LANG=C /usr/bin/mrtg /etc/mrtg.cfg 2>&1 | tee -a /var/log/mrtg/mrtg.log ; fi
-if [ -x /usr/bin/mrtg ] && [ -r /etc/mrtg.cfg ]; then mkdir -p /var/log/mrtg ; env LANG=C /usr/bin/mrtg /etc/mrtg.cfg 2>&1 | tee -a /var/log/mrtg/mrtg.log ; fi
-if [ -x /usr/bin/mrtg ] && [ -r /etc/mrtg.cfg ]; then mkdir -p /var/log/mrtg ; env LANG=C /usr/bin/mrtg /etc/mrtg.cfg 2>&1 | tee -a /var/log/mrtg/mrtg.log ; fi
-cd
-
 #install OpenVPN
 apt-get -y install openvpn easy-rsa openssl iptables
 cp -r /usr/share/easy-rsa/ /etc/openvpn
@@ -327,39 +300,6 @@ cp /etc/openvpn/easy-rsa/keys/server.crt /etc/openvpn/server.crt
 cp /etc/openvpn/easy-rsa/keys/server.key /etc/openvpn/server.key
 cp /etc/openvpn/easy-rsa/keys/ca.crt /etc/openvpn/ca.crt
 # Setting Server
-cat > /etc/openvpn/server2.conf <<-END
-port 1194
-proto tcp
-dev tun
-ca ca.crt
-cert server.crt
-key server.key
-dh dh2048.pem
-client-cert-not-required
-username-as-common-name
-plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
-server 192.168.100.0 255.255.255.0
-ifconfig-pool-persist ipp.txt
-push "redirect-gateway def1 bypass-dhcp"
-push "dhcp-option DNS 8.8.8.8"
-push "dhcp-option DNS 8.8.4.4"
-push "route-method exe"
-push "route-delay 2"
-duplicate-cn
-push "route-method exe"
-push "route-delay 2"
-keepalive 10 120
-comp-lzo
-user nobody
-group nogroup
-persist-key
-persist-tun
-status openvpn-status.log
-log         openvpn.log
-verb 3
-cipher AES-128-CBC
-END
-#server2
 cat > /etc/openvpn/server.conf <<-END
 port 55
 proto tcp
@@ -392,6 +332,7 @@ log         openvpn.log
 verb 3
 cipher AES-128-CBC
 END
+
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/client.ovpn <<-END
@@ -401,6 +342,7 @@ client
 dev tun
 proto tcp
 remote $MYIP 55
+http-proxy $MYIP 8080
 persist-key
 persist-tun
 dev tun
@@ -421,8 +363,6 @@ route 0.0.0.0 0.0.0.0
 route-method exe
 route-delay 2
 cipher AES-128-CBC
-http-proxy $MYIP 8080
-http-proxy-retry
 
 END
 echo '<ca>' >> /home/vps/public_html/client.ovpn
