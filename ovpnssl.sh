@@ -71,12 +71,6 @@ apt-file update
 vnstat -u -i eth0
 service vnstat restart
 
-# install screenfetch
-#cd
-#wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/daybreakersx/premscript/master/screenfetch"
-#chmod +x /usr/bin/screenfetch
-#echo "clear" >> .profile
-#echo "screenfetch" >> .profile
 # text wrn
 cd
 rm -rf /root/.bashrc
@@ -132,7 +126,7 @@ http {
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://shortenerku.com/"
+wget -O /home/vps/public_html/index.html "https://sshfast.net/"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
@@ -172,7 +166,7 @@ service ssh restart
 
 # install vnstat gui
 cd /home/vps/public_html/
-wget https://raw.githubusercontent.com/brantbell/cream/mei/vnstat_php_frontend-1.5.1.tar.gz
+wget https://raw.githubusercontent.com/emue25/cream/mei/vnstat_php_frontend-1.5.1.tar.gz
 
 tar xf vnstat_php_frontend-1.5.1.tar.gz
 rm vnstat_php_frontend-1.5.1.tar.gz
