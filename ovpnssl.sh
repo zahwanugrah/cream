@@ -1,5 +1,5 @@
 #!/bin/sh
-# Created by https://www.hostingtermurah.net
+# Created by https://sshfast.net
 # Modified by ZhangZi
 
 #Requirement
@@ -220,7 +220,7 @@ refresh_pattern ^ftp: 1440 20% 10080
 refresh_pattern ^gopher: 1440 0% 1440
 refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
 refresh_pattern . 0 20% 4320
-visible_hostname daybreakersx
+visible_hostname ZhangZi
 END
 sed -i $MYIP2 /etc/squid3/squid.conf;
 service squid3 restart
@@ -421,7 +421,6 @@ service openvpn status
 apt-get install ufw
 ufw allow ssh
 ufw allow 55/tcp
-ufw allow 1194/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 cat > /etc/ufw/before.rules <<-END
@@ -536,17 +535,6 @@ sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
 sed -i $MYIP2 /etc/iptables.up.rules;
 iptables-restore < /etc/iptables.up.rules
 
-# download script
-cd
-wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
-
-# cronjob
-echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
-echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
-echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
-echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
-echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
-
 #install ssl
 sudo apt update
 sudo apt full-upgrade
@@ -565,6 +553,16 @@ sudo cp /etc/stunnel/stunnel.pem ~
 # download stunnel.pem from home directory. It is needed by client.
 /etc/init.d/stunnel4 restart
 
+# download script
+cd
+wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
+tar -czf /home/vps/public_html/install-premiumscript.sh
+# cronjob
+echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
+echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
+echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
+echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
+echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
 # finalizing
 apt-get -y autoremove
@@ -591,14 +589,14 @@ echo " "
 echo "Installation has been completed!!"
 echo " "
 echo "--------------------------- Configuration Setup Server -------------------------"
-echo "                         Copyright Sshfast.us                        "
-echo "                        https://sshfast.us                         "
+echo "                         Copyright sshfast.net                       "
+echo "                            https://sshfast.net                       "
 echo "               Created By Deny(fb.com/elang.overdosis)                 "
 echo "                                Modified by deenie88                             "
 echo "--------------------------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
-echo "   - Timezone    : Asia/Jakarta (GMT +7)"  | tee -a log-install.txt
+echo "   - Timezone    : Asia/Malaysia (GMT +8)"  | tee -a log-install.txt
 echo "   - Fail2Ban    : [ON]"  | tee -a log-install.txt
 echo "   - Dflate      : [ON]"  | tee -a log-install.txt
 echo "   - IPtables    : [ON]"  | tee -a log-install.txt
@@ -641,4 +639,4 @@ echo "   - MRTG                    : http://$MYIP:85/mrtg/"  | tee -a log-instal
 echo "   - Installation Log        : cat /root/log-install.txt"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "----------- Script Created By Deny (fb.com/elang.overdosis) ------------"
-echo "------------------------------ Modified by DENBAGUSS -----------------------------"
+echo "------------------------------ Modified by ZhangZi -----------------------------"
