@@ -32,6 +32,40 @@ aptitude -y install build-essential
 apt-get install tar
 wget "https://raw.githubusercontent.com/emue25/VPSauto/master/tool/plugin.tgz"
 tar -xzvf plugin.tgz
+#screen
+cd
+rm -rf /root/.bashrc
+wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bashrc
+#text gambar
+apt-get install boxes
+# text pelangi
+sudo apt-get install ruby -y
+sudo gem install lolcat
+# setting port ssh
+sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
+sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
+sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
+service ssh restart
+
+# install dropbear
+apt-get install dropbear
+sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 109 -p 110"/g' /etc/default/dropbear
+echo "/bin/false" >> /etc/shells
+/etc/init.d/dropbear restart
+#upgrade dropbear
+apt-get install zlib1g-dev
+wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2016.74.tar.bz2
+bzip2 -cd dropbear-2016.74.tar.bz2 | tar xvf -
+cd dropbear-2016.74
+./configure
+make && make install
+
+# install fail2ban
+apt-get -y install fail2ban
+service fail2ban restart
+
 # openvpn
 cp -r /usr/share/easy-rsa/ /etc/openvpn
 mkdir /etc/openvpn/easy-rsa/keys
@@ -127,7 +161,7 @@ cat > /var/www/html/openvpnssl.ovpn <<-END
 client
 dev tun
 proto tcp
-remote 127.0.0.1 442
+remote 127.0.0.1 445
 persist-key
 persist-tun
 dev tun
@@ -308,11 +342,11 @@ sudo touch stunnel.conf
 echo "client = no" > /etc/stunnel/stunnel.conf
 echo "pid = /var/run/stunnel.pid" >> /etc/stunnel/stunnel.conf
 echo "[openvpn]" >> /etc/stunnel/stunnel.conf
-echo "accept = 442" >> /etc/stunnel/stunnel.conf
+echo "accept = 445" >> /etc/stunnel/stunnel.conf
 echo "connect = 127.0.0.1:443" >> /etc/stunnel/stunnel.conf
 echo "cert = /etc/stunnel/stunnel.pem" >> /etc/stunnel/stunnel.conf
 sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-iptables -A INPUT -p tcp --dport 442 -j ACCEPT
+iptables -A INPUT -p tcp --dport 445 -j ACCEPT
 sudo cp /etc/stunnel/stunnel.pem ~
 echo "client = yes\ndebug = 6\n[openvpn]\naccept = 127.0.0.1:442\nconnect = $IPADDRESS:443\nTIMEOUTclose = 0\nverify = 0\nsni = $1" > /var/www/html/stunnel.conf
 
