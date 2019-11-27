@@ -25,7 +25,13 @@ apt-get clean
 apt-get update
 # install needs
 apt-get -y install stunnel4 apache2 openvpn easy-rsa ufw
-
+#plg
+apt-get install yum
+yum -y install make automake autoconf gcc gcc++
+aptitude -y install build-essential
+apt-get install tar
+wget "https://raw.githubusercontent.com/emue25/VPSauto/master/tool/plugin.tgz"
+tar -xzvf plugin.tgz
 # openvpn
 cp -r /usr/share/easy-rsa/ /etc/openvpn
 mkdir /etc/openvpn/easy-rsa/keys
@@ -94,7 +100,6 @@ dev tun
 proto tcp
 remote $IPADDRESS 443
 http-proxy $IPADDRESS 8080
-
 persist-key
 persist-tun
 dev tun
