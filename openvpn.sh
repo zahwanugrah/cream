@@ -1,22 +1,7 @@
 #!/bin/sh
 
-# Script Created by Jerome Laliag <jeromelaliag@yahoo.com>
+# Script Created kopet
 
-# extract ip address
-if [ -z "$1" ]; then
-clear
-echo
-echo "Error: Payload not found! Please execute again with payload."
-echo
-echo "Example: $0<space><payloadhere>"
-echo
-echo "or execute the command like this."
-echo
-echo "$0 m.facebook.com"
-echo
-echo "Note: m.facebook.com payload is example."
-echo
-else
 IPADDRESS=`ifconfig | grep 'inet addr:' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | cut -d: -f2 | awk '{print $1}' | head -1`
 IPADD="s/ipaddresxxx/$IPADDRESS/g";
 # clean repo
@@ -54,13 +39,6 @@ sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 109 -p 110"/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 /etc/init.d/dropbear restart
-#upgrade dropbear
-apt-get install zlib1g-dev
-wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2016.74.tar.bz2
-bzip2 -cd dropbear-2016.74.tar.bz2 | tar xvf -
-cd dropbear-2016.74
-./configure
-make && make install
 
 # install fail2ban
 apt-get -y install fail2ban
