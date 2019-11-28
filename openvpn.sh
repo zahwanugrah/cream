@@ -23,22 +23,6 @@ rm -rf /root/.bashrc
 wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bashrc
 #text gambar
 apt-get install boxes
-# text pelangi
-sudo apt-get install ruby -y
-sudo gem install lolcat
-
-# install dropbear
-apt-get install dropbear
-sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 109 -p 110"/g' /etc/default/dropbear
-echo "/bin/false" >> /etc/shells
-/etc/init.d/dropbear restart
-
-# install fail2ban
-apt-get -y install fail2ban
-service fail2ban restart
-
 # openvpn
 cp -r /usr/share/easy-rsa/ /etc/openvpn
 mkdir /etc/openvpn/easy-rsa/keys
