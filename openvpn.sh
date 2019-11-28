@@ -26,11 +26,6 @@ apt-get install boxes
 # text pelangi
 sudo apt-get install ruby -y
 sudo gem install lolcat
-# setting port ssh
-sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
-sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
-sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
-service ssh restart
 
 # install dropbear
 apt-get install dropbear
@@ -43,24 +38,7 @@ echo "/bin/false" >> /etc/shells
 # install fail2ban
 apt-get -y install fail2ban
 service fail2ban restart
-# clean repo
-apt-get clean
-# update repo
-apt-get update
-# stunnel
-cd /etc/stunnel/
-openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
-sudo touch stunnel.conf
-echo "client = no" > /etc/stunnel/stunnel.conf
-echo "pid = /var/run/stunnel.pid" >> /etc/stunnel/stunnel.conf
-echo "[openvpn]" >> /etc/stunnel/stunnel.conf
-echo "accept = 443" >> /etc/stunnel/stunnel.conf
-echo "connect = 127.0.0.1:55" >> /etc/stunnel/stunnel.conf
-echo "cert = /etc/stunnel/stunnel.pem" >> /etc/stunnel/stunnel.conf
-sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-sudo cp /etc/stunnel/stunnel.pem ~
-echo "client = yes\ndebug = 6\n[openvpn]\naccept = 127.0.0.1:443\nconnect = $IPADDRESS:55\nTIMEOUTclose = 0\nverify = 0\nsni = $1" > /var/www/html/stunnel.conf
+
 # openvpn
 cp -r /usr/share/easy-rsa/ /etc/openvpn
 mkdir /etc/openvpn/easy-rsa/keys
@@ -325,7 +303,24 @@ echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-
 echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
 echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
-
+# clean repo
+apt-get clean
+# update repo
+apt-get update
+# stunnel
+cd /etc/stunnel/
+openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
+sudo touch stunnel.conf
+echo "client = no" > /etc/stunnel/stunnel.conf
+echo "pid = /var/run/stunnel.pid" >> /etc/stunnel/stunnel.conf
+echo "[openvpn]" >> /etc/stunnel/stunnel.conf
+echo "accept = 443" >> /etc/stunnel/stunnel.conf
+echo "connect = 127.0.0.1:55" >> /etc/stunnel/stunnel.conf
+echo "cert = /etc/stunnel/stunnel.pem" >> /etc/stunnel/stunnel.conf
+sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+sudo cp /etc/stunnel/stunnel.pem ~
+echo "client = yes\ndebug = 6\n[openvpn]\naccept = 127.0.0.1:443\nconnect = $IPADDRESS:55\nTIMEOUTclose = 0\nverify = 0\nsni = $1" > /var/www/html/stunnel.conf
 # restart apps
 service squid stop
 service squid3 stop
