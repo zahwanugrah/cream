@@ -23,17 +23,30 @@ rm -rf /root/.bashrc
 wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bashrc
 #text gambar
 apt-get install boxes
+# setting port ssh
+sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
+sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
+sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
+/etc/init.d/sshd restart
+
+# install dropbear
+apt-get install dropbear
+sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 109 -p 110"/g' /etc/default/dropbear
+echo "/bin/false" >> /etc/shells
+/etc/init.d/dropbear restart
 # openvpn
 cp -r /usr/share/easy-rsa/ /etc/openvpn
 mkdir /etc/openvpn/easy-rsa/keys
-sed -i 's|export KEY_COUNTRY="US"|export KEY_COUNTRY="PH"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_PROVINCE="CA"|export KEY_PROVINCE="BTG"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_CITY="SanFrancisco"|export KEY_CITY="Batangas City"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_ORG="Fort-Funston"|export KEY_ORG="GROME"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_EMAIL="me@myhost.mydomain"|export KEY_EMAIL="jeromelaliag@yahoo.com"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="jeromelaliag"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_NAME="EasyRSA"|export KEY_NAME="jeromelaliag"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_OU=changeme|export KEY_OU=jeromelaliag|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_COUNTRY="US"|export KEY_COUNTRY="ID"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_PROVINCE="CA"|export KEY_PROVINCE="JATENG"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_CITY="SanFrancisco"|export KEY_CITY="PORDJO City"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_ORG="Fort-Funston"|export KEY_ORG="sshfast"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_EMAIL="me@myhost.mydomain"|export KEY_EMAIL="aditya679g@yahoo.com"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="sshfast"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_NAME="EasyRSA"|export KEY_NAME="sshfast"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_OU=changeme|export KEY_OU=sshfast|' /etc/openvpn/easy-rsa/vars
 # create diffie-helman pem
 openssl dhparam -out /etc/openvpn/dh1024.pem 1024
 # create pki
@@ -256,7 +269,7 @@ sed -i '$ i\echo "nameserver 8.8.4.4" >> /etc/resolv.conf' /etc/rc.local
 ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 # setting ufw
 ufw allow ssh
-ufw allow 443/tcp
+ufw allow 55/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 cat > /etc/ufw/before.rules <<-END
@@ -306,15 +319,10 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 sudo cp /etc/stunnel/stunnel.pem ~
 echo "client = yes\ndebug = 6\n[openvpn]\naccept = 127.0.0.1:443\nconnect = $IPADDRESS:55\nTIMEOUTclose = 0\nverify = 0\nsni = $1" > /var/www/html/stunnel.conf
 # restart apps
-service squid stop
-service squid3 stop
-service squid4 stop
-service squid start
-service squid3 start
-service squid4 start
-service stunnel4 restart
-service openvpn stop
-service openvpn start
+/etc/init.d/squid restart
+/etc/init.d/openvpn restart
+/etc/init.d/stunnel4 restart
+
 # create openvpn account
 useradd openvpn
 clear
