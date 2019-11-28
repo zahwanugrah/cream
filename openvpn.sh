@@ -97,7 +97,8 @@ verb 3
 cipher none
 END
 # create openvpn config
-cat > /var/www/html/openvpn.ovpn <<-END
+mkdir -p /home/vps/public_html
+cat > /home/vps/public_html/openvpn.ovpn <<-END
 #modif by zhangzi
 client
 dev tun
@@ -123,11 +124,12 @@ route-delay 2
 cipher none
 
 END
-echo '<ca>' >> /var/www/html/openvpn.ovpn
-cat /etc/openvpn/ca.crt >> /var/www/html/openvpn.ovpn
-echo '</ca>' >> /var/www/html/openvpn.ovpn
+echo '<ca>' >> /home/vps/public_html/openvpn.ovpn
+cat /etc/openvpn/ca.crt >> /home/vps/public_html/openvpn.ovpn
+echo '</ca>' >> /home/vps/public_html/openvpn.ovpn
 # create openvpn config with stunnel
-cat > /var/www/html/openvpnssl.ovpn <<-END
+mkdir -p /home/vps/public_html
+cat > /home/vps/public_html/openvpnssl.ovpn <<-END
 client
 dev tun
 proto tcp
@@ -153,12 +155,12 @@ route-delay 2
 cipher none
 
 END
-echo '<ca>' >> /var/www/html/openvpnssl.ovpn
-cat /etc/openvpn/ca.crt >> /var/www/html/openvpnssl.ovpn
-echo '</ca>' >> /var/www/html/openvpnssl.ovpn
+echo '<ca>' >> /home/vps/public_html/openvpnssl.ovpn
+cat /etc/openvpn/ca.crt >> /home/vps/public_html/openvpnssl.ovpn
+echo '</ca>' >> /home/vps/public_html/openvpnssl.ovpn
 # compress config
-cd /var/www/html/
-tar -zcvf /var/www/html/openvpn.tgz openvpn.ovpn openvpnssl.ovpn stunnel.conf
+cd /home/vps/public_html/
+tar -zcvf /home/vps/public_html/openvpn.tgz openvpn.ovpn openvpnssl.ovpn stunnel.conf
 # install squid3
 apt-get -y install squid3
 cat > /etc/squid/squid.conf <<-END
@@ -318,7 +320,7 @@ sudo touch stunnel.conf
 echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "accept = 443" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "connect = 127.0.0.1:1194" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "connect = 127.0.0.1:55" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
 
 sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
@@ -326,37 +328,12 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 sudo cp /etc/stunnel/stunnel.pem ~
 # download stunnel.pem from home directory. It is needed by client.
 /etc/init.d/stunnel4 restart
-#finish
+# finalizing
+apt-get -y autoremove
+chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/squid restart
 /etc/init.d/openvpn restart
 
 
-# create openvpn account
-useradd openvpn
-clear
-echo "######### Download your config files here! #########"
-echo "~> http://$IPADDRESS/openvpn.ovpn - Normal config"
-echo "~> http://$IPADDRESS/openvpnssl.ovpn - Config with stunnel"
-echo "~> http://$IPADDRESS/stunnel.conf - Stunnel config file"
-echo "~> http://$IPADDRESS/openvpn.tgz - All config"
-echo "######### Download your config files here! #########"
-echo
-echo "################# OpenVPN Account ##################"
-echo "~> Username: admin"
-echo "~> Password: 123456"
-echo "################# OpenVPN Account ##################"
-echo
-echo "######### To Add OpenVPN User Account ##############"
-echo "useradd USERNAMEHERE"
-echo "echo USERNAMEHERE:PASSWORDHERE | chpasswd"
-echo "######### To Add OpenVPN User Account ##############"
-echo
-echo "######## To Change OpenVPN User Account ############"
-echo "echo USERNAMEHERE:PASSWORDHERE | chpasswd"
-echo "######## To Change OpenVPN User Account ############"
-echo
-echo "########### To Delete OpenVPN Account ##############"
-echo "userdel USERNAMEHERE"
-echo "########### To Delete OpenVPN Account ##############"
-fi
-
+#clearing history
+history -c
