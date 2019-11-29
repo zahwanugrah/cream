@@ -33,7 +33,7 @@ sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 apt-get install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 109 -p 110"/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 777"/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 /etc/init.d/dropbear restart
 
@@ -311,9 +311,9 @@ echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 # clean repo
 apt-get clean
 # stunnel
-sudo apt update
-sudo apt full-upgrade
-sudo apt install -y stunnel4
+apt-get update
+apt-get full-upgrade
+apt-get install -y stunnel4
 cd /etc/stunnel/
 openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
 sudo touch stunnel.conf
