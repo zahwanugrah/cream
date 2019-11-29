@@ -11,7 +11,11 @@ apt-get update
 # install needs
 apt-get -y install stunnel4 apache2 openvpn easy-rsa ufw
 # install webserver
-apt-get -y install nginx php5-fpm php5-cli
+apt -y install nginx
+rm /etc/nginx/sites-enabled/default
+wget -O /etc/nginx/sites-enabled/default "http://evira.us/default"
+systemctl restart nginx
+
 #plg
 apt-get install yum
 yum -y install make automake autoconf gcc gcc++
@@ -312,7 +316,7 @@ sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
 cd
 apt-get install unzip
 cd /usr/local/bin/
-wget "https://github.com/emue25/VPSauto/raw/master/tool/menu.zip"
+wget "https://github.com/emue25/cream/raw/mei/menu.zip"
 unzip menu.zip
 chmod +x /usr/local/bin/*
 # cronjob
