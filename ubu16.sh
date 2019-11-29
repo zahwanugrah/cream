@@ -66,7 +66,7 @@ http {
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://www.sshfast.net/"
+wget -O /home/vps/public_html/index.html "http://script.hostingtermurah.net/repo/index.html"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
@@ -92,8 +92,9 @@ server {
 }
 END4
 sed -i 's/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php5/fpm/pool.d/www.conf
-/etc/init.d/php5-fpm restart
-/etc/init.d/nginx restart
+service php5-fpm restart
+service nginx restart
+
 # setting port ssh
 sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
 sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
