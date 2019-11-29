@@ -10,6 +10,8 @@ apt-get clean
 apt-get update
 # install needs
 apt-get -y install stunnel4 apache2 openvpn easy-rsa ufw
+# install webserver
+apt-get -y install nginx php5-fpm php5-cli
 #plg
 apt-get install yum
 yum -y install make automake autoconf gcc gcc++
@@ -23,6 +25,75 @@ rm -rf /root/.bashrc
 wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bashrc
 #text gambar
 apt-get install boxes
+# text pelangi
+apt-get install ruby -y
+sudo gem install lolcat
+# install webserver
+cd
+rm /etc/nginx/sites-enabled/default
+rm /etc/nginx/sites-available/default
+cat > /etc/nginx/nginx.conf <<END3
+user www-data;
+worker_processes 1;
+pid /var/run/nginx.pid;
+events {
+	multi_accept on;
+  worker_connections 1024;
+}
+http {
+	gzip on;
+	gzip_vary on;
+	gzip_comp_level 5;
+	gzip_types    text/plain application/x-javascript text/xml text/css;
+	autoindex on;
+  sendfile on;
+  tcp_nopush on;
+  tcp_nodelay on;
+  keepalive_timeout 65;
+  types_hash_max_size 2048;
+  server_tokens off;
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
+  access_log /var/log/nginx/access.log;
+  error_log /var/log/nginx/error.log;
+  client_max_body_size 32M;
+	client_header_buffer_size 8m;
+	large_client_header_buffers 8 8m;
+	fastcgi_buffer_size 8m;
+	fastcgi_buffers 8 8m;
+	fastcgi_read_timeout 600;
+  include /etc/nginx/conf.d/*.conf;
+}
+END3
+mkdir -p /home/vps/public_html
+wget -O /home/vps/public_html/index.html "https://www.sshfast.net/"
+echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
+args='$args'
+uri='$uri'
+document_root='$document_root'
+fastcgi_script_name='$fastcgi_script_name'
+cat > /etc/nginx/conf.d/vps.conf <<END4
+server {
+  listen       85;
+  server_name  127.0.0.1 localhost;
+  access_log /var/log/nginx/vps-access.log;
+  error_log /var/log/nginx/vps-error.log error;
+  root   /home/vps/public_html;
+  location / {
+    index  index.html index.htm index.php;
+    try_files $uri $uri/ /index.php?$args;
+  }
+  location ~ \.php$ {
+    include /etc/nginx/fastcgi_params;
+    fastcgi_pass  127.0.0.1:9000;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+  }
+}
+END4
+sed -i 's/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php5/fpm/pool.d/www.conf
+/etc/init.d/php5-fpm restart
+/etc/init.d/nginx restart
 # setting port ssh
 sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
 sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
@@ -133,7 +204,7 @@ cat > /home/vps/public_html/openvpnssl.ovpn <<-END
 client
 dev tun
 proto tcp
-remote 127.0.0.1 443
+remote $IPADDRESS 443
 persist-key
 persist-tun
 dev tun
@@ -296,7 +367,6 @@ sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
 
 # download script
 cd
-#wget https://raw.githubusercontent.com/brantbell/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
 apt-get install unzip
 cd /usr/local/bin/
 wget "https://github.com/emue25/VPSauto/raw/master/tool/menu.zip"
@@ -334,6 +404,3 @@ chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/squid restart
 /etc/init.d/openvpn restart
 
-
-#clearing history
-history -c
