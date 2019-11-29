@@ -316,11 +316,12 @@ useradd admin
 echo "admin:kopet" | chpasswd
 # download script
 cd
-apt-get install unzip
-cd /usr/local/bin/
-wget "https://github.com/emue25/cream/raw/mei/menu.zip"
-unzip menu.zip
-chmod +x /usr/local/bin/*
+wget https://raw.githubusercontent.com/emue25/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
+#apt-get install unzip
+#cd /usr/local/bin/
+#wget "https://github.com/emue25/cream/raw/mei/menu.zip"
+#unzip menu.zip
+#chmod +x /usr/local/bin/*
 # cronjob
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
 echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
