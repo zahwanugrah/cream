@@ -123,14 +123,14 @@ echo ""
 echo "" 
 echo "            ---[ SELAMAT DATANG  DI VPS ZhangZi ]---"| boxes -d cat | lolcat 
 echo "            =====================================================" | lolcat
-echo "            #           WhatsApp     : 6011122233              #" | lolcat
-echo "            #           Telegram     : @denbaguss                #" | lolcat
+echo "            #           WhatsApp     : 6011122233               #" | lolcat
+echo "            #           Telegram     : @denbaguss               #" | lolcat
 echo "            #           Facebook     : fb.com/zhang-zi          #" | lolcat 
 echo "            #           Website      : https://vpnstunnel.com   #" | lolcat
 echo "            #---------------------------------------------------#" | lolcat
 echo "            #     Silahkan ketik [menu] ENTER untuk pilihan     #" | lolcat
 echo "            #---------------------------------------------------#" | lolcat
-echo "            #       Copyright: © ZhangZi™ Premium 2019      #" | lolcat
+echo "            #       Copyright: © ZhangZi™ Premium 2019          #" | lolcat
 echo "            =====================================================" | lolcat
 date +"                            %A, %d-%m-%Y" | lolcat
 date +"                                 %H:%M:%S %Z" | lolcat
