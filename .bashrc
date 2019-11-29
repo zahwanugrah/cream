@@ -121,21 +121,21 @@ clear
 echo ""
 echo "" 
 echo "" 
-echo "            ---[ SELAMAT DATANG  DI VPS ZHANGZI-SSL ]---"| boxes -d cat 
-echo "            ====================================================="
-echo "            #           WhatsApp     : 60146309176              #"
-echo "            #           Telegram     : DENBAGUSS                #"
-echo "            #           Facebook     : fb.com/zhang-zi          #"
-echo "            #           Pin-BBM      : zhang-zi                 #"
-echo "            #---------------------------------------------------#"
-echo "            #     Silahkan ketik [menu] ENTER untuk pilihan     #"
-echo "            #---------------------------------------------------#"
-echo "            #       Copyright: © ZHANGZI-SSL™ Premium 2018      #"
-echo "            ====================================================="
-date +"                            %A, %d-%m-%Y" 
-date +"                                 %H:%M:%S %Z" 
+echo "            ---[ SELAMAT DATANG  DI VPS ZHANGZI-SSL ]---"| boxes -d cat | lolcat 
+echo "            =====================================================" | lolcat
+echo "            #           WhatsApp     : 60146309176              #" | lolcat
+echo "            #           Telegram     : denbaguss                #" | lolcat
+echo "            #           Facebook     : fb.com/zhang-zi          #" | lolcat 
+echo "            #           Website      : https://vpnstunnel.com   #" | lolcat
+echo "            #---------------------------------------------------#" | lolcat
+echo "            #     Silahkan ketik [menu] ENTER untuk pilihan     #" | lolcat
+echo "            #---------------------------------------------------#" | lolcat
+echo "            #       Copyright: © ZHANGZI-SSL™ Premium 2019      #" | lolcat
+echo "            =====================================================" | lolcat
+date +"                            %A, %d-%m-%Y" | lolcat
+date +"                                 %H:%M:%S %Z" | lolcat
 echo ""
-echo -e "            Server - IP: $MYIP " 
+echo -e "            Server - IP: $MYIP " | lolcat
 echo ""
 	cname=$( awk -F: '/model name/ {name=$2} END {print name}' /proc/cpuinfo )
 	cores=$( awk -F: '/model name/ {core++} END {print core}' /proc/cpuinfo )
