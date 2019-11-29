@@ -1,5 +1,4 @@
 #!/bin/sh
-
 # Script Created kopet
 # initialisasi var
 export DEBIAN_FRONTEND=noninteractive
@@ -12,12 +11,13 @@ IPADD="s/ipaddresxxx/$IPADDRESS/g";
 
 # go to root
 cd
-# clean repo
+# clean
 apt-get clean
-# update repo
+# update
 apt-get update
+apt-get upgrade -y
 # install needs
-apt-get -y install stunnel4 apache2 openvpn easy-rsa ufw
+apt-get -y install stunnel4 apache2 openvpn easy-rsa ufw fail2ban zip -y
 #plg
 apt-get install yum
 yum -y install make automake autoconf gcc gcc++
@@ -25,6 +25,9 @@ aptitude -y install build-essential
 apt-get install tar
 wget "https://raw.githubusercontent.com/emue25/VPSauto/master/tool/plugin.tgz"
 tar -xzvf plugin.tgz
+
+# disable ipv6
+echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 
 #text gambar
 apt-get install boxes
