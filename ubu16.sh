@@ -10,12 +10,6 @@ apt-get clean
 apt-get update
 # install needs
 apt-get -y install stunnel4 apache2 openvpn easy-rsa ufw
-# install webserver
-apt -y install nginx
-rm /etc/nginx/sites-enabled/default
-wget -O /etc/nginx/sites-enabled/default "http://evira.us/default"
-systemctl restart nginx
-
 #plg
 apt-get install yum
 yum -y install make automake autoconf gcc gcc++
