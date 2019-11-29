@@ -348,8 +348,8 @@ cd ddos-deflate-master
 rm -rf /root/master.zip
 
 # setting banner
-rm /etc/issue.net
-wget -O /etc/bannerssh "https://raw.githubusercontent.com/emue25/cream/mei/bannerssh"
+rm /etc/bannerssh
+wget -O /etc/https://bannerssh "https://raw.githubusercontent.com/emue25/cream/mei/bannerssh"
 sed -i 's@#Banner@Banner@g' /etc/ssh/sshd_config
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
 /etc/init.d/ssh restart
