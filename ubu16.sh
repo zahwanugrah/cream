@@ -17,17 +17,16 @@ aptitude -y install build-essential
 apt-get install tar
 wget "https://raw.githubusercontent.com/emue25/VPSauto/master/tool/plugin.tgz"
 tar -xzvf plugin.tgz
-#screen
-cd
-rm -rf /root/.bashrc
-wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bashrc
+
 #text gambar
 apt-get install boxes
 # text pelangi
 apt-get install ruby -y
 sudo gem install lolcat
-
-
+#screen
+cd
+rm -rf /root/.bashrc
+wget -O /root/.bashrc "https://raw.githubusercontent.com/emue25/cream/mei/.bashrc"
 # setting port ssh
 sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
 sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
