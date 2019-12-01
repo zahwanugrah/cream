@@ -121,7 +121,7 @@ clear
 echo ""
 echo "" 
 echo "" 
-echo "            ---[ SELAMAT DATANG  DI VPS ZhangZi ]---"| boxes -d cat | lolcat 
+echo "              ---[ SELAMAT DATANG  DI VPS ZhangZi ]---"| boxes -d cat | lolcat 
 echo "            =====================================================" | lolcat
 echo "            #           WhatsApp     : 6011122233               #" | lolcat
 echo "            #           Telegram     : @denbaguss               #" | lolcat
