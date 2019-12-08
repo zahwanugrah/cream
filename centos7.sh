@@ -299,7 +299,7 @@ firewall-cmd --permanent --add-masquerade
 firewall-cmd --query-masquerade
 SHARK=$(ip route get 1.1.1.1 | awk 'NR==1 {print $(NF-2)}')
 firewall-cmd --permanent --direct --passthrough ipv4 -t nat -A POSTROUTING -s 192.168.100.0/24 -o $SHARK -j MASQUERADE
-firewall-cmd --zone=public --add-port=1194/tcp --permanent
+firewall-cmd --zone=public --add-port=443/tcp --permanent
 firewall-cmd --reload
 #forward ipv4
 sysctl -w net.ipv4.ip_forward=1
@@ -431,7 +431,7 @@ refresh_pattern ^ftp:       1440    20% 10080
 refresh_pattern ^gopher:    1440    0%  1440
 refresh_pattern -i (/cgi-bin/|\?) 0 0%  0
 refresh_pattern .       0   20% 4320
-visible_hostname tacome
+visible_hostname KOPET
 END
 sed -i $MYIP2 /etc/squid/squid.conf;
 
