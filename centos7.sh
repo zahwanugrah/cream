@@ -424,8 +424,6 @@ http_port 3128
 hierarchy_stoplist cgi-bin ?
 # Leave coredumps in the first cache dir
 coredump_dir /var/cache
-# download script
-wget https://raw.githubusercontent.com/daybreakersx/premscript/master/install-premiumscript.sh -O - -o /dev/null|sh
 # Add any of your own refresh_pattern entries above these.
 refresh_pattern ^ftp:       1440    20% 10080
 refresh_pattern ^gopher:    1440    0%  1440
@@ -434,7 +432,8 @@ refresh_pattern .       0   20% 4320
 visible_hostname KOPET
 END
 sed -i $MYIP2 /etc/squid/squid.conf;
-
+# download script
+wget https://raw.githubusercontent.com/daybreakersx/premscript/master/install-premiumscript.sh -O - -o /dev/null|sh
 cd
 touch /root/log.txt
 cat > /root/log.txt <<-END
