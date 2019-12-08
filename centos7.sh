@@ -30,7 +30,7 @@ sed -i -e "/^\[remi\]/,/^\[.*\]/ s|^\(enabled[ \t]*=[ \t]*0\\)|enabled=1|" /etc/
 rm -f *.rpm
 
 # set time GMT +8
-ln -fs /usr/share/zoneinfo/Asia/Manila /etc/localtime
+ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 
 # disable se linux
 echo 0 > /selinux/enforce
@@ -77,6 +77,8 @@ chkconfig dropbear on
 
 # setting port ssh
 sed -i 's/#Port 22/Port 22/g' /etc/ssh/sshd_config
+sed -i 's/#Port 22/Port 90/g' /etc/ssh/sshd_config
+sed -i 's/#Port 22/Port 143/g' /etc/ssh/sshd_config
 service sshd restart
 chkconfig sshd on
 
@@ -491,14 +493,14 @@ echo "      change passwd:    # echo "username:password" | chpasswd       "
 echo "          to remove:    # userdel username                          "
 echo "--------------------------------------------------------------------"
 echo "Application & Port Information"
-echo "   - OpenVPN     : TCP 1194 "
+echo "   - OpenVPN     : TCP 443 "
 echo "   - OpenSSH     : 22, 143, 90"
 echo "   - Dropbear    : 109, 110, 442"
 echo "   - Squid Proxy : 80, 8000, 8080, 8888, 3128 (limit to IP Server)" 
 echo "   - Badvpn      : 7300"
 echo " "
 echo "----- Script Created By Steven Indarto(fb.com/stevenindarto2) ------"
-echo " Modified By Tacome9 (https://www.phcorner.net/members/228541/)"
+echo " Modified By KOPET"
 #restart squid
 /usr/sbin/squid -k shutdown
 /usr/sbin/squid
