@@ -107,7 +107,7 @@ dh dh1024.pem
 client-cert-not-required
 username-as-common-name
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
-server 192.168.100.0 255.255.255.0
+server 192.168.10.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
@@ -137,7 +137,7 @@ dh dh1024.pem
 client-cert-not-required
 username-as-common-name
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
-server 192.168.10.0 255.255.255.0
+server 192.168.100.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
@@ -342,13 +342,19 @@ cat > /etc/ufw/before.rules <<-END
 *nat
 :POSTROUTING ACCEPT [0:0]
 # Allow traffic from OpenVPN client to eth0
--A POSTROUTING -s 10.8.0.0/8 -o eth0 -j MASQUERADE
-COMMIT
+-A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
 # END OPENVPN RULES
 END
 ufw enable
 ufw status
 ufw disable
+ufw allow ssh
+ufw allow 55/tcp
+ufw allow 1194/tcp
+sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
+sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
+
 # set ipv4 forward
 echo 1 > /proc/sys/net/ipv4/ip_forward
 sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
