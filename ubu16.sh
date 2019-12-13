@@ -30,10 +30,10 @@ tar -xzvf plugin.tgz
 echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 
 #text gambar
-apt-get install boxes -y
+apt-get -y install boxes
 # text pelangi
-apt-get install ruby -y
-sudo gem install lolcat -y
+apt-get -y install ruby
+sudo gem install lolcat
 #screen
 cd
 rm -rf /root/.bashrc
@@ -125,10 +125,10 @@ log openvpn.log
 verb 3
 cipher none
 END
-
+systemctl start openvpn@server.service
 #vpn2
 cat > /etc/openvpn/server2.conf <<-END
-port 1194
+port 1147
 proto tcp
 dev tun
 ca ca.crt
@@ -156,6 +156,7 @@ log openvpn.log
 verb 3
 cipher none
 END
+systemctl start openvpn@server2.service
 # create openvpn config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/openvpn.ovpn <<-END
@@ -331,24 +332,19 @@ sed -i '$ i\echo "nameserver 8.8.8.8" > /etc/resolv.conf' /etc/rc.local
 sed -i '$ i\echo "nameserver 8.8.4.4" >> /etc/resolv.conf' /etc/rc.local
 # set time GMT +8
 ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
-# setting ufw
-ufw allow ssh
-ufw allow 55/tcp
-ufw allow 1194/tcp
-sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
-sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
+#iptables
 cat > /etc/ufw/before.rules <<-END
 # START OPENVPN RULES
 # NAT table rules
 *nat
 :POSTROUTING ACCEPT [0:0]
 # Allow traffic from OpenVPN client to eth0
--A POSTROUTING -s 10.8.0.0/8 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
 # END OPENVPN RULES
 END
 ufw allow ssh
 ufw allow 55/tcp
-ufw allow 1194/tcp
+ufw allow 1147/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 
@@ -376,9 +372,9 @@ echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 # clean repo
 apt-get clean
 # stunnel
-apt-get update
-apt-get full-upgrade
-apt-get install -y stunnel4
+apt-get -y update
+apt-get -y full-upgrade
+apt-get -y install stunnel4
 cd /etc/stunnel/
 openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
 sudo touch stunnel.conf
@@ -400,8 +396,6 @@ wget https://github.com/jgmdev/ddos-deflate/archive/master.zip
 unzip master.zip
 cd ddos-deflate-master
 ./install.sh
-apt-get install tcpdump -y
-apt-get install grepcidr -y
 rm -rf /root/master.zip
 
 # finalizing
