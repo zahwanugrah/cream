@@ -41,13 +41,13 @@ rm /root/webmin_1.930_all.deb
 # install screenfetch
 cd
 rm -rf /root/.bashrc
-wget -O /root/.bashrc https://raw.githubusercontent.com/brantbell/cream/mei/.bashrc
+wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
 
 #text gambar
-apt-get install boxes
+apt install boxes -y
 # text pelangi
-apt-get install ruby -y
-gem install lolcat
+apt install ruby -y
+gem install lolcat -y
 
 # install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
@@ -176,11 +176,11 @@ mkdir /etc/openvpn/easy-rsa/keys
 sed -i 's|export KEY_COUNTRY="US"|export KEY_COUNTRY="ID"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_PROVINCE="CA"|export KEY_PROVINCE="JAWA TENGAH"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_CITY="SanFrancisco"|export KEY_CITY="PURWOREJO"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_ORG="Fort-Funston"|export KEY_ORG="denbaguss"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_ORG="Fort-Funston"|export KEY_ORG="ZhangZi"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_EMAIL="me@myhost.mydomain"|export KEY_EMAIL="vpnstunnel@email.com"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="sshfast.net"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_NAME="EasyRSA"|export KEY_NAME="denbaguss"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_OU=changeme|export KEY_OU=denbaguss|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_OU=changeme|export KEY_OU=ZhangZi|' /etc/openvpn/easy-rsa/vars
 #Create Diffie-Helman Pem
 openssl dhparam -out /etc/openvpn/dh1024.pem 1024
 # Create PKI
@@ -335,7 +335,7 @@ script-security 2
 route-method exe
 setenv opt block-outside-dns
 route-delay 2
-remote $MYIP 444
+remote $MYIP 80
 cipher AES-128-CBC
 script-security 2
 up /etc/openvpn/update-resolv-conf
@@ -350,15 +350,15 @@ cd /home/vps/public_html/
 tar -czf /home/vps/public_html/openvpnssl.tar.gz clientssl.ovpn
 cd
 # Configure Stunnel
-apt update
-apt full-upgrade
+apt -y update
+apt -y full-upgrade
 apt install -y stunnel4
 cd /etc/stunnel/
 openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
 sudo touch stunnel.conf
 echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "accept = 444" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "accept = 80" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "connect = $MYIP:55" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
 sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
@@ -535,10 +535,12 @@ sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
 
 # Configure menu
 #wget https://raw.githubusercontent.com/emue25/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
-apt-get install unzip
+apt-get -y remove --purge unscd
+apt-get -y install dnsutils
+apt-get -y install unzip
 cd /usr/local/bin/
-wget "https://github.com/johndesu090/AutoScriptDebianStretch/raw/master/Files/Menu/bashmenu.zip" 
-unzip bashmenu.zip
+wget "https://github.com/emue25/cream/raw/mei/menu.zip"
+unzip menu.zip
 chmod +x /usr/local/bin/*
 # cronjob
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
@@ -601,12 +603,11 @@ echo "   - Auto-Reboot : [OFF]"  | tee -a log-install.txt
 echo "   - IPv6        : [OFF]"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Application & Port Information"  | tee -a log-install.txt
-echo "   - OpenVPN		: TCP 443 55 1194"  | tee -a log-install.txt
-echo "   - OpenVPN-SSL   	: 444 "  | tee -a log-install.txt
+echo "   - OpenVPN		: TCP 443 55 "  | tee -a log-install.txt
+echo "   - OpenVPN-SSL   	: 80 "  | tee -a log-install.txt
 echo "   - Dropbear		: 442"  | tee -a log-install.txt
-echo "   - Stunnel		: 444"  | tee -a log-install.txt
 echo "   - BadVPN  	        : 7200"  | tee -a log-install.txt
-echo "   - Squid Proxy	: 8080, 8000, 3128, 80 (limit to IP Server)"  | tee -a log-install.txt
+echo "   - Squid Proxy	: 8080, 8000, 3128, 81 (limit to IP Server)"  | tee -a log-install.txt
 echo "   - Nginx		: 85"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
