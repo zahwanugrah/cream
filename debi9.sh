@@ -47,7 +47,7 @@ wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
 apt install boxes -y
 # text pelangi
 apt install ruby -y
-gem install lolcat -y
+apt install lolcat -y
 
 # install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
