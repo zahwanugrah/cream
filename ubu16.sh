@@ -263,7 +263,7 @@ cat > /etc/iptables.up.rules <<-END
 :POSTROUTING ACCEPT [0:0]
 -A POSTROUTING -j SNAT --to-source ipaddresxxx
 -A POSTROUTING -o eth0 -j MASQUERADE
--A POSTROUTING -s 192.168.100.0/8 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
 COMMIT
 
@@ -343,8 +343,7 @@ cat > /etc/ufw/before.rules <<-END
 *nat
 :POSTROUTING ACCEPT [0:0]
 # Allow traffic from OpenVPN client to eth0
--A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
--A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 10.8.0.0/8 -o eth0 -j MASQUERADE
 # END OPENVPN RULES
 END
 ufw allow ssh
@@ -401,7 +400,10 @@ wget https://github.com/jgmdev/ddos-deflate/archive/master.zip
 unzip master.zip
 cd ddos-deflate-master
 ./install.sh
+apt-get install tcpdump -y
+apt-get install grepcidr -y
 rm -rf /root/master.zip
+
 # finalizing
 apt-get -y autoremove
 chown -R www-data:www-data /home/vps/public_html
