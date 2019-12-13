@@ -5,7 +5,7 @@ wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg|apt-key add -
 sleep 2
 echo "deb http://build.openvpn.net/debian/openvpn/release/2.4 stretch main" > /etc/apt/sources.list.d/openvpn-aptrepo.list
 #Requirement
-apt update
+apt update -y
 apt upgrade -y
 apt install openvpn nginx php7.0-fpm stunnel4 squid3 dropbear easy-rsa vnstat ufw build-essential fail2ban zip -y
 
@@ -14,7 +14,7 @@ MYIP=$(wget -qO- ipv4.icanhazip.com);
 MYIP2="s/xxxxxxxxx/$MYIP/g";
 cd /root
 
-apt-get install yum
+apt-get install yum -y
 yum -y install make automake autoconf gcc gcc++
 #apt-get -y install build-essential
 aptitude -y install build-essential
@@ -47,7 +47,7 @@ wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
 apt install boxes -y
 # text pelangi
 apt install ruby -y
-apt install lolcat -y
+sudo gem install lolcat -y
 
 # install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
@@ -160,9 +160,9 @@ sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dr
 /etc/init.d/dropbear restart
 
 # install badvpn
-wget -O /usr/bin/badvpn-udpgw "https://github.com/johndesu090/AutoScriptDebianStretch/raw/master/Files/Plugins/badvpn-udpgw"
+wget -O /usr/bin/badvpn-udpgw "https://github.com/emue25/AutoScriptDebianStretch/raw/master/Files/Plugins/badvpn-udpgw"
 if [ "$OS" == "x86_64" ]; then
-  wget -O /usr/bin/badvpn-udpgw "https://github.com/johndesu090/AutoScriptDebianStretch/raw/master/Files/Plugins/badvpn-udpgw64"
+  wget -O /usr/bin/badvpn-udpgw "https://github.com/emue25/AutoScriptDebianStretch/raw/master/Files/Plugins/badvpn-udpgw64"
 fi
 sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
@@ -275,6 +275,41 @@ cipher none
 auth none
 END
 systemctl start openvpn@server2.service
+#vpn3
+cat > /etc/openvpn/server3.conf <<-END
+port 1194
+proto tcp
+dev tun
+ca ca.crt
+cert server.crt
+key server.key
+dh dh1024.pem
+verify-client-cert none
+username-as-common-name
+plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
+server 192.168.47.222 255.255.255.0
+ifconfig-pool-persist ipp.txt
+push "redirect-gateway def1 bypass-dhcp"
+push "dhcp-option DNS 8.8.8.8"
+push "dhcp-option DNS 8.8.4.4"
+push "route-method exe"
+push "route-delay 2"
+socket-flags TCP_NODELAY
+push "socket-flags TCP_NODELAY"
+keepalive 10 120
+comp-lzo
+user nobody
+group nogroup
+persist-key
+persist-tun
+status openvpn-status.log
+log openvpn.log
+verb 3
+ncp-disable
+cipher none
+auth none
+END
+systemctl start openvpn@server3.service
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/zhangzi.ovpn <<-END
@@ -390,6 +425,7 @@ cat > /etc/iptables.up.rules <<-END
 -A POSTROUTING -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.47.222.0/24 -o eth0 -j MASQUERADE
 COMMIT
 *filter
 :INPUT ACCEPT [0:0]
