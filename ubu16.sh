@@ -14,12 +14,12 @@ cd
 # clean
 apt-get clean
 # update
-apt-get update
+apt-get update -y
 apt-get upgrade -y
 # install needs
 apt-get -y install stunnel4 apache2 openvpn easy-rsa ufw fail2ban zip -y
 #plg
-apt-get install yum
+apt-get install yum -y
 yum -y install make automake autoconf gcc gcc++
 aptitude -y install build-essential
 apt-get install tar
@@ -30,10 +30,10 @@ tar -xzvf plugin.tgz
 echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 
 #text gambar
-apt-get install boxes
+apt-get install boxes -y
 # text pelangi
 apt-get install ruby -y
-sudo gem install lolcat
+sudo gem install lolcat -y
 #screen
 cd
 rm -rf /root/.bashrc
@@ -45,7 +45,7 @@ sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 /etc/init.d/ssh restart
 
 # install dropbear
-apt-get install dropbear
+apt-get -y install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 777"/g' /etc/default/dropbear
@@ -125,6 +125,7 @@ log openvpn.log
 verb 3
 cipher none
 END
+
 #vpn2
 cat > /etc/openvpn/server2.conf <<-END
 port 1194
@@ -262,7 +263,7 @@ cat > /etc/iptables.up.rules <<-END
 :POSTROUTING ACCEPT [0:0]
 -A POSTROUTING -j SNAT --to-source ipaddresxxx
 -A POSTROUTING -o eth0 -j MASQUERADE
--A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.100.0/8 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
 COMMIT
 
@@ -346,9 +347,6 @@ cat > /etc/ufw/before.rules <<-END
 -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
 # END OPENVPN RULES
 END
-ufw enable
-ufw status
-ufw disable
 ufw allow ssh
 ufw allow 55/tcp
 ufw allow 1194/tcp
