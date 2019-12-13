@@ -44,10 +44,10 @@ rm -rf /root/.bashrc
 wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
 
 #text gambar
-apt install boxes -y
+apt-get -y install boxes
 # text pelangi
-apt install ruby -y
-sudo gem install lolcat -y
+apt-get -y install ruby
+sudo gem install lolcat
 
 # install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
@@ -277,7 +277,7 @@ END
 systemctl start openvpn@server2.service
 #vpn3
 cat > /etc/openvpn/server3.conf <<-END
-port 1194
+port 1147
 proto tcp
 dev tun
 ca ca.crt
@@ -287,7 +287,7 @@ dh dh1024.pem
 verify-client-cert none
 username-as-common-name
 plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 192.168.47.222 255.255.255.0
+server 192.168.200.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
@@ -408,6 +408,7 @@ END
 ufw allow ssh
 ufw allow 55/tcp
 ufw allow 443/tcp
+ufw allow 1147/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 
@@ -425,7 +426,7 @@ cat > /etc/iptables.up.rules <<-END
 -A POSTROUTING -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
--A POSTROUTING -s 192.168.47.222.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.200.0/24 -o eth0 -j MASQUERADE
 COMMIT
 *filter
 :INPUT ACCEPT [0:0]
