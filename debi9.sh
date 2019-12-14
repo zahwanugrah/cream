@@ -55,12 +55,12 @@ sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 777"/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 #upgrade
-apt-get install zlib1g-dev
-wget https://raw.githubusercontent.com/emue25/VPSauto/master/dropbear-2019.78.tar.bz2
-bzip2 -cd dropbear-2019.78.tar.bz2 | tar xvf -
-cd dropbear-2019.78
-./configure
-make && make install
+#apt-get install zlib1g-dev
+#wget https://raw.githubusercontent.com/emue25/VPSauto/master/dropbear-2019.78.tar.bz2
+#bzip2 -cd dropbear-2019.78.tar.bz2 | tar xvf -
+#cd dropbear-2019.78
+#./configure
+#make && make install
 # install privoxy
 cat > /etc/privoxy/config <<-END
 user-manual /usr/share/doc/privoxy/user-manual
