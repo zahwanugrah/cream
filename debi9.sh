@@ -310,6 +310,41 @@ cipher none
 auth none
 END
 systemctl start openvpn@server3.service
+#udp
+cat > /etc/openvpn/server4.conf <<-END
+port 53
+proto udp
+dev tun
+ca ca.crt
+cert server.crt
+key server.key
+dh dh1024.pem
+verify-client-cert none
+username-as-common-name
+plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
+server 192.168.0.0 255.255.255.0
+ifconfig-pool-persist ipp.txt
+push "redirect-gateway def1 bypass-dhcp"
+push "dhcp-option DNS 8.8.8.8"
+push "dhcp-option DNS 8.8.4.4"
+push "route-method exe"
+push "route-delay 2"
+socket-flags TCP_NODELAY
+push "socket-flags TCP_NODELAY"
+keepalive 10 120
+comp-lzo
+user nobody
+group nogroup
+persist-key
+persist-tun
+status openvpn-status.log
+log openvpn.log
+verb 3
+ncp-disable
+cipher none
+auth none
+END
+systemctl start openvpn@server4.service
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/zhangzi.ovpn <<-END
@@ -406,6 +441,7 @@ END
 /etc/init.d/stunnel4 restart
 
 ufw allow ssh
+ufw allow 53/udp
 ufw allow 55/tcp
 ufw allow 443/tcp
 ufw allow 1147/tcp
@@ -427,6 +463,7 @@ cat > /etc/iptables.up.rules <<-END
 -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.200.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.0.0/24 -o eth0 -j MASQUERADE
 COMMIT
 *filter
 :INPUT ACCEPT [0:0]
@@ -447,6 +484,7 @@ COMMIT
 -A INPUT -p udp --dport 1194  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 55  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 55  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 53  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 8085  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 8085  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 8888  -m state --state NEW -j ACCEPT
