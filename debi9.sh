@@ -484,7 +484,6 @@ COMMIT
 -A INPUT -p udp --dport 1194  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 55  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 55  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 53  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 8085  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 8085  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 8888  -m state --state NEW -j ACCEPT
