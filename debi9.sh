@@ -322,7 +322,7 @@ dh dh1024.pem
 verify-client-cert none
 username-as-common-name
 plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 192.168.1.0 255.255.255.0
+server 192.168.20.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
@@ -434,14 +434,13 @@ echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
 sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 iptables -A INPUT -p tcp --dport 444 -j ACCEPT
 sudo cp /etc/stunnel/stunnel.pem ~
-/etc/init.d/stunnel4 restart
-END
-# Restart openvpn
-/etc/init.d/openvpn restart
 
+END
+# Restart openvpn ssl
+/etc/init.d/openvpn restart
+/etc/init.d/stunnel4 restart
 #ufw
 ufw allow ssh
-ufw allow 53/udp
 ufw allow 55/tcp
 ufw allow 443/tcp
 ufw allow 1147/tcp
@@ -463,7 +462,7 @@ cat > /etc/iptables.up.rules <<-END
 -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.200.0/24 -o eth0 -j MASQUERADE
--A POSTROUTING -s 192.168.1.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.20.0/24 -o eth0 -j MASQUERADE
 COMMIT
 *filter
 :INPUT ACCEPT [0:0]
