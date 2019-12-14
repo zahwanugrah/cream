@@ -277,7 +277,7 @@ END
 systemctl start openvpn@server2.service
 #vpn3
 cat > /etc/openvpn/server3.conf <<-END
-port 1194
+port 1147
 proto tcp
 dev tun
 ca ca.crt
@@ -444,7 +444,7 @@ ufw allow ssh
 ufw allow 53/udp
 ufw allow 55/tcp
 ufw allow 443/tcp
-ufw allow 1194/tcp
+ufw allow 1147/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 
