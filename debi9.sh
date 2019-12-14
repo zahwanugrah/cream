@@ -322,7 +322,7 @@ dh dh1024.pem
 verify-client-cert none
 username-as-common-name
 plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 192.168.80.0 255.255.255.0
+server 192.168.1.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
@@ -463,7 +463,7 @@ cat > /etc/iptables.up.rules <<-END
 -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.200.0/24 -o eth0 -j MASQUERADE
--A POSTROUTING -s 192.168.80.0/16 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.1.0/24 -o eth0 -j MASQUERADE
 COMMIT
 *filter
 :INPUT ACCEPT [0:0]
