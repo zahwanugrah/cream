@@ -140,7 +140,6 @@ username-as-common-name
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
 server 192.168.100.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
-push "route 10.8.0.0 255.255.255.0"
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
@@ -158,6 +157,37 @@ verb 3
 cipher none
 END
 systemctl start openvpn@server2.service
+#udp
+cat > /etc/openvpn/server3.conf <<-END
+port 53
+proto udp
+dev tun
+ca ca.crt
+cert server.crt
+key server.key
+dh dh1024.pem
+client-cert-not-required
+username-as-common-name
+plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
+server 192.168.200.0 255.255.255.0
+ifconfig-pool-persist ipp.txt
+push "redirect-gateway def1 bypass-dhcp"
+push "dhcp-option DNS 8.8.8.8"
+push "dhcp-option DNS 8.8.4.4"
+push "route-method exe"
+push "route-delay 2"
+duplicate-cn
+push "route-method exe"
+push "route-delay 2"
+keepalive 10 120
+persist-key
+persist-tun
+status openvpn-status.log
+log openvpn.log
+verb 3
+cipher none
+END
+systemctl start openvpn@server3.service
 # create openvpn config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/openvpn.ovpn <<-END
@@ -267,6 +297,7 @@ cat > /etc/iptables.up.rules <<-END
 -A POSTROUTING -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.200.0/24 -o eth0 -j MASQUERADE
 COMMIT
 
 *filter
@@ -343,6 +374,7 @@ cat > /etc/ufw/before.rules <<-END
 -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
 # END OPENVPN RULES
 END
+ufw allow udp
 ufw allow ssh
 ufw allow 55/tcp
 ufw allow 1194/tcp
