@@ -2,10 +2,10 @@
 <BR><font color='#DAA520'>=======================================</BR></font>
 <BR>
 <BR><font color='#32CD32'>- VPNSTUNNEL & SSHFAST</BR></font>
-<BR><font color='#1E90FF'>- Support OpenSSH : 22, 143</BR></font>
-<BR><font color='#860000'>- Support SSL/TLS+ : 444</BR></font>
-<BR><font color='#860086'>- Support Dropbear: 442, 110</BR></font>
-<BR><font color='#1E22FF'>- Support squid+++: 80,8080,8000,3128</BR></font>
+<BR><font color='#1E90FF'>- OpenSSH : 22,90,143</BR></font>
+<BR><font color='#860000'>- SSL/TLS+ : 443</BR></font>
+<BR><font color='#860086'>- Dropbear: 442, 110, 777</BR></font>
+<BR><font color='#1E22FF'>- Squid Proxy: 80,8080,8000,3128</BR></font>
 <BR><font color='#1E11FF'>- https://vpnstunnel.com</BR></font>
 <BR><font color='#1E22FF'>- https://sshfast.net</BR></font>
 <BR><font color='#FF0000'>==============!!! WARNING !!!=============</BR></font>
@@ -16,5 +16,5 @@
 <BR><font color='#FF0000'>- Ikuti Aturan Atau Acc auto Banned *</BR></font>
 <BR><font color='#DAA520'>=======================================</BR></font>
 <BR>
-<BR><font color='#1E22FF'>- Contact us : https://t.me/denbaguss</BR></font>
+<BR><font color='#1E22FF'>- Contact admin : https://t.me/denbaguss</BR></font>
 <BR><font color='#DAA520'>=======================================</BR></font>
