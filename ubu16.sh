@@ -128,7 +128,7 @@ END
 systemctl start openvpn@server.service
 #vpn2
 cat > /etc/openvpn/server2.conf <<-END
-port 1147
+port 1194
 proto tcp
 dev tun
 ca ca.crt
@@ -138,8 +138,9 @@ dh dh1024.pem
 client-cert-not-required
 username-as-common-name
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
-server 192.168.100.0 255.255.255.0
+server 10.8.1.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
+push "route 192.168.100.0 255.255.255.0"
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
@@ -164,8 +165,8 @@ cat > /home/vps/public_html/openvpn.ovpn <<-END
 client
 dev tun
 proto tcp
-remote $IPADDRESS 55
-http-proxy $IPADDRESS 8080
+remote $IPADDRESS 1194
+http-proxy $IPADDRESS 3128
 persist-key
 persist-tun
 dev tun
