@@ -138,7 +138,7 @@ dh dh1024.pem
 client-cert-not-required
 username-as-common-name
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
-server 192.168.200.0 255.255.255.0
+server 192.168.100.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
@@ -265,7 +265,7 @@ cat > /etc/iptables.up.rules <<-END
 :POSTROUTING ACCEPT [0:0]
 -A POSTROUTING -j SNAT --to-source ipaddresxxx
 -A POSTROUTING -o eth0 -j MASQUERADE
--A POSTROUTING -s 192.168.200.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
 COMMIT
 
@@ -340,7 +340,7 @@ cat > /etc/ufw/before.rules <<-END
 *nat
 :POSTROUTING ACCEPT [0:0]
 # Allow traffic from OpenVPN client to eth0
--A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+#-A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
 # END OPENVPN RULES
 END
 ufw allow ssh
