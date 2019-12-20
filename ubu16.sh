@@ -138,8 +138,9 @@ dh dh1024.pem
 client-cert-not-required
 username-as-common-name
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
-server 192.168.100.0 255.255.255.0
+ifconfig 192.168.100.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
+server-bridge 172.13.23.1 255.255.255.0 172.13.23.100 172.13.23.200
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
