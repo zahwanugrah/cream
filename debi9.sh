@@ -593,7 +593,7 @@ sed -i 's/listen = \/var\/run\/php7.0-fpm.sock/listen = 127.0.0.1:9000/g' /etc/p
 
 #Create Admin
 useradd admin
-echo "admin:kopet" | chpasswd
+echo "admin:mania" | chpasswd
 
 
 # Create and Configure rc.local
