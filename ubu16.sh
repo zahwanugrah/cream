@@ -17,7 +17,7 @@ apt-get clean
 apt-get update -y
 apt-get upgrade -y
 # install needs
-apt-get -y install stunnel4 apache2 openvpn easy-rsa ufw fail2ban zip -y
+apt-get -y install stunnel4 apache2 openvpn easy-rsa ufw bridge-utils fail2ban zip -y
 #plg
 apt-get install yum -y
 yum -y install make automake autoconf gcc gcc++
