@@ -277,7 +277,7 @@ END
 systemctl start openvpn@server2.service
 #vpn3
 cat > /etc/openvpn/server3.conf <<-END
-port 1147
+port 1195
 proto tcp
 dev tun
 ca ca.crt
@@ -443,7 +443,7 @@ END
 ufw allow ssh
 ufw allow 55/tcp
 ufw allow 443/tcp
-ufw allow 1147/tcp
+ufw allow 1195/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 
@@ -663,23 +663,23 @@ clear
 echo " "
 echo "Installation has been completed!!"
 echo " Please Reboot your VPS"
-echo "--------------------------- Configuration Setup Server -------------------------"
-echo "                       Debian9 Script HostingTermurah Based                      "
-echo "                                 -modifikasi by zhangzi-                                   "
+echo "--------------------------------Configuration Setup Server ---------------------"
+echo "                                Debian9 Script sshfast.net                      "
+echo "                                 -modifikasi by zhangzi-                        "
 echo "--------------------------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
-echo "   - Timezone    : Asia/Malay (GMT +8)"  | tee -a log-install.txt
+echo "   - Timezone    : Asia/Malay Babi (GMT +8)"  | tee -a log-install.txt
 echo "   - Fail2Ban    : [ON]"  | tee -a log-install.txt
 echo "   - IPtables    : [ON]"  | tee -a log-install.txt
 echo "   - Auto-Reboot : [OFF]"  | tee -a log-install.txt
 echo "   - IPv6        : [OFF]"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Application & Port Information"  | tee -a log-install.txt
-echo "   - OpenVPN		: TCP 443 55 1194"  | tee -a log-install.txt
+echo "   - OpenVPN		: TCP 443 55 1195"  | tee -a log-install.txt
 echo "   - OpenVPN-SSL   	: 80 "  | tee -a log-install.txt
-echo "   - Dropbear		: 442"  | tee -a log-install.txt
-echo "   - BadVPN  	        : 7200"  | tee -a log-install.txt
+echo "   - Dropbear		: 442, 777"  | tee -a log-install.txt
+echo "   - BadVPN  	        : 7300"  | tee -a log-install.txt
 echo "   - Squid Proxy	: 8080, 8000, 3128, 81 (limit to IP Server)"  | tee -a log-install.txt
 echo "   - Nginx		: 85"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
