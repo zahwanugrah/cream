@@ -37,65 +37,65 @@ cat /usr/bin/bannermenu | lolcat
 echo "                    Server: $MYIP"  | lolcat
 date +"                    %A, %d-%m-%Y"  | lolcat
 date +"                            %H:%M:%S %Z" | lolcat
-echo "" | lolcat
-echo "" | lolcat
+echo "" 
+echo ""
 PS3='Silahkan ketik nomor pilihan anda lalu tekan ENTER: '
-options=("Create User SSH/OVPN" "Create User SSH/OVPN Trial" "Perbarui User" "Ganti Password User SSH/OVPN" "Semua User Dan Tanggal Kadaluarsa" "Hapus User" "Buat User PPTP VPN" "Monitor User Login" "Daftar User Aktif" "Daftar User Kadaluarsa" "Disable User Kadaluarsa" "Hapus User Kadaluarsa" "Banned User" "Unbanned User" "Penggunaan Ram" "Speedtest" "Benchmark" "Manual Kill Multi Login" "(ON)AutoKill Multi Login" "(OFF)AutoKill Multi Login" "Ganti Password VPS" "Bersihkan Cache Ram Manual" "Edit Banner Login" "Edit Banner Menu" "Lihat Lokasi User" "Restart Webmin" "Restart Server VPS" "Restart Dropbear" "Restart OpenSSH" "Restart Squid3" "Restart OpenVPN" "Restart SSL" "Ganti Port OpenSSH" "Ganti Port Dropbear" "Ganti Port Squid3" "Ganti Port OpenVPN" "Update Script VPS" "Quit")
+options=("Create User SSH/OVPN" "Create User SSH/OVPN Trial" "Renew User" "Change Password User SSH/OVPN" "All User Dan Date Expired" "Delete User" "Create User PPTP VPN" "Monitor User Login" "List User Aktif" "list User Expire" "Disable User Expire" "Delete User Expire" "Banned User" "Unbanned User" "Penggunaan Ram" "Speedtest" "Benchmark" "Manual Kill Multi Login" "(ON)AutoKill Multi Login" "(OFF)AutoKill Multi Login" "Change Password VPS" "Bersihkan Cache Ram Manual" "Edit Banner Login" "Edit Banner Menu" "Lihat Lokasi User" "Restart Webmin" "Restart Server VPS" "Restart Dropbear" "Restart OpenSSH" "Restart Squid3" "Restart OpenVPN" "Restart SSL" "Ganti Port OpenSSH" "Change Port Dropbear" "Change Port Squid3" "Change Port OpenVPN" "Update Script VPS" "Quit")
 select opt in "${options[@]}"
 do
     case $opt in
-        "Create User SSH/OVPN")
+        "Create User SSH/OVPN" | lolcat)
 	clear
-        user-add | lolcat
+        user-add 
         break
             ;;
-	"Create User SSH/OVPN Trial")
+	"Create User SSH/OVPN Trial" | lolcat)
 	clear
-	user-gen | lolcat
+	user-gen
 	break
 	;;
-	"Perbarui User")
+	"Renew User" | lolcat)
 	clear
-	user-renew | lolcat
+	user-renew
 	break
 	;;
-	"Ganti Password User SSH/OVPN")
+	"Change Password User SSH/OVPN" | lolcat)
 	clear
-	user-pass | lolcat
+	user-pass
 	break
 	;;
-	"Semua User Dan Tanggal Kadaluarsa")
+	"All User Dan Date Expired" | lolcat)
 	clear
-	user-list | lolcat
+	user-list
 	break
 	;;
-	"Hapus User")
+	"Delete User" | lolcat)
 	clear
-	user-del | lolcat
+	user-del 
 	break
 	;;
-	"Buat User PPTP VPN")
+	"Create User PPTP VPN" | lolcat)
 	clear
-	user-add-pptp | lolcat
+	user-add-pptp
 	break
 	;;
-	"Monitor User Login")
+	"Monitor User Login" | lolcat)
 	clear
-	dropmon | lolcat
+	dropmon 
 	break
 	;;
-	"Manual Kill Multi Login")
+	"Manual Kill Multi Login" | lolcat)
 	clear
         read -p "Isikan Maximal User Login (1-2): " MULTILOGIN
         userlimit.sh $MULTILOGIN
 	#userlimitssh.sh $MULTILOGIN
 	break
 	;;
-	"(ON)AutoKill Multi Login")
+	"(ON)AutoKill Multi Login" | lolcat)
 	clear 
 	read -p "Isikan Maximal User Login (1-2): " MULTILOGIN2
 	echo "@reboot root /root/userlimit.sh" > /etc/cron.d/userlimitreboot
-	service cron stop
+	/etc/init.d/cron stop
 	echo "* * * * * root /usr/bin/userlimit.sh $MULTILOGIN2" > /etc/cron.d/userlimit1
 	   echo "* * * * * root sleep 10; /usr/bin/userlimit.sh $MULTILOGIN2" > /etc/cron.d/userlimit2
            echo "* * * * * root sleep 20; /usr/bin/userlimit.sh $MULTILOGIN2" > /etc/cron.d/userlimit3
@@ -109,20 +109,20 @@ do
            #echo "* * * * * root sleep 31; /usr/bin/userlimitssh.sh $MULTILOGIN2" >> /etc/cron.d/userlimit4
           # echo "* * * * * root sleep 41; /usr/bin/userlimitssh.sh $MULTILOGIN2" >> /etc/cron.d/userlimit5
            #echo "* * * * * root sleep 51; /usr/bin/userlimitssh.sh $MULTILOGIN2" >> /etc/cron.d/userlimit6
-	    service cron start
-	    service cron restart
-	    service ssh restart
-	    service dropbear restart
-	    echo "------------+ AUTO KILL SUDAH DI AKTIFKAN BOSS +--------------"  
+	    /etc/init.d/cron start
+	    /etc/init.d/cron restart
+	    /etc/init.d/ssh restart
+	    /etc/init.d/dropbear restart
+	    echo "------------+ AUTO KILL SUDAH DI AKTIFKAN BOSS +--------------"  | lolcat
 	    
-	echo "Dasar pelit!!! user ente marah2 jangan salahkan ane ya boss¡¡¡
+	echo "Dasar pelit!!! user ente marah2 jangan salahkan ane ya boss¡¡¡ | lolcat
 nanti jangan lupa di matikan boss
-biar user senang bs multilogin lagi.."  | boxes -d boy
+biar user senang bs multilogin lagi.."  | boxes -d boy | lolcat
 	break
 	;;
 	"(OFF)AutoKill Multi Login")
 	clear
-	service cron stop
+	/etc/init.d/cron stop
 	rm -rf /etc/cron.d/userlimit1
 	rm -rf /etc/cron.d/userlimit2
 	rm -rf /etc/cron.d/userlimit3
@@ -130,17 +130,17 @@ biar user senang bs multilogin lagi.."  | boxes -d boy
 	rm -rf /etc/cron.d/userlimit5
 	rm -rf /etc/cron.d/userlimit6
 	#rm -rf /etc/cron.d/userlimitreboot
-	service cron start
-	service cron restart
-	    service ssh restart
-	    service dropbear restart
+	/etc/init.d/cron start
+	/etc/init.d/cron restart
+	    /etc/init.d/ssh restart
+	    /etc/init.d/dropbear restart
 	clear
 	echo ""
 	echo "AUTO KILL LOGIN,SUDAH SAYA MATIKAN BOS 
 User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	break
 	;;
-	"Ganti Password VPS")
+	"Change Password VPS")
 	clear
 	read -p "Silahkan isi password baru untuk VPS anda: " pass	
         echo "root:$pass" | chpasswd
@@ -168,22 +168,22 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
         echo ""
 	break
 	;;
-	"Daftar User Aktif")
+	"List User Aktif")
 	clear
 	user-active-list | boxes -d peek | lolcat
 	break
 	;;
-	"Daftar User Kadaluarsa")
+	"List User Expire")
 	clear
 	user-expire-list | lolcat
 	break
 	;;
-	"Disable User Kadaluarsa")
+	"Disable User expire")
 	clear
 	disable-user-expire | lolcat
 	break
 	;;
-	"Hapus User Kadaluarsa")
+	"Delete User Expire")
 	clear
 	delete-user-expire | lolcat
 	break
@@ -208,7 +208,7 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	echo ""
 	echo "SPEEDTEST SERVER" | boxes -d peek| lolcat
 	echo "-----------------------------------------"| lolcat
-	speedtest --share 
+	speedtest --share | lolcat
 	echo "-----------------------------------------" | lolcat
 	break
 	;;
@@ -227,7 +227,7 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	echo -e "2.) Membatalkan edit text= (CTRL + X, lalu ketik N dan tekan Enter)"
 	echo "-----------------------------------------------------------"
 	read -p "Tekan ENTER untuk melanjutkan........................ " 
-	nano /usr/bin/issue.net
+	nano /etc/issue.net
 	/etc/init.d/dropbear restart && service ssh restart
 	break
 	;;
@@ -265,47 +265,47 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	 ;;
 	 "Restart Dropbear")
 	 clear
-	 service dropbear restart
+	 /etc/init.d/dropbear restart
 	 echo "Dropbear sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	 "Restart OpenSSH")
 	 clear
-	 service ssh restart
+	 /etc/init.d/ssh restart
 	 echo "OpenSSH sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	 "Restart OpenVPN")
 	 clear
-	 service openvpn restart
+	 /etc/init.d/openvpn restart
 	 echo "openvpn sudah di restart boss!!!" | boxes -d boy  | lolcat
 	 break
 	 ;;
 	  "Restart SSL")
 	 clear
-	 service stunnel4 restart
+	 /etc/init.d/stunnel4 restart
 	 echo "stunnel4/ssl sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	 
 	 "Restart Squid3")
 	 clear
-	 service squid3 restart
+	 /etc/init.d/squid restart
 	 echo "Squid3 sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
-	 "Ganti Port OpenSSH")
+	 "Change Port OpenSSH")
 	 clear
 	 
 		edit-port-openssh
 	 break
          ;;
-	 "Ganti Port Dropbear")
+	 "Change Port Dropbear")
 	 clear
 		edit-port-dropbear
 	 break
 	 ;;
-	 "Ganti Port Squid3")
+	 "Change Port Squid3")
 	 clear
 		edit-port-squid
 			break
@@ -315,9 +315,9 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 			python speedtest.py --share
 			break		
 	 ;;
-	 "Ganti Port OpenVPN")
+	 "Change Port OpenVPN")
 	 clear
-		edit-port-openvpn
+		edit-port-openvpn 
 	 break
 	 ;;
 	 "Update Script VPS")
