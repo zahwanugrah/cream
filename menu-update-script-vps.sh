@@ -23,20 +23,20 @@ vps="aneka";
 #if [[ $vps = "zvur" ]]; then
 	#source="http://"
 #else
-	source="https://raw.githubusercontent.com/brantbell/cream/mei"
+	source="https://raw.githubusercontent.com/emue25/cream/mei"
 #fi
 
 # go to root
 cd
 
 # check registered ip
-wget -q -O IP https://raw.githubusercontent.com/brantbell/cream/mei/IP.txt
+wget -q -O IP https://raw.githubusercontent.com/emue25/cream/mei/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
 	if [[ $vps = "zvur" ]]; then
-		echo "Hubungi: editor YUSUF-ARDIANSYAH atau (082139743432)"
+		echo "Hubungi: editor vpnstunnel.com atau (@denbaguss)"
 	else
-		echo "Hubungi: editor YUSUF-ARDIANSYAH atau (082139743432)"
+		echo "Hubungi: editor sshfast.net atau (@denbaguss)"
 	fi
 	rm -f /root/IP
 	exit
@@ -44,7 +44,7 @@ fi
 cd
 function update_script() {
 cd
-wget -O /usr/bin/updatescript.sh https://raw.githubusercontent.com/brantbell/cream/mei/updatescript.sh && clear && chmod +x /usr/bin/updatescript.sh && /usr/bin/updatescript.sh && rm -f /root/IP && rm -f /root/IPcarding
+wget -O /usr/bin/updatescript.sh https://raw.githubusercontent.com/emue25/cream/mei/updatescript.sh && clear && chmod +x /usr/bin/updatescript.sh && /usr/bin/updatescript.sh && rm -f /root/IP && rm -f /root/IPcarding
 }
 
 function anti_ddos() {
@@ -101,7 +101,7 @@ do
 	;;
 	"Install SQLmap")
 	cd /root
-	wget -O /usr/bin/install-sqlmap.sh https://raw.githubusercontent.com/brantbell/cream/mei/install-sqlmap.sh
+	wget -O /usr/bin/install-sqlmap.sh https://raw.githubusercontent.com/emue25/cream/mei/install-sqlmap.sh
 	chmod 755 /usr/bin/install-sqlmap.sh
 	clear
 	/usr/bin/install-sqlmap.sh
