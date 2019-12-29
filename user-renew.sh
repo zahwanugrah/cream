@@ -14,15 +14,15 @@ if [ "$MYIP" = "" ]; then
 fi
 #MYIP=$(wget -qO- ipv4.icanhazip.com)
 
-echo "----------------- TAMBAH MASA AKTIF AKUN SSH --------------------"
+echo "----------------- TAMBAH MASA AKTIF AKUN SSH --------------------" | lolcat
 
-	echo "        DEVELOPED BY ZHANG-ZI atau (60146309176)           "
+	echo "        DEVELOPED BY ZHANG-ZI atau VPNSTUNNEL.COM        " | lolcat
 echo ""
 
 # begin of user-list
-echo "-----------------------------------"
-echo "USERNAME              EXP DATE     " 
-echo "-----------------------------------"
+echo "-----------------------------------" | lolcat
+echo "USERNAME              EXP DATE     " | lolcat
+echo "-----------------------------------" | lolcat
 
 while read expired
 do
@@ -33,7 +33,7 @@ do
 		printf "%-21s %2s\n" "$AKUN" "$exp"
 	fi
 done < /etc/passwd
-echo "-----------------------------------"
+echo "-----------------------------------" | lolcat
 echo ""
 # end of user-list
 
@@ -53,28 +53,28 @@ if [ $? -eq 0 ]; then
 clear
 	
 echo -e ""
-echo -e "|       Informasi Akun Baru SSH      |" 
-echo -e "============[[-SERVER-PREMIUM-]]===========" 
-echo -e "     Host: $MYIP                           " 
-echo -e "     Username: $username                   " 
-echo -e "     Password: $password                   " 
-echo -e "     Port default dropbear: 442,110        " 
-echo -e "     Port default SSL/TLS : 443            " 
-echo -e "     Port default openSSH : 22,143         " 
-echo -e "     Port default squid   : 8080,3128      " 
-echo -e "     Auto kill user maximal login 2        " 
-echo -e "-------------------------------------------" 
-echo -e "     Aktif Sampai: $(date -d "$AKTIF days" +"%d-%m-%Y")" 
-echo -e "===========================================" 
-echo -e "     NO-CRIMINAL - CYBER,,,                "
-echo -e "===========================================" 
-echo -e "   http://$MYIP:85/client.ovpn             " 
-echo -e "   Script by ZHANG-ZI (60146309176)        "
-echo -e "-------------------------------------------" 
+echo -e "|       Informasi Akun Baru SSH      |" | lolcat
+echo -e "============[[-SERVER-PREMIUM-]]===========" | lolcat
+echo -e "     Host: $MYIP                           " | lolcat
+echo -e "     Username: $username                   " | lolcat
+echo -e "     Password: $password                   " | lolcat
+echo -e "     Port default dropbear: 442,110        " | lolcat
+echo -e "     Port default SSL/TLS : 443            " | lolcat
+echo -e "     Port default openSSH : 22,143         " | lolcat
+echo -e "     Port default squid   : 8080,3128,81   " | lolcat
+echo -e "     Auto kill user maximal login 2        " | lolcat
+echo -e "-------------------------------------------" | lolcat
+echo -e "     Aktif Sampai: $(date -d "$AKTIF days" +"%d-%m-%Y")" | lolcat
+echo -e "===========================================" | lolcat
+echo -e "     NO-CRIMINAL - CYBER,,,                " | lolcat
+echo -e "===========================================" | lolcat
+echo -e "   http://$MYIP:85/client.ovpn             " | lolcat
+echo -e "   Script by ZHANG-ZI & VPNSTUNNEL.COM     " | lolcat
+echo -e "-------------------------------------------" | lolcat
 echo -e ""
 echo -e ""
 else
-	echo "Username [$username] belum terdaftar!"
+	echo "Username [$username] belum terdaftar!" | lolcat
 	exit 1
 fi
 
