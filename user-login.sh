@@ -16,11 +16,11 @@ fi
 
 
 data=( `ps aux | grep -i dropbear | awk '{print $2}'`);
-echo "----------------------------------------------"
+echo "----------------------------------------------" | lolcat
 echo "Checking Dropbear login";
-echo "----------------------------------------------"
+echo "----------------------------------------------" | lolcat
 echo "   PID.  USERNAME.       IP" 
-echo "----------------------------------------------"
+echo "----------------------------------------------" | lolcat
 
 for PID in "${data[@]}"
 do
@@ -36,9 +36,9 @@ done
 echo "";
 
 data=( `ps aux | grep "\[priv\]" | sort -k 72 | awk '{print $2}'`);
-echo "----------------------------------------------"
+echo "----------------------------------------------" | lolcat
 echo "Checking OpenSSH login" ;
-echo "----------------------------------------------"
+echo "----------------------------------------------" | lolcat
 for PID in "${data[@]}"
 do
 	#echo "check $PID";
@@ -52,35 +52,35 @@ done
 
 #echo "";
 
-#echo "-----------------------------------"
+#echo "-----------------------------------" | lolcat
 #echo "Checking OpenVPN login";
-#echo "-----------------------------------"
+#echo "-----------------------------------" | lolcat
 #tail -f /etc/openvpn/server-vpn.log
 
 echo "";
 
-echo "----------------------------------------------"
+echo "----------------------------------------------" | lolcat
 echo "Checking PPTP login";
-echo "----------------------------------------------"
+echo "----------------------------------------------" | lolcat
 last | grep ppp | grep still
 
 echo "";
 
 #Melihat Riwayat Login User
-echo "----------------------------------------------"
+echo "----------------------------------------------" | lolcat
 echo "Checking PPTP Login History";
-echo "----------------------------------------------"
+echo "----------------------------------------------" | lolcat
 last | grep ppp
 
 echo "";
-echo "----------------------------------------------------------------"
+echo "----------------------------------------------------------------" | lolcat
 echo " Kalau ada Multi Login Kill Aja "
-echo " Tetap Multi Login Ganti Passnya baru Kill Lagi "
+echo " Tetap Multi Login Ganti Passnya baru Kill Lagi " | lolcat
 echo " Caranya pake Kill nomor PID "
-echo "----------------------------------------------------------------"
+echo "----------------------------------------------------------------" | lolcat
 
-	echo " DEVELOPED BY YUSUF-ARDIANSYAH atau (082139743432) "
-echo "----------------------------------------------------------------"
+	echo " DEVELOPED BY ZhangZi atau VPNSTUNNEL.COM " | lolcat
+echo "----------------------------------------------------------------" | lolcat
 echo ""
 
 
