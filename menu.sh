@@ -227,8 +227,8 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	echo -e "2.) Membatalkan edit text= (CTRL + X, lalu ketik N dan tekan Enter)"
 	echo "-----------------------------------------------------------"
 	read -p "Tekan ENTER untuk melanjutkan........................ " 
-	nano /bannerssh
-	service dropbear restart && service ssh restart
+	nano /use/bin/bannerssh
+	/etc/init.d/dropbear restart && service ssh restart
 	break
 	;;
 	"Edit Banner Menu")
