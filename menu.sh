@@ -40,16 +40,16 @@ date +"                            %H:%M:%S %Z" | lolcat
 echo "" | lolcat
 echo "" | lolcat
 PS3='Silahkan ketik nomor pilihan anda lalu tekan ENTER: '
-options=("Buat User SSH/OVPN" "Buat User SSH/OVPN Trial" "Perbarui User" "Ganti Password User SSH/OVPN" "Semua User Dan Tanggal Kadaluarsa" "Hapus User" "Buat User PPTP VPN" "Monitor User Login" "Daftar User Aktif" "Daftar User Kadaluarsa" "Disable User Kadaluarsa" "Hapus User Kadaluarsa" "Banned User" "Unbanned User" "Penggunaan Ram" "Speedtest" "Benchmark" "Manual Kill Multi Login" "(ON)AutoKill Multi Login" "(OFF)AutoKill Multi Login" "Ganti Password VPS" "Bersihkan Cache Ram Manual" "Edit Banner Login" "Edit Banner Menu" "Lihat Lokasi User" "Restart Webmin" "Restart Server VPS" "Restart Dropbear" "Restart OpenSSH" "Restart Squid3" "Restart OpenVPN" "Restart SSL" "Ganti Port OpenSSH" "Ganti Port Dropbear" "Ganti Port Squid3" "Ganti Port OpenVPN" "Update Script VPS" "Quit")
+options=("Create User SSH/OVPN" "Create User SSH/OVPN Trial" "Perbarui User" "Ganti Password User SSH/OVPN" "Semua User Dan Tanggal Kadaluarsa" "Hapus User" "Buat User PPTP VPN" "Monitor User Login" "Daftar User Aktif" "Daftar User Kadaluarsa" "Disable User Kadaluarsa" "Hapus User Kadaluarsa" "Banned User" "Unbanned User" "Penggunaan Ram" "Speedtest" "Benchmark" "Manual Kill Multi Login" "(ON)AutoKill Multi Login" "(OFF)AutoKill Multi Login" "Ganti Password VPS" "Bersihkan Cache Ram Manual" "Edit Banner Login" "Edit Banner Menu" "Lihat Lokasi User" "Restart Webmin" "Restart Server VPS" "Restart Dropbear" "Restart OpenSSH" "Restart Squid3" "Restart OpenVPN" "Restart SSL" "Ganti Port OpenSSH" "Ganti Port Dropbear" "Ganti Port Squid3" "Ganti Port OpenVPN" "Update Script VPS" "Quit")| lolcat
 select opt in "${options[@]}"
 do
     case $opt in
-        "Buat User SSH/OVPN")
+        "Create User SSH/OVPN")
 	clear
         user-add | lolcat
         break
             ;;
-	"Buat User SSH/OVPN Trial")
+	"Create User SSH/OVPN Trial")
 	clear
 	user-gen | lolcat
 	break
@@ -227,7 +227,7 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	echo -e "2.) Membatalkan edit text= (CTRL + X, lalu ketik N dan tekan Enter)"
 	echo "-----------------------------------------------------------"
 	read -p "Tekan ENTER untuk melanjutkan........................ " 
-	nano /use/bin/bannerssh
+	nano /usr/bin/issue.net
 	/etc/init.d/dropbear restart && service ssh restart
 	break
 	;;
