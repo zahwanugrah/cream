@@ -18,7 +18,7 @@ fi
 echo "------------------------ MEMBUAT AKUN SSH ------------------------"
 
 
-	echo "           DEVELOPED BY ZHANG-ZI atau (60146309176)           " 
+	echo "           DEVELOPED BY ZHANG-ZI atau VPNSTUNNEL.COM           " 
 echo ""
 
 read -p "Isikan username: " username
@@ -45,7 +45,7 @@ echo -e "============[[-SERVER-PREMIUM-]]==========="
 echo -e "     Host: $MYIP                           " 
 echo -e "     Username: $username                   " 
 echo -e "     Password: $password                   " 
-echo -e "     Port default SSL/TLS : 443.553        " 
+echo -e "     Port default SSL/TLS : 443.           " 
 echo -e "     Port default dropbear: 442,110        " 
 echo -e "     Port default openSSH : 22,143         " 
 echo -e "     Port default squid   : 8080,3128      " 
@@ -56,7 +56,7 @@ echo -e "==========================================="
 echo -e "     NO-CRIMINAL - CYBER,,,                " 
 echo -e "===========================================" 
 echo -e "   http://$MYIP:85/client.ovpn             " 
-echo -e "   Script by ZHANG-ZI (60146309176)" 
+echo -e "   Script by ZHANG-ZI " 
 echo -e "-------------------------------------------"
 echo -e ""
 echo -e ""
