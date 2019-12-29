@@ -19,11 +19,11 @@ fi
 disable-user-expire
 clear
 
-#echo "---------------------------- DAFTAR AKUN SSH ACTIVE ----------------------------"
+#echo "---------------------------- DAFTAR AKUN SSH ACTIVE ----------------------------" | lolcat
 
 
 
-echo "DEVELOPED BY ZHANG-ZI atau (60146309176)"
+echo "DEVELOPED BY ZHANG-ZI atau VPNSTUNNEL" | lolcat
 echo ""
 
 cat /root/activeuser.txt
