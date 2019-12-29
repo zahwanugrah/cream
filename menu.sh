@@ -46,42 +46,42 @@ do
     case $opt in
         "Buat User SSH/OVPN")
 	clear
-        user-add
+        user-add | lolcat
         break
             ;;
 	"Buat User SSH/OVPN Trial")
 	clear
-	user-gen
+	user-gen | lolcat
 	break
 	;;
 	"Perbarui User")
 	clear
-	user-renew
+	user-renew | lolcat
 	break
 	;;
 	"Ganti Password User SSH/OVPN")
 	clear
-	user-pass
+	user-pass | lolcat
 	break
 	;;
 	"Semua User Dan Tanggal Kadaluarsa")
 	clear
-	user-list
+	user-list | lolcat
 	break
 	;;
 	"Hapus User")
 	clear
-	user-del
+	user-del | lolcat
 	break
 	;;
 	"Buat User PPTP VPN")
 	clear
-	user-add-pptp 
+	user-add-pptp | lolcat
 	break
 	;;
 	"Monitor User Login")
 	clear
-	dropmon
+	dropmon | lolcat
 	break
 	;;
 	"Manual Kill Multi Login")
@@ -170,37 +170,37 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	;;
 	"Daftar User Aktif")
 	clear
-	user-active-list | boxes -d dog | lolcat
+	user-active-list | boxes -d peek | lolcat
 	break
 	;;
 	"Daftar User Kadaluarsa")
 	clear
-	user-expire-list 
+	user-expire-list | lolcat
 	break
 	;;
 	"Disable User Kadaluarsa")
 	clear
-	disable-user-expire
+	disable-user-expire | lolcat
 	break
 	;;
 	"Hapus User Kadaluarsa")
 	clear
-	delete-user-expire
+	delete-user-expire | lolcat
 	break
 	;;
 	"Banned User")
 	clear
-	banned-user
+	banned-user | lolcat
 	break
 	;;
 	"Unbanned User")
 	clear
-	unbanned-user
+	unbanned-user | lolcat
 	break
 	;;
 	"Penggunaan Ram")
 	clear
-	ps-mem  | boxes -d dog| lolcat
+	ps-mem  | boxes -d peek| lolcat
 	break
 	;;
 	"Speedtest")
@@ -243,7 +243,7 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	;;
 	"Lihat Lokasi User")
 	clear
-	user-login
+	user-login | lolcat
 	echo "Contoh: 112.123.345.126 lalu Enter" 
         read -p "Ketik Salah Satu Alamat IP User: " userip
         curl ipinfo.io/$userip
