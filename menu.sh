@@ -117,7 +117,7 @@ do
 	    
 	echo "Dasar pelit!!! user ente marah2 jangan salahkan ane ya boss¡¡¡
 nanti jangan lupa di matikan boss
-biar user senang bs multilogin lagi.."  | boxes -d boy
+biar user senang bs multilogin lagi.."  | boxes -d boy | lolcat
 	break
 	;;
 	"(OFF)AutoKill Multi Login")
@@ -137,14 +137,14 @@ biar user senang bs multilogin lagi.."  | boxes -d boy
 	clear
 	echo ""
 	echo "AUTO KILL LOGIN,SUDAH SAYA MATIKAN BOS 
-User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy 
+User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	break
 	;;
 	"Ganti Password VPS")
 	clear
 	read -p "Silahkan isi password baru untuk VPS anda: " pass	
         echo "root:$pass" | chpasswd
-	echo "Ciieeee.. Ciieeeeeee.. Abis Ganti Password VPS Nie Yeeee...!!!"  | boxes -d peek 
+	echo "Ciieeee.. Ciieeeeeee.. Abis Ganti Password VPS Nie Yeeee...!!!"  | boxes -d peek | lolcat
 	break
 	;;
 	"Bersihkan Cache Ram Manual")
@@ -164,13 +164,13 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy
 	echo "---------------------------------------------" 
 	free -h
 	echo "---------------------------------------------" 
-	echo "SUKSES..!!!Cache ram anda sudah di bersihkan." | boxes -d boy 
+	echo "SUKSES..!!!Cache ram anda sudah di bersihkan." | boxes -d boy | lolcat
         echo ""
 	break
 	;;
 	"Daftar User Aktif")
 	clear
-	user-active-list | boxes -d dog 
+	user-active-list | boxes -d dog | lolcat
 	break
 	;;
 	"Daftar User Kadaluarsa")
@@ -200,23 +200,23 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy
 	;;
 	"Penggunaan Ram")
 	clear
-	ps-mem  | boxes -d dog
+	ps-mem  | boxes -d dog | lolcat
 	break
 	;;
 	"Speedtest")
 	clear
 	echo ""
-	echo "SPEEDTEST SERVER" | boxes -d peek
-	echo "-----------------------------------------"
+	echo "SPEEDTEST SERVER" | boxes -d peek| lolcat
+	echo "-----------------------------------------"| lolcat
 	speedtest --share
-	echo "-----------------------------------------"
+	echo "-----------------------------------------"| lolcat
 	break
 	;;
 	"Benchmark")
 	clear
 	echo ""
 	echo ""
-	echo "     #----------BENCHMARK-----------#" | boxes -d peek
+	echo "     #----------BENCHMARK-----------#" | boxes -d peek | lolcat
 	benchmark
 	break
 	;;
@@ -253,45 +253,45 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy
 	"Restart Webmin")
 	clear
 	 service webmin restart
-	 echo "Webmin sudah di restart boss!!!" | boxes -d boy 
+	 echo "Webmin sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	 "Restart Server VPS")
 	 clear
 	 reboot
-	 echo "Sudah di restart tunggu sebentar ya boss!!!" | boxes -d boy
+	 echo "Sudah di restart tunggu sebentar ya boss!!!" | boxes -d boy | lolcat
 	 echo "Sebentar lagi CONSOLE akan log out"
 	 break
 	 ;;
 	 "Restart Dropbear")
 	 clear
 	 service dropbear restart
-	 echo "Dropbear sudah di restart boss!!!" | boxes -d boy
+	 echo "Dropbear sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	 "Restart OpenSSH")
 	 clear
 	 service ssh restart
-	 echo "OpenSSH sudah di restart boss!!!" | boxes -d boy
+	 echo "OpenSSH sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	 "Restart OpenVPN")
 	 clear
 	 service openvpn restart
-	 echo "openvpn sudah di restart boss!!!" | boxes -d boy 
+	 echo "openvpn sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	  "Restart SSL")
 	 clear
 	 service stunnel4 restart
-	 echo "stunnel4/ssl sudah di restart boss!!!" | boxes -d boy
+	 echo "stunnel4/ssl sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	 
 	 "Restart Squid3")
 	 clear
 	 service squid3 restart
-	 echo "Squid3 sudah di restart boss!!!" | boxes -d boy
+	 echo "Squid3 sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
 	 "Ganti Port OpenSSH")
