@@ -14,10 +14,10 @@ if [ "$MYIP" = "" ]; then
 fi
 #MYIP=$(wget -qO- ipv4.icanhazip.com)
 
-echo "-------------------------- GENERATE  AKUN SSH ---------------------------"
+echo "-------------------------- GENERATE  AKUN SSH ---------------------------" | lolcat
 
 
-	echo "           DEVELOPED BY YUSUF-ARDIANSYAH atau (082139743432)          "
+	echo "           DEVELOPED BY ZhangZi & VPNSTUNNEL.COM        " | lolcat
 
 echo ""
 
@@ -37,23 +37,23 @@ useradd -e `date -d "$masaaktif days" +"%Y-%m-%d"` -s /bin/false -M $uname
 exp="$(chage -l $uname | grep "Account expires" | awk -F": " '{print $2}')"
 echo -e "$pass\n$pass\n"|passwd $uname &> /dev/null
 echo -e ""
-echo -e "|       Informasi Akun Baru SSH      |" 
-echo -e "============[[-SERVER-PREMIUM-]]===========" 
-echo -e "     Host: $MYIP                           " 
-echo -e "     Username: $username                   " 
-echo -e "     Password: $password                   " 
-echo -e "     Port default dropbear: 777            " 
-echo -e "     Port default SSL/TLS : 443            " 
-echo -e "     Port default openSSH : 80             " 
-echo -e "     Port default squid   : 8080           " 
-echo -e "     Auto kill user maximal login 2        " 
-echo -e "-------------------------------------------" 
-echo -e "     Aktif Sampai: $(date -d "$AKTIF days" +"%d-%m-%Y")" 
-echo -e "===========================================" 
-echo -e "     NO-CRIMINAL - CYBER,,,                " 
-echo -e "===========================================" 
-echo -e "   http://$MYIP:81/client.ovpn             " 
-echo -e "   Script by YUSUF-ARDIANSYAH              " 
-echo -e "-------------------------------------------" 
+echo -e "|       Informasi Akun Baru SSH      |" | lolcat
+echo -e "============[[-SERVER-PREMIUM-]]===========" | lolcat
+echo -e "     Host: $MYIP                           " | lolcat
+echo -e "     Username: $username                   " | lolcat
+echo -e "     Password: $password                   " | lolcat
+echo -e "     Port default dropbear: 777 & 442      " | lolcat
+echo -e "     Port default SSL/TLS : 443            " | lolcat
+echo -e "     Port default openSSH : 22             " | lolcat
+echo -e "     Port default squid   : 8080,3128      " | lolcat
+echo -e "     Auto kill user maximal login 2        " | lolcat
+echo -e "-------------------------------------------" | LOLCAT
+echo -e "     Aktif Sampai: $(date -d "$AKTIF days" +"%d-%m-%Y")" | lolcat
+echo -e "===========================================" | lolcat
+echo -e "     NO-CRIMINAL - CYBER,,,                " | lolcat
+echo -e "===========================================" | lolcat
+echo -e "   http://$MYIP:85/client.ovpn             " | lolcat
+echo -e "   Script by ZhangZi & VPNSTUNNEL.COM      " | lolcat
+echo -e "-------------------------------------------" | lolcat
 echo -e ""
 echo -e ""
