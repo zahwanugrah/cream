@@ -377,68 +377,10 @@ END
 echo '<ca>' >> /home/vps/public_html/zhangzi.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/zhangzi.ovpn
 echo '</ca>' >> /home/vps/public_html/zhangzi.ovpn
-
-#Create OpenVPN Config
-mkdir -p /home/vps/public_html
-cat > /home/vps/public_html/clientssl.ovpn <<-END
-# OpenVPN Configuration by sshfast.net
-# by zhangzi ovpn ssl
-client
-dev tun
-proto tcp
-persist-key
-persist-tun
-dev tun
-pull
-resolv-retry infinite
-nobind
-user nobody
-group nogroup
-comp-lzo
-ns-cert-type server
-verb 3
-mute 2
-mute-replay-warnings
-auth-user-pass
-redirect-gateway def1
-script-security 2
-route-method exe
-setenv opt block-outside-dns
-route-delay 2
-remote $MYIP 80
-cipher AES-128-CBC
-script-security 2
-up /etc/openvpn/update-resolv-conf
-down /etc/openvpn/update-resolv-conf
-route $MYIP 255.255.255.255 net_gateway
-
-END
-echo '<ca>' >> /home/vps/public_html/clientssl.ovpn
-cat /etc/openvpn/ca.crt >> /home/vps/public_html/clientssl.ovpn
-echo '</ca>' >> /home/vps/public_html/clientssl.ovpn
-cd /home/vps/public_html/
-tar -czf /home/vps/public_html/openvpnssl.tar.gz clientssl.ovpn
-cd
-# Configure Stunnel
-apt -y update
-apt -y full-upgrade
-apt install -y stunnel4
-cd /etc/stunnel/
-openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
-sudo touch stunnel.conf
-echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "accept = 80" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "connect = $MYIP:55" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
-sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-iptables -A INPUT -p tcp --dport 444 -j ACCEPT
-sudo cp /etc/stunnel/stunnel.pem ~
-
 END
 # Restart openvpn ssl
 /etc/init.d/openvpn restart
-/etc/init.d/stunnel4 restart
+#/etc/init.d/stunnel4 restart
 #ufw
 ufw allow ssh
 ufw allow 55/tcp
@@ -607,14 +549,14 @@ sed -i '$ i\echo "nameserver 8.8.4.4" >> /etc/resolv.conf' /etc/rc.local
 sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
 
 # Configure menu
-#wget https://raw.githubusercontent.com/emue25/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
-apt-get -y remove --purge unscd
-apt-get -y install dnsutils
-apt-get -y install unzip
-cd /usr/local/bin/
-wget "https://github.com/emue25/cream/raw/mei/menu.zip"
-unzip menu.zip
-chmod +x /usr/local/bin/*
+wget https://raw.githubusercontent.com/emue25/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
+#apt-get -y remove --purge unscd
+#apt-get -y install dnsutils
+#apt-get -y install unzip
+#cd /usr/local/bin/
+#wget "https://github.com/emue25/cream/raw/mei/menu.zip"
+#unzip menu.zip
+#chmod +x /usr/local/bin/*
 # cronjob
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
 echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
@@ -652,7 +594,7 @@ chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/dropbear restart
 /etc/init.d/fail2ban restart
 /etc/init.d/squid restart
-/etc/init.d/stunnel4 restart
+#/etc/init.d/stunnel4 restart
 
 #clearing history
 history -c
@@ -677,7 +619,6 @@ echo "   - IPv6        : [OFF]"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Application & Port Information"  | tee -a log-install.txt
 echo "   - OpenVPN		: TCP 443 55 1195"  | tee -a log-install.txt
-echo "   - OpenVPN-SSL   	: 80 "  | tee -a log-install.txt
 echo "   - Dropbear		: 442, 777"  | tee -a log-install.txt
 echo "   - BadVPN  	        : 7300"  | tee -a log-install.txt
 echo "   - Squid Proxy	: 8080, 8000, 3128, 81 (limit to IP Server)"  | tee -a log-install.txt
