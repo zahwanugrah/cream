@@ -33,7 +33,7 @@ echo
 	echo ""
 	echo ""
 	
-cat /usr/bin/bannermenu
+cat /usr/bin/bannermenu | lolcat
 echo "                    Server: $MYIP"  | lolcat
 date +"                    %A, %d-%m-%Y"  | lolcat
 date +"                            %H:%M:%S %Z" | lolcat
@@ -44,22 +44,22 @@ options=("Buat User SSH/OVPN" "Buat User SSH/OVPN Trial" "Perbarui User" "Ganti 
 select opt in "${options[@]}"
 do
     case $opt in
-        "Buat/Create User SSH/OVPN") | lolcat
+        "Buat User SSH/OVPN") | lolcat
 	clear
         user-add
         break
             ;;
-	"Buat/Create User SSH/OVPN Trial") | lolcat
+	"Buat User SSH/OVPN Trial") | lolcat
 	clear
 	user-gen
 	break
 	;;
-	"Perbarui/Renew User") | lolcat
+	"Perbarui User") | lolcat
 	clear
 	user-renew
 	break
 	;;
-	"Ganti/Change Password User SSH/OVPN") | lolcat
+	"Ganti Password User SSH/OVPN") | lolcat
 	clear
 	user-pass
 	break
@@ -69,12 +69,12 @@ do
 	user-list
 	break
 	;;
-	"Hapus/Delete User") | lolcat
+	"Hapus User") | lolcat
 	clear
 	user-del
 	break
 	;;
-	"Buat/Create User PPTP VPN") | lolcat
+	"Buat User PPTP VPN") | lolcat
 	clear
 	user-add-pptp 
 	break
@@ -140,7 +140,7 @@ biar user senang bs multilogin lagi.."  | boxes -d boy | lolcat
 User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	break
 	;;
-	"Ganti Password VPS/ Change Password VPS") | lolcat
+	"Ganti Password VPS") | lolcat
 	clear
 	read -p "Silahkan isi password baru untuk VPS anda: " pass	
         echo "root:$pass" | chpasswd
@@ -168,12 +168,12 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
         echo ""
 	break
 	;;
-	"Daftar User Aktif/Liat User Active") | lolcat
+	"Daftar User Aktif") | lolcat
 	clear
 	user-active-list | boxes -d dog | lolcat
 	break
 	;;
-	"Daftar User Kadaluarsa/ List User Exp") | lolcat
+	"Daftar User Kadaluarsa") | lolcat
 	clear
 	user-expire-list 
 	break
@@ -183,7 +183,7 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	disable-user-expire
 	break
 	;;
-	"Hapus User Kadaluarsa/ Delete User Exp") | lolcat
+	"Hapus User Kadaluarsa") | lolcat
 	clear
 	delete-user-expire
 	break
@@ -294,13 +294,13 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	 echo "Squid3 sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
-	 "Ganti/Change Port OpenSSH") | lolcat
+	 "Ganti Port OpenSSH") | lolcat
 	 clear
 	 
 		edit-port-openssh
 	 break
          ;;
-	 "Ganti/Change Port Dropbear") | lolcat
+	 "Ganti Port Dropbear") | lolcat
 	 clear
 		edit-port-dropbear
 	 break
