@@ -16,7 +16,7 @@ fi
 disable-user-expire
 clear
 
-echo "----------------- DAFTAR AKUN SSH EXPIRE -------------------"
+echo "----------------- DAFTAR AKUN SSH EXPIRE -------------------" | lolcat
 
 
 cat /root/expireduser.txt
