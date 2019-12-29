@@ -39,7 +39,7 @@ date +"                    %A, %d-%m-%Y"  | lolcat
 date +"                            %H:%M:%S %Z" | lolcat
 echo "" | lolcat
 echo "" | lolcat
-PS3='Silahkan ketik nomor pilihan anda lalu tekan ENTER:
+PS3='Silahkan ketik nomor pilihan anda lalu tekan ENTER: '
 options=("Buat User SSH/OVPN" "Buat User SSH/OVPN Trial" "Perbarui User" "Ganti Password User SSH/OVPN" "Semua User Dan Tanggal Kadaluarsa" "Hapus User" "Buat User PPTP VPN" "Monitor User Login" "Daftar User Aktif" "Daftar User Kadaluarsa" "Disable User Kadaluarsa" "Hapus User Kadaluarsa" "Banned User" "Unbanned User" "Penggunaan Ram" "Speedtest" "Benchmark" "Manual Kill Multi Login" "(ON)AutoKill Multi Login" "(OFF)AutoKill Multi Login" "Ganti Password VPS" "Bersihkan Cache Ram Manual" "Edit Banner Login" "Edit Banner Menu" "Lihat Lokasi User" "Restart Webmin" "Restart Server VPS" "Restart Dropbear" "Restart OpenSSH" "Restart Squid3" "Restart OpenVPN" "Restart SSL" "Ganti Port OpenSSH" "Ganti Port Dropbear" "Ganti Port Squid3" "Ganti Port OpenVPN" "Update Script VPS" "Quit")
 select opt in "${options[@]}"
 do
@@ -113,11 +113,11 @@ do
 	    service cron restart
 	    service ssh restart
 	    service dropbear restart
-	    echo "------------+ AUTO KILL SUDAH DI AKTIFKAN BOSS +--------------"  | lolcat
+	    echo "------------+ AUTO KILL SUDAH DI AKTIFKAN BOSS +--------------"  
 	    
-	echo "Dasar Kedekut nak mampuz!!! user ente marah2 jangan salahkan ane ya boss¡¡¡ | lolcat
-nanti jangan lupa di matikan boss | lolcat
-biar user senang bs multilogin lagi.."  | boxes -d boy | lolcat
+	echo "Dasar pelit!!! user ente marah2 jangan salahkan ane ya boss¡¡¡
+nanti jangan lupa di matikan boss
+biar user senang bs multilogin lagi.."  | boxes -d boy
 	break
 	;;
 	"(OFF)AutoKill Multi Login")
@@ -136,7 +136,7 @@ biar user senang bs multilogin lagi.."  | boxes -d boy | lolcat
 	    service dropbear restart
 	clear
 	echo ""
-	echo "AUTO KILL LOGIN,SUDAH SAYA MATIKAN BOS | lolcat
+	echo "AUTO KILL LOGIN,SUDAH SAYA MATIKAN BOS 
 User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	break
 	;;
@@ -144,14 +144,14 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	clear
 	read -p "Silahkan isi password baru untuk VPS anda: " pass	
         echo "root:$pass" | chpasswd
-	echo "Ciieeee.. Ciieeeeeee.. Abis Ganti Password VPS Nie Yeeee...!!!"  | boxes -d peek | lolcat
+	echo "Ciieeee.. Ciieeeeeee.. Abis Ganti Password VPS Nie Yeeee...!!!"  | boxes -d peek 
 	break
 	;;
-	"Bersihkan Cache Ram Manual") 
+	"Bersihkan Cache Ram Manual")
 	clear
-	echo "---------------------------------------------" | lolcat
-	echo "Sebelum..."  | lolcat
-	echo "---------------------------------------------" | lolcat
+	echo "---------------------------------------------"
+	echo "Sebelum..."  
+	echo "---------------------------------------------"
        free -h
 	echo 1 > /proc/sys/vm/drop_caches
 	sleep 1
@@ -159,16 +159,16 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	sleep 1
 	echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a
 	sleep 1
-	echo "---------------------------------------------" | lolcat
-	echo "Sesudah..."  | lolcat
-	echo "---------------------------------------------" | lolcat
+	echo "---------------------------------------------" 
+	echo "Sesudah..."  
+	echo "---------------------------------------------" 
 	free -h
-	echo "---------------------------------------------" | lolcat
+	echo "---------------------------------------------" 
 	echo "SUKSES..!!!Cache ram anda sudah di bersihkan." | boxes -d boy | lolcat
         echo ""
 	break
 	;;
-	"Daftar User Aktif") 
+	"Daftar User Aktif")
 	clear
 	user-active-list | boxes -d dog | lolcat
 	break
@@ -200,7 +200,7 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	;;
 	"Penggunaan Ram")
 	clear
-	ps-mem  | boxes -d dog | lolcat
+	ps-mem  | boxes -d dog| lolcat
 	break
 	;;
 	"Speedtest")
@@ -208,25 +208,25 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	echo ""
 	echo "SPEEDTEST SERVER" | boxes -d peek| lolcat
 	echo "-----------------------------------------"| lolcat
-	speedtest --share
-	echo "-----------------------------------------"| lolcat
+	speedtest --share 
+	echo "-----------------------------------------" | lolcat
 	break
 	;;
 	"Benchmark")
 	clear
-	echo "" | lolcat
-	echo "" | lolcat
+	echo ""
+	echo ""
 	echo "     #----------BENCHMARK-----------#" | boxes -d peek | lolcat
 	benchmark
 	break
 	;;
         "Edit Banner Login")
 	clear
-	echo "-----------------------------------------------------------" | lolcat
-	echo -e "1.) Simpan text          = (CTRL + X, lalu ketik Y dan tekan Enter) " | lolcat
-	echo -e "2.) Membatalkan edit text= (CTRL + X, lalu ketik N dan tekan Enter)" | lolcat
-	echo "-----------------------------------------------------------" | lolcat
-	read -p "Tekan ENTER untuk melanjutkan........................ "  | lolcat
+	echo "-----------------------------------------------------------" 
+	echo -e "1.) Simpan text          = (CTRL + X, lalu ketik Y dan tekan Enter) "
+	echo -e "2.) Membatalkan edit text= (CTRL + X, lalu ketik N dan tekan Enter)"
+	echo "-----------------------------------------------------------"
+	read -p "Tekan ENTER untuk melanjutkan........................ " 
 	nano /bannerssh
 	service dropbear restart && service ssh restart
 	break
@@ -234,20 +234,20 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	"Edit Banner Menu")
 	clear
 	echo "--------------------------------------------------------" 
-	echo -e "1. Simpan text          = (CTRL + X, lalu ketik Y dan tekan ENTER)" | lolcat
-	echo -e "2. Membatalkan edit text= (CTRL + X,lalu ketik N dan tekan ENTER)" | lolcat
-	echo "--------------------------------------------------------" | lolcat
-	read -p "Tekan ENTER untuk melanjutkan..................."  | lolcat
+	echo -e "1. Simpan text          = (CTRL + X, lalu ketik Y dan tekan ENTER)" 
+	echo -e "2. Membatalkan edit text= (CTRL + X,lalu ketik N dan tekan ENTER)"
+	echo "--------------------------------------------------------"
+	read -p "Tekan ENTER untuk melanjutkan..................." 
 	nano /usr/bin/bannermenu
 	break
 	;;
 	"Lihat Lokasi User")
 	clear
 	user-login
-	echo "Contoh: 112.123.345.126 lalu Enter" | lolcat
+	echo "Contoh: 112.123.345.126 lalu Enter" 
         read -p "Ketik Salah Satu Alamat IP User: " userip
         curl ipinfo.io/$userip
-	echo "-----------------------------------" | lolcat
+	echo "-----------------------------------"
         break
 	;;
 	"Restart Webmin")
@@ -260,7 +260,7 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	 clear
 	 reboot
 	 echo "Sudah di restart tunggu sebentar ya boss!!!" | boxes -d boy | lolcat
-	 echo "Sebentar lagi CONSOLE akan log out" | lolcat
+	 echo "Sebentar lagi CONSOLE akan log out"
 	 break
 	 ;;
 	 "Restart Dropbear")
@@ -269,7 +269,7 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	 echo "Dropbear sudah di restart boss!!!" | boxes -d boy | lolcat
 	 break
 	 ;;
-	 "Restart OpenSSH") 
+	 "Restart OpenSSH")
 	 clear
 	 service ssh restart
 	 echo "OpenSSH sudah di restart boss!!!" | boxes -d boy | lolcat
@@ -278,7 +278,7 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	 "Restart OpenVPN")
 	 clear
 	 service openvpn restart
-	 echo "openvpn sudah di restart boss!!!" | boxes -d boy | lolcat
+	 echo "openvpn sudah di restart boss!!!" | boxes -d boy  | lolcat
 	 break
 	 ;;
 	  "Restart SSL")
@@ -315,7 +315,7 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 			python speedtest.py --share
 			break		
 	 ;;
-	 "Ganti/Change Port OpenVPN")
+	 "Ganti Port OpenVPN")
 	 clear
 		edit-port-openvpn
 	 break
