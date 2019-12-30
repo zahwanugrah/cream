@@ -144,7 +144,7 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	clear
 	read -p "Silahkan isi password baru untuk VPS anda: " pass	
         echo "root:$pass" | chpasswd
-	echo "Ciieeee.. Ciieeeeeee.. Abis Ganti Password VPS Nie Yeeee...!!!"  | boxes -d peek 
+	echo "Ciieeee.. Ciieeeeeee.. Abis Ganti Password VPS Nie Yeeee...!!!"  | boxes -d peek | lolcat
 	break
 	;;
 	"Bersihkan Cache Ram Manual")
