@@ -46,42 +46,42 @@ do
     case $opt in
         "Create User SSH/OVPN")
 	clear
-        user-add | lolcat
+        user-add 
         break
             ;;
 	"Create User SSH/OVPN Trial")
 	clear
-	user-gen | lolcat
+	user-gen
 	break
 	;;
 	"Renew User")
 	clear
-	user-renew | lolcat
+	user-renew
 	break
 	;;
 	"Change Password User SSH/OVPN")
 	clear
-	user-pass | lolcat
+	user-pass
 	break
 	;;
 	"All User Dan Date Expired")
 	clear
-	user-list | lolcat
+	user-list
 	break
 	;;
 	"Delete User")
 	clear
-	user-del | lolcat
+	user-del
 	break
 	;;
 	"Create User PPTP VPN")
 	clear
-	user-add-pptp | lolcat
+	user-add-pptp
 	break
 	;;
 	"Monitor User Login")
 	clear
-	dropmon | lolcat
+	dropmon
 	break
 	;;
 	"Manual Kill Multi Login")
@@ -113,11 +113,11 @@ do
 	    /etc/init.d/cron restart
 	    /etc/init.d/ssh restart
 	    /etc/init.d/dropbear restart
-	    echo "------------+ AUTO KILL SUDAH DI AKTIFKAN BOSS +--------------"  | lolcat
+	    echo "------------+ AUTO KILL SUDAH DI AKTIFKAN BOSS +--------------"
 	    
-	echo "Dasar Kedekut nak mampuz!!! user ente marah2 jangan salahkan ane ya boss¡¡¡ | lolcat
+	echo "Dasar Kedekut nak mampuz!!! user ente marah2 jangan salahkan ane ya boss¡¡¡
 nanti jangan lupa di matikan boss
-biar user senang bisa multilogin lagi.."  | boxes -d boy
+biar user senang bisa multilogin lagi.."  | boxes -d peek | lolcat
 	break
 	;;
 	"(OFF)AutoKill Multi Login")
@@ -175,27 +175,27 @@ User Sudah Bisa Multi Login Lagi!!!" | boxes -d boy | lolcat
 	;;
 	"List User Expire")
 	clear
-	user-expire-list | lolcat
+	user-expire-list
 	break
 	;;
 	"Disable User expire")
 	clear
-	disable-user-expire | lolcat
+	disable-user-expire
 	break
 	;;
 	"Delete User Expire")
 	clear
-	delete-user-expire | lolcat
+	delete-user-expire
 	break
 	;;
 	"Banned User")
 	clear
-	banned-user | lolcat
+	banned-user
 	break
 	;;
 	"Unbanned User")
 	clear
-	unbanned-user | lolcat
+	unbanned-user
 	break
 	;;
 	"Penggunaan Ram")
