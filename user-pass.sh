@@ -14,15 +14,15 @@ if [ "$MYIP" = "" ]; then
 fi
 #MYIP=$(wget -qO- ipv4.icanhazip.com)
 
-echo "--------------------------- GANTI PASSWORD AKUN SSH ---------------------------"
+echo "--------------------------- GANTI PASSWORD AKUN SSH ---------------------------" | lolcat
 
-	echo "            DEVELOPED BY zhang-zi atau (6014309176)            "
+	echo "            DEVELOPED BY ZhangZi atau VPNSTUNNEL.COM            " | lolcat
 echo ""
 
 # begin of user-list
-echo "-----------------------------------"
-echo "USERNAME              EXP DATE     "
-echo "-----------------------------------"
+echo "-----------------------------------" | lolcat
+echo "USERNAME              EXP DATE     " | lolcat
+echo "-----------------------------------" | lolcat
 
 while read expired
 do
@@ -46,27 +46,27 @@ if [ $? -eq 0 ]; then
 	echo ""
 	if [[ $password = $password1 ]]; then
 		echo $username:$password | chpasswd
-		echo "Penggantian password akun [$username] Sukses"
+		echo "Penggantian password akun [$username] Sukses" | lolcat
 		echo ""
-		echo "-----------------------------------"
-		echo "Data Login:"
-		echo "-----------------------------------"
-		echo "Host/IP: $MYIP"
-		echo "Dropbear Port: 442, 777"
-		echo "SSL/TSL Port: 443"
-		echo "OpenSSH Port: 22, 80"
-		echo "Squid Proxy: 8080, 3128"
-		echo "OpenVPN Config: http://$MYIP:81/client.ovpn"
-		echo "Username: $username"
-		echo "Password: $password"
-		#echo "Valid s/d: $(date -d "$AKTIF days" +"%d-%m-%Y")"
-		echo "-----------------------------------"
+		echo "-----------------------------------" | lolcat
+		echo "Data Login:" | lolcat
+		echo "-----------------------------------" | lolcat
+		echo "Host/IP: $MYIP" | lolcat
+		echo "Dropbear Port: 442, 777" | lolcat
+		echo "SSL/TSL Port: 443" | lolcat
+		echo "OpenSSH Port: 22, 143" | lolcat
+		echo "Squid Proxy: 8080, 3128" | lolcat
+		echo "OpenVPN Config: http://$MYIP:85/client.ovpn" | lolcat
+		echo "Username: $username" | lolcat
+		echo "Password: $password" | lolcat
+		#echo "Valid s/d: $(date -d "$AKTIF days" +"%d-%m-%Y")" | lolcat
+		echo "-----------------------------------" | lolcat
 	else
-		echo "Penggantian password akun [$username] Gagal"
-		echo "[Password baru] & [Konfirmasi Password Baru] tidak cocok, silahkan ulangi lagi!"
+		echo "Penggantian password akun [$username] Gagal" | lolcat
+		echo "[Password baru] & [Konfirmasi Password Baru] tidak cocok, silahkan ulangi lagi!" | lolcat
 	fi
 else
-	echo "Username [$username] belum terdaftar!"
+	echo "Username [$username] belum terdaftar!" | lolcat
 	exit 1
 fi
 
