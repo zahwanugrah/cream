@@ -14,9 +14,9 @@ if [ "$MYIP" = "" ]; then
 fi
 #MYIP=$(wget -qO- ipv4.icanhazip.com)
 
-echo "-----------------------------------"
-echo "USERNAME              EXP DATE     "
-echo "-----------------------------------"
+echo "-----------------------------------" | lolcat
+echo "USERNAME              EXP DATE     " | lolcat
+echo "-----------------------------------" | lolcat
 
 while read expired
 do
@@ -28,15 +28,15 @@ do
 	fi
 done < /etc/passwd
 
-JUMLAH="$(awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd | wc -l)"
+JUMLAH="$(awk -F: '$3 >= 1000 && $1 != "nobody" {print $1}' /etc/passwd | wc -l)" | lolcat
 
-echo "-----------------------------------"
-echo "Jumlah akun: $JUMLAH user"
-echo "-----------------------------------"
+echo "-----------------------------------" | lolcat
+echo "Jumlah akun: $JUMLAH user" | lolcat
+echo "-----------------------------------" | lolcat
 echo ""
-echo "----------------------------------------------------------------"
+echo "----------------------------------------------------------------" | lolcat
 
-	echo " DEVELOPED BY YUSUF-ARDIANSYAH atau (082139743432)"
-echo "----------------------------------------------------------------"
+	echo " DEVELOPED BY ZhangZi atau VPNSTUNNEL.COM" | lolcat
+echo "----------------------------------------------------------------" | lolcat
 echo ""
 
