@@ -19,60 +19,21 @@ echo "------------------------ MEMBUAT AKUN SSH ------------------------" | lolc
 
 
 	echo "           DEVELOPED BY ZHANG-ZI atau VPNSTUNNEL.COM           " | lolcat
-echo ""
+read -p "Isikan username: " username
 
-red='\e[1;31m'
-green='\e[0;32m'
-NC='\e[0m'
-echo "Connecting to Server..."
-sleep 0.5
-echo "Checking Permision..."
-sleep 0.4
-CEK=FordSenpai
-if [ "$CEK" != "zhangzi" ]; then
-		echo -e "${red}Permission Denied!${NC}";
-        echo $CEK;
-        exit 0;
-else
-echo -e "${green}Permission Accepted...${NC}"
-sleep 1
-clear
-fi
-  echo ""
-  echo ""
-  echo ""
-read -p "        Username       : " username
 egrep "^$username" /etc/passwd >/dev/null
 if [ $? -eq 0 ]; then
-echo "Username already exists in your VPS"
-exit 0
+	echo "Username [$username] sudah ada!"
+	exit 1
 else
-read -p "        Password       : " password
-read -p "        How many days? : " masa_aktif
-MYIP=$(wget -qO- ipv4.icanhazip.com)
-today=`date +%s`
-masa_aktif_detik=$(( $masa_aktif * 86400 ))
-saat_expired=$(($today + $masa_aktif_detik))
-tanggal_expired=$(date -u --date="1970-01-01 $saat_expired sec GMT" +%Y/%m/%d)
-tanggal_expired_display=$(date -u --date="1970-01-01 $saat_expired sec GMT" '+%d %B %Y')
-clear
-echo "Connecting to Server..."
-sleep 0.5
-echo "Creating Account..."
-sleep 0.5
-echo "Generating Host..."
-sleep 0.5
-echo "Generating Your New Username: $username"
-sleep 0.5
-echo "Generating Password: $password"
-sleep 1
+	read -p "Isikan password akun [$username]: " password
+	read -p "Berapa hari akun [$username] aktif: " AKTIF
 
-useradd $username
-usermod -s /bin/false $username
-usermod -e  $tanggal_expired $username
-  egrep "^$username" /etc/passwd >/dev/null
-  echo -e "$password\n$password" | passwd $username
-  clear
+	today="$(date +"%Y-%m-%d")"
+	expire=$(date -d "$AKTIF days" +"%Y-%m-%d")
+	useradd -M -N -s /bin/false -e $expire $username
+	echo $username:$password | chpasswd
+clear
 clear
 echo -e ""
 echo -e ""
