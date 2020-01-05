@@ -1,5 +1,49 @@
 #!/bin/sh
 #Script by ZhangZi
+# initialisasi var
+MYIP=$(wget -qO- ipv4.icanhazip.com);
+MYIP2="s/xxxxxxxxx/$MYIP/g";
+cd /root
+
+# check registered ip
+wget -q -O IP https://raw.githubusercontent.com/emue25/VPSauto/master/IP.txt
+if ! grep -w -q $MYIP IP; then
+	echo "Maaf boz, hanya IP teregister sahaja yang boleh menggunakan script ini!"
+        echo "     
+                       
+               =============== OS-DEBIAN-9-64-bit ============
+               ♦                                             ♦
+               ♦     AUTOSCRIPT CREATED BY VPNSTUNNEL        ♦
+	       ♦                     &                       ♦
+	       ♦                 ZHANG-ZI                    ♦
+               ♦     -----------Contact Us------------       ♦ 
+               ♦            Tel : +601122334455              ♦
+               ♦         { Sms/whatsapp/telegram }           ♦ 
+               ♦           http://t.me/denbaguss             ♦    
+               ♦     ------------Channel Tele----------      ♦
+               ♦                                             ♦
+                ================ OS- 64-bit =================
+               
+                 Please make payment before use auto script
+                 ..........................................
+                 .          Price: Rm: 30/1 IP            .
+                 .          *****************             .
+                 .           Maybank Account              .
+                 .                 &                      .
+                 .               Paypall                  .
+                 .           =================            .
+                 .          Contact:  admin               .
+                 .          Name   : denbaguss            .
+                 ..........................................   
+                          Thank You For Choice Us"
+
+	echo "        Contact: editor ( vpnstunnel.com atau denbaguss)"
+	
+	rm /root/IP
+	rm ori.sh
+	rm -f /root/IP
+	exit
+fi
 
 wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg|apt-key add -
 sleep 2
