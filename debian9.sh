@@ -30,7 +30,7 @@ if ! grep -w -q $MYIP IP; then
                  .          *****************             .
                  .           Maybank Account              .
                  .                 &                      .
-                 .               Paypall                  .
+                 .              Paypall                   .
                  .           =================            .
                  .          Contact:  admin               .
                  .          Name   : denbaguss            .
@@ -40,7 +40,7 @@ if ! grep -w -q $MYIP IP; then
 	echo "        Contact: editor ( vpnstunnel.com atau denbaguss)"
 	
 	rm /root/IP
-	rm debi9.sh
+	rm debian9.sh
 	rm -f /root/IP
 	exit
 fi
