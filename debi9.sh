@@ -6,7 +6,7 @@ MYIP2="s/xxxxxxxxx/$MYIP/g";
 cd /root
 
 # check registered ip
-wget -q -O IP https://raw.githubusercontent.com/emue25/VPSauto/master/IP.txt
+wget -q -O IP https://raw.githubusercontent.com/emue25/cream/mei/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf boz, hanya IP teregister sahaja yang boleh menggunakan script ini!"
         echo "     
@@ -40,7 +40,7 @@ if ! grep -w -q $MYIP IP; then
 	echo "        Contact: editor ( vpnstunnel.com atau denbaguss)"
 	
 	rm /root/IP
-	rm ori.sh
+	rm debi9.sh
 	rm -f /root/IP
 	exit
 fi
