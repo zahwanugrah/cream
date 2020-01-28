@@ -393,7 +393,7 @@ systemctl start openvpn@server4.service
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/zhangzi.ovpn <<-END
 # Created by kopet
-# sshfast.net & vpnstunnel.com
+# vpnshock.com & vpnstunnel.com
 auth-user-pass
 client
 dev tun
@@ -593,14 +593,14 @@ sed -i '$ i\echo "nameserver 8.8.4.4" >> /etc/resolv.conf' /etc/rc.local
 sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
 
 # Configure menu
-wget https://raw.githubusercontent.com/emue25/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
-#apt-get -y remove --purge unscd
-#apt-get -y install dnsutils
+#wget https://raw.githubusercontent.com/emue25/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
+apt-get -y remove --purge unscd
+apt-get -y install dnsutils
 #apt-get -y install unzip
-#cd /usr/local/bin/
-#wget "https://github.com/emue25/cream/raw/mei/menu.zip"
-#unzip menu.zip
-#chmod +x /usr/local/bin/*
+cd /usr/local/bin/
+wget "https://github.com/emue25/cream/raw/mei/menu.zip"
+unzip menu.zip
+chmod +x /usr/local/bin/*
 # cronjob
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
 echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
