@@ -52,7 +52,12 @@ echo "deb http://build.openvpn.net/debian/openvpn/release/2.4 stretch main" > /e
 apt update -y
 apt upgrade -y
 apt install openvpn nginx php7.0-fpm stunnel4 squid3 dropbear easy-rsa vnstat ufw build-essential fail2ban zip -y
-
+cat > /etc/apt/sources.list <<END2
+deb http://cdn-aws.deb.debian.org/debian stable main
+deb http://cdn-aws.deb.debian.org/debian-security stable/updates main
+deb https://deb.debian.org/debian stable main
+deb https://deb.debian.org/debian-security stable/updates main
+END2
 # initializing var
 MYIP=$(wget -qO- ipv4.icanhazip.com);
 MYIP2="s/xxxxxxxxx/$MYIP/g";
