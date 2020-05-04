@@ -74,13 +74,13 @@ echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 
 # install webmin
-cd
-wget "https://github.com/mzkin/script/raw/auto/webmin_1.930_all.deb"
-dpkg --install webmin_1.930_all.deb;
-apt-get -y -f install;
-sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-rm /root/webmin_1.930_all.deb
-/etc/init.d/webmin restart
+#cd
+#wget "https://github.com/mzkin/script/raw/auto/webmin_1.930_all.deb"
+#dpkg --install webmin_1.930_all.deb;
+#apt-get -y -f install;
+#sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
+#rm /root/webmin_1.930_all.deb
+#/etc/init.d/webmin restart
 
 # install screenfetch
 cd
