@@ -1,48 +1,71 @@
 #!/bin/sh
 #Script by ZhangZi
-# initialisasi var
-MYIP=$(wget -qO- ipv4.icanhazip.com);
-MYIP2="s/xxxxxxxxx/$MYIP/g";
 cd /root
 
-# check registered ip
-wget -q -O IP https://raw.githubusercontent.com/emue25/cream/mei/IP.txt
-if ! grep -w -q $MYIP IP; then
-	echo "Maaf boz, hanya IP teregister sahaja yang boleh menggunakan script ini!"
-        echo "     
-                       
-               =============== OS-DEBIAN-9-64-bit ============
-               ♦                                             ♦
-               ♦     AUTOSCRIPT CREATED BY VPNSTUNNEL        ♦
-	       ♦                     &                       ♦
-	       ♦                 ZHANG-ZI                    ♦
-               ♦     -----------Contact Us------------       ♦ 
-               ♦            Tel : +601122334455              ♦
-               ♦         { Sms/whatsapp/telegram }           ♦ 
-               ♦           http://t.me/denbaguss             ♦    
-               ♦     ------------Channel Tele----------      ♦
-               ♦                                             ♦
-                ================ OS- 64-bit =================
-               
-                 Please make payment before use auto script
-                 ..........................................
-                 .          Price: Rm: 30/1 IP            .
-                 .          *****************             .
-                 .           Maybank Account              .
-                 .                 &                      .
-                 .              Paypall                   .
-                 .           =================            .
-                 .          Contact:  admin               .
-                 .          Name   : denbaguss            .
-                 ..........................................   
-                          Thank You For Choice Us"
-
-	echo "        Contact: editor ( vpnstunnel.com atau denbaguss)"
-	
-	rm /root/IP
-	rm debian9.sh
-	rm -f /root/IP
-	exit
+myip=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0' | head -n1`;
+myint=`ifconfig | grep -B1 "inet addr:$myip" | head -n1 | awk '{print $1}'`;
+red='\e[1;31m'
+green='\e[0;32m'
+NC='\e[0m'
+clear
+echo ""
+echo ""
+echo ""
+wget --quiet -O IP.txt https://raw.githubusercontent.com/emue25/cream/mei/IP.txt
+flag=0
+echo -e "${green}Connecting to Server...${NC}"
+sleep 1
+echo ""
+echo -e "${green}Checking Permission...${NC}"
+sleep 1
+echo ""
+echo -e "${green}Your IP Server : $myip${NC}"
+sleep 1
+echo ""
+echo -e "${green}Checking Your IP Server...${NC}"
+sleep 3
+iplist="IP.txt"
+lines=`cat $IP`
+for line in $lines; do
+if [ "$line" == "$myip" ];
+then
+flag=1
+echo ""
+echo -e "${green}IP address accepted!${NC}";
+echo ""
+echo ""
+echo "          -----[WELCOME TO TEAM MUMET™ PREMIUM SCRIPT]-----  "
+echo "        ====================================================="
+echo "        #            Telegram : @mumet                      #"
+echo "        #       Copyright: © TEAM-MUMET™ Premium 2020       #"
+echo "        ====================================================="
+echo ""
+echo ""
+echo -e "${green}Permission Accepted...${NC}"
+sleep 1.5
+echo ""
+echo "		==============================		"
+echo "		Thanks for using our services.		"
+echo "		==============================		"
+echo ""
+fi
+done
+if [ $flag -eq 0 ]
+then
+clear
+echo ""
+echo ""
+echo -e "${red}Access denied!${NC}"
+echo "                                                        				 "
+echo "============================================================================"
+echo -e "${red}Sorry, your ip address $myip is not register in our system.${NC}	  "
+echo ""
+echo -e "${green}Please contact your network administrator to access this service at
+telegram: @blackitsupport ${NC} 												  "
+echo "============================================================================"
+rm -f /root/debian9
+rm -f /root/IP.txt
+exit 1
 fi
 
 wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg|apt-key add -
@@ -208,9 +231,9 @@ wget -O /usr/bin/badvpn-udpgw "https://github.com/emue25/AutoScriptDebianStretch
 if [ "$OS" == "x86_64" ]; then
   wget -O /usr/bin/badvpn-udpgw "https://github.com/emue25/AutoScriptDebianStretch/raw/master/Files/Plugins/badvpn-udpgw64"
 fi
-sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
+sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
-screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200
 
 #install OpenVPN
 cp -r /usr/share/easy-rsa/ /etc/openvpn
