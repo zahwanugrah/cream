@@ -1,10 +1,5 @@
 #!/bin/sh
 #Script by ZhangZi
-cd /root
-
-# initialisasi var
-export DEBIAN_FRONTEND=noninteractive
-OS=`uname -m`;
 
 MYIP=$(ifconfig | grep 'inet addr:' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | cut -d: -f2 | awk '{ print $1}' | head -1)
 if [ "$MYIP" = "" ]; then
@@ -18,7 +13,7 @@ if [[ $ether = "" ]]; then
 fi
 
 # go to root
-cd
+cd /root
 
 # check registered ip
 wget -q -O IP https://raw.githubusercontent.com/emue25/cream/mei/IP.txt
