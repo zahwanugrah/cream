@@ -35,9 +35,10 @@ if ! grep -w -q $MYIP IP; then
 
 	echo "        Hubungi: editor ( elang overdosis atau deeniedoank)"											  "
 echo "============================================================================"
-rm -f /root/debian9.sh
-rm -f /root/IP.txt
-exit 1
+        rm /root/IP
+	rm debian9.sh
+	rm -f /root/IP
+	exit
 fi
 
 wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg|apt-key add -
