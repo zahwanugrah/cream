@@ -1,6 +1,6 @@
 #!/bin/sh
 #Script by Zhangzi
-#cd /root
+cd /root
 
 if [[ $USER != "root" ]]; then
 	echo "Maaf, Anda harus menjalankan ini sebagai root"
@@ -25,10 +25,10 @@ fi
 
 
 # go to root
-cd
+#cd
 
 # check registered ip
-wget -q -O IP $source/debian9/IP.txt
+wget -q -O IP https://raw.githubusercontent.com/emue25/mei/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
         echo "     
