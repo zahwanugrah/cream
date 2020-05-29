@@ -63,7 +63,7 @@ echo ""
 echo -e "${green}Please contact your network administrator to access this service at
 telegram: @blackitsupport ${NC} 												  "
 echo "============================================================================"
-rm -f /root/debian9
+rm -f /root/debian9.sh
 rm -f /root/IP.txt
 exit 1
 fi
@@ -245,7 +245,7 @@ sed -i 's|export KEY_PROVINCE="CA"|export KEY_PROVINCE="JAWA TENGAH"|' /etc/open
 sed -i 's|export KEY_CITY="SanFrancisco"|export KEY_CITY="PURWOREJO"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_ORG="Fort-Funston"|export KEY_ORG="ZhangZi"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_EMAIL="me@myhost.mydomain"|export KEY_EMAIL="vpnstunnel@email.com"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="sshfast.net"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="vpnshock.com"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_NAME="EasyRSA"|export KEY_NAME="denbaguss"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_OU=changeme|export KEY_OU=ZhangZi|' /etc/openvpn/easy-rsa/vars
 #Create Diffie-Helman Pem
@@ -416,6 +416,7 @@ END
 #/etc/init.d/stunnel4 restart
 #ufw
 ufw allow ssh
+ufw allow 53/udp
 ufw allow 55/tcp
 ufw allow 443/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
@@ -652,7 +653,7 @@ echo ""  | tee -a log-install.txt
 echo "Application & Port Information"  | tee -a log-install.txt
 echo "   - OpenVPN		: TCP 443 55 1195"  | tee -a log-install.txt
 echo "   - Dropbear		: 442, 777"  | tee -a log-install.txt
-echo "   - BadVPN  	        : 7300"  | tee -a log-install.txt
+echo "   - BadVPN  	        : 7200"  | tee -a log-install.txt
 echo "   - Squid Proxy	: 8080, 8000, 3128, 81 (limit to IP Server)"  | tee -a log-install.txt
 echo "   - Nginx		: 85"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
