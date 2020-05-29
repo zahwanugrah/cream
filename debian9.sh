@@ -1,19 +1,43 @@
 #!/bin/sh
 #Script by Zhangzi
-cd /root
+#cd /root
+
+if [[ $USER != "root" ]]; then
+	echo "Maaf, Anda harus menjalankan ini sebagai root"
+	exit
+fi
+
+# initialisasi var
+export DEBIAN_FRONTEND=noninteractive
+OS=`uname -m`;
+
+MYIP=$(ifconfig | grep 'inet addr:' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | cut -d: -f2 | awk '{ print $1}' | head -1)
+if [ "$MYIP" = "" ]; then
+	MYIP=$(wget -qO- ipv4.icanhazip.com)
+fi
+MYIP2="s/xxxxxxxxx/$MYIP/g";
+ether=`ifconfig | cut -c 1-8 | sort | uniq -u | grep venet0 | grep -v venet0:`
+if [[ $ether = "" ]]; then
+        ether=eth0
+fi
+
+	source="https://raw.githubusercontent.com/emue25/mei"
+
+
+# go to root
+cd
 
 # check registered ip
-wget -q -O IP https://raw.githubusercontent.com/emue25/cream/mei/IP.txt
+wget -q -O IP $source/debian9/IP.txt
 if ! grep -w -q $MYIP IP; then
 	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
         echo "     
                        
                =============== OS-32 & 64-bit ================
                ♦                                             ♦
-               ♦  AUTOSCRIPT CREATED BY YUSUF ARDIANSYAH     ♦
+               ♦   AUTOSCRIPT CREATED BY YUSUF ARDIANSYAH    ♦
 	       ♦                     &                       ♦
 	       ♦               DENY SISWANTO                 ♦
-	       ♦           MODIFIED BY DENBAGUSS             ♦
                ♦       -----------About Us------------       ♦ 
                ♦            Tel : +6283843700098             ♦
                ♦         { Sms/whatsapp/telegram }           ♦ 
@@ -24,7 +48,7 @@ if ! grep -w -q $MYIP IP; then
                
                  Please make payment before use auto script
                  ..........................................
-                 .        Price: Rp.20.000 = 1IP          .
+                 .          Price: Rm.20 = 1IP            .
                  .          *****************             .
                  .           Maybank Account              .
                  .           =================            .
@@ -33,9 +57,9 @@ if ! grep -w -q $MYIP IP; then
                  ..........................................   
                           Thank You For Choice Us"
 
-	echo "        Hubungi: editor ( elang overdosis atau deeniedoank)"											  "
-echo "============================================================================"
-        rm /root/IP
+	echo "        Hubungi: editor ( elang overdosis atau deeniedoank)"
+	
+	rm /root/IP
 	rm debian9.sh
 	rm -f /root/IP
 	exit
