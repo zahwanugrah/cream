@@ -2,66 +2,56 @@
 #Script by ZhangZi
 cd /root
 
-myip=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0' | head -n1`;
-myint=`ifconfig | grep -B1 "inet addr:$myip" | head -n1 | awk '{print $1}'`;
-red='\e[1;31m'
-green='\e[0;32m'
-NC='\e[0m'
-clear
-echo ""
-echo ""
-echo ""
-wget --quiet -O IP.txt https://raw.githubusercontent.com/emue25/cream/mei/IP.txt
-flag=0
-echo -e "${green}Connecting to Server...${NC}"
-sleep 1
-echo ""
-echo -e "${green}Checking Permission...${NC}"
-sleep 1
-echo ""
-echo -e "${green}Your IP Server : $myip${NC}"
-sleep 1
-echo ""
-echo -e "${green}Checking Your IP Server...${NC}"
-sleep 3
-iplist="IP.txt"
-lines=`cat $IP`
-for line in $lines; do
-if [ "$line" == "$myip" ];
-then
-flag=1
-echo ""
-echo -e "${green}IP address accepted!${NC}";
-echo ""
-echo ""
-echo "          -----[WELCOME TO TEAM MUMET™ PREMIUM SCRIPT]-----  "
-echo "        ====================================================="
-echo "        #            Telegram : @mumet                      #"
-echo "        #       Copyright: © TEAM-MUMET™ Premium 2020       #"
-echo "        ====================================================="
-echo ""
-echo ""
-echo -e "${green}Permission Accepted...${NC}"
-sleep 1.5
-echo ""
-echo "		==============================		"
-echo "		Thanks for using our services.		"
-echo "		==============================		"
-echo ""
+# initialisasi var
+export DEBIAN_FRONTEND=noninteractive
+OS=`uname -m`;
+
+MYIP=$(ifconfig | grep 'inet addr:' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | cut -d: -f2 | awk '{ print $1}' | head -1)
+if [ "$MYIP" = "" ]; then
+	MYIP=$(wget -qO- ipv4.icanhazip.com)
 fi
-done
-if [ $flag -eq 0 ]
-then
-clear
-echo ""
-echo ""
-echo -e "${red}Access denied!${NC}"
-echo "                                                        				 "
-echo "============================================================================"
-echo -e "${red}Sorry, your ip address $myip is not register in our system.${NC}	  "
-echo ""
-echo -e "${green}Please contact your network administrator to access this service at
-telegram: @blackitsupport ${NC} 												  "
+MYIP2="s/xxxxxxxxx/$MYIP/g";
+MYIP3="s/xxxxxxxxx:443/$MYIP:443/g";
+ether=`ifconfig | cut -c 1-8 | sort | uniq -u | grep venet0 | grep -v venet0:`
+if [[ $ether = "" ]]; then
+        ether=eth0
+fi
+
+# go to root
+cd
+
+# check registered ip
+wget -q -O IP https://raw.githubusercontent.com/emue25/cream/mei/IP.txt
+if ! grep -w -q $MYIP IP; then
+	echo "Maaf, hanya IP yang terdaftar yang bisa menggunakan script ini!"
+        echo "     
+                       
+               =============== OS-32 & 64-bit ================
+               ♦                                             ♦
+               ♦  AUTOSCRIPT CREATED BY YUSUF ARDIANSYAH     ♦
+	       ♦                     &                       ♦
+	       ♦               DENY SISWANTO                 ♦
+	       ♦           MODIFIED BY DENBAGUSS             ♦
+               ♦       -----------About Us------------       ♦ 
+               ♦            Tel : +6283843700098             ♦
+               ♦         { Sms/whatsapp/telegram }           ♦ 
+               ♦       http://facebook.com/t34mh4ck3r        ♦    
+               ♦   http://www.facebook.com/elang.overdosis   ♦
+               ♦                                             ♦
+               =============== OS-32 & 64-bit ================
+               
+                 Please make payment before use auto script
+                 ..........................................
+                 .        Price: Rp.20.000 = 1IP          .
+                 .          *****************             .
+                 .           Maybank Account              .
+                 .           =================            .
+                 .          No   : Hubungi admin          .
+                 .          Name : Yusuf Ardiansyah       .
+                 ..........................................   
+                          Thank You For Choice Us"
+
+	echo "        Hubungi: editor ( elang overdosis atau deeniedoank)"											  "
 echo "============================================================================"
 rm -f /root/debian9.sh
 rm -f /root/IP.txt
