@@ -1,11 +1,5 @@
 #!/bin/bash
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
+# VPN Premium Script
 # Thanks for using this script, Enjoy Highspeed OpenVPN Service
 
 #############################
@@ -16,10 +10,10 @@ MyScriptName='JohnFordTV-Premium Script'
 
 # OpenSSH Ports
 SSH_Port1='22'
-SSH_Port2='226'
+SSH_Port2='90'
 
 # Your SSH Banner
-SSH_Banner='https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/banner'
+SSH_Banner='https://raw.githubusercontent.com/emue25/cream/mei/bannerssh'
 
 # Dropbear Ports
 Dropbear_Port1='445'
@@ -38,9 +32,9 @@ Privoxy_Port1='3356'
 Privoxy_Port2='8086'
 
 # Squid Ports
-Squid_Port1='3355'
-Squid_Port2='8085'
-Squid_Port3='60000'
+Squid_Port1='3128'
+Squid_Port2='8080'
+Squid_Port3='80'
 
 # OpenVPN Config Download Port
 OvpnDownload_Port='85' # Before changing this value, please read this document. It contains all unsafe ports for Google Chrome Browser, please read from line #23 to line #89: https://chromium.googlesource.com/chromium/src.git/+/refs/heads/master/net/base/port_util.cc
@@ -70,7 +64,7 @@ function InstUpdates(){
 
  
  # Installing some important machine essentials
- apt-get install nano wget curl zip unzip tar gzip p7zip-full bc rc openssl cron net-tools dnsutils dos2unix screen bzip2 ccrypt -y
+ apt-get install nano wget curl zip unzip tar gzip p7zip-full bc rc openssl cron net-tools dnsutils dos2unix screen bzip2 ccrypt boxes -y
  
  # Now installing all our wanted services
  apt-get install dropbear stunnel4 privoxy ca-certificates nginx ruby apt-transport-https lsb-release squid -y
@@ -771,18 +765,12 @@ $(cat /etc/openvpn/ca.crt)
 EOF15
 
 cat <<EOF16> /var/www/openvpn/sun-tutcp.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
+# VPN Premium Script
 # Thanks for using this script, Enjoy Highspeed OpenVPN Service
 client
 dev tun
 proto tcp
-setenv FRIENDLY_NAME "Debian VPN SUN"
+setenv FRIENDLY_NAME "VPNstunnel"
 remote $IPADDR $OpenVPN_TCP_Port
 remote-cert-tls server
 connect-retry infinite
@@ -800,9 +788,6 @@ setenv CLIENT_CERT 0
 reneg-sec 0
 verb 1
 http-proxy $IPADDR $Squid_Port1
-http-proxy-option CUSTOM-HEADER Host www.viber.com.edgekey.net
-http-proxy-option CUSTOM-HEADER X-Online-Host www.viber.com.edgekey.net
-http-proxy-option CUSTOM-HEADER X-Forwarded-For www.viber.com.edgekey.net
 
 <ca>
 $(cat /etc/openvpn/ca.crt)
@@ -810,18 +795,12 @@ $(cat /etc/openvpn/ca.crt)
 EOF16
 
 cat <<EOF162> /var/www/openvpn/sun-tuudp.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
+# VPN Premium Script
 # Thanks for using this script, Enjoy Highspeed OpenVPN Service
 client
 dev tun
 proto udp
-setenv FRIENDLY_NAME "Debian VPN SUN"
+setenv FRIENDLY_NAME "VPNstunnel"
 remote $IPADDR $OpenVPN_UDP_Port
 remote-cert-tls server
 resolv-retry infinite
@@ -1247,13 +1226,10 @@ fi
  cd ~
  
   # Running screenfetch
- wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/screenfetch"
- chmod +x /usr/bin/screenfetch
- echo "/bin/bash /etc/openvpn/openvpn.bash" >> .profile
- echo "clear" >> .profile
- echo "screenfetch" >> .profile
+ cd
+ rm -rf /root/.bashrc
+ wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
 
- 
  # Showing script's banner message
  ScriptMessage
  
@@ -1262,7 +1238,7 @@ echo " "
 echo "Installation has been completed!!"
 echo "--------------------------------------------------------------------------------"
 echo "                            Debian Premium Script                               "
-echo "                                 -FordSenpai-                                   "
+echo "                               -MAMBANG-KIMCIL-                                 "
 echo "--------------------------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
@@ -1294,10 +1270,10 @@ echo ""  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "OpenVPN Configs Download"  | tee -a log-install.txt
 echo "   - Download Link           : http://$IPADDR:85/configs.zip"  | tee -a log-install.txt
-echo " ©JohnFordTV"  | tee -a log-install.txt
-echo " Facebook: https://fb.me/johndesu090"  | tee -a log-install.txt
+echo " ©JohnKopet"  | tee -a log-install.txt
+echo " Facebook: https://fb.me/johnasu"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
-echo " This script is under project of https://github.com/johndesu090/AutoScriptDB"  | tee -a log-install.txt
+echo " This script is under project of https://github.com/kontol"  | tee -a log-install.txt
 echo " Please Reboot your VPS"
 
  # Clearing all logs from installation
