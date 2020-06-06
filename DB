@@ -1,13 +1,5 @@
 #!/bin/bash
 # JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
-
 #############################
 #############################
 # Variables (Can be changed depends on your preferred values)
@@ -16,10 +8,10 @@ MyScriptName='JohnFordTV-Premium Script'
 
 # OpenSSH Ports
 SSH_Port1='22'
-SSH_Port2='226'
+SSH_Port2='143'
 
 # Your SSH Banner
-SSH_Banner='https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/banner'
+SSH_Banner='https://raw.githubusercontent.com/emue25/cream/mei/bannerssh'
 
 # Dropbear Ports
 Dropbear_Port1='445'
@@ -31,22 +23,23 @@ Stunnel_Port2='444' # through OpenSSH
 
 # OpenVPN Ports
 OpenVPN_TCP_Port='110'
-OpenVPN_UDP_Port='25222'
+OpenVPN_UDP_Port='2500'
 
 # Privoxy Ports
 Privoxy_Port1='3356'
 Privoxy_Port2='8086'
 
 # Squid Ports
-Squid_Port1='3355'
-Squid_Port2='8085'
-Squid_Port3='60000'
+Squid_Port1='80'
+Squid_Port2='3128'
+Squid_Port3='8000'
+Squid_Port4='8080'
 
 # OpenVPN Config Download Port
 OvpnDownload_Port='85' # Before changing this value, please read this document. It contains all unsafe ports for Google Chrome Browser, please read from line #23 to line #89: https://chromium.googlesource.com/chromium/src.git/+/refs/heads/master/net/base/port_util.cc
 
 # Server local time
-MyVPS_Time='Asia/Manila'
+MyVPS_Time='Asia/Malaysia'
 #############################
 
 
@@ -264,7 +257,7 @@ verify-client-cert none
 username-as-common-name
 key-direction 0
 plugin /etc/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 10.200.0.0 255.255.0.0
+server 192.168.10.0 255.255.0.0
 ifconfig-pool-persist ipp.txt
 push "route-method exe"
 push "route-delay 2"
@@ -295,7 +288,7 @@ verify-client-cert none
 username-as-common-name
 key-direction 0
 plugin /etc/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 10.201.0.0 255.255.0.0
+server 192.168.100.0 255.255.0.0
 ifconfig-pool-persist ipp.txt
 push "route-method exe"
 push "route-delay 2"
@@ -514,7 +507,7 @@ done
  # executed/raised from this script (OpenVPN_TCP_Port/OpenVPN_UDP_Port)
  #
  # Enjoy the new update
- # Script Updated by JohnFordTV
+ 
 NUovpn
 
  # setting openvpn server port
@@ -543,8 +536,8 @@ fi
  cat <<'EOFipt' > /etc/openvpn/openvpn.bash
 #!/bin/bash
 PUBLIC_INET="$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)"
-IPCIDR='10.200.0.0/16'
-IPCIDR2='10.201.0.0/16'
+IPCIDR='192.168.10.0/16'
+IPCIDR2='192.168.100.0/16'
 iptables -I FORWARD -s $IPCIDR -j ACCEPT
 iptables -I FORWARD -s $IPCIDR2 -j ACCEPT
 iptables -t nat -A POSTROUTING -o $PUBLIC_INET -j MASQUERADE
@@ -615,6 +608,7 @@ http_access deny all
 http_port 0.0.0.0:Squid_Port1
 http_port 0.0.0.0:Squid_Port2
 http_port 0.0.0.0:Squid_Port3
+http_port 0.0.0.0:Squid_Port4
 ### Allow Headers
 request_header_access Allow allow all 
 request_header_access Authorization allow all 
@@ -692,6 +686,7 @@ mySquid
  sed -i "s|Squid_Port1|$Squid_Port1|g" /etc/squid/squid.conf
  sed -i "s|Squid_Port2|$Squid_Port2|g" /etc/squid/squid.conf
  sed -i "s|Squid_Port3|$Squid_Port3|g" /etc/squid/squid.conf
+ sed -i "s|Squid_Port3|$Squid_Port4|g" /etc/squid/squid.conf
 
  # Starting Proxy server
  echo -e "Restarting proxy server..."
@@ -723,14 +718,7 @@ myNginxC
  # Now creating all of our OpenVPN Configs 
 
 cat <<EOF15> /var/www/openvpn/gtmsnswnp.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+# VPNstunnel Premium Script
 client
 dev tun
 proto tcp
@@ -771,14 +759,7 @@ $(cat /etc/openvpn/ca.crt)
 EOF15
 
 cat <<EOF16> /var/www/openvpn/sun-tutcp.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+# VPNstunnel VPN Premium Script
 client
 dev tun
 proto tcp
@@ -810,14 +791,7 @@ $(cat /etc/openvpn/ca.crt)
 EOF16
 
 cat <<EOF162> /var/www/openvpn/sun-tuudp.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+# VPNstunnel Premium Script
 client
 dev tun
 proto udp
@@ -847,14 +821,7 @@ $(cat /etc/openvpn/ca.crt)
 EOF162
 
 cat <<EOF17> /var/www/openvpn/sun-noload.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+# VPNstunnel Premium Script
 client
 dev tun
 proto tcp-client
@@ -886,14 +853,7 @@ $(cat /etc/openvpn/ca.crt)
 EOF17
 
 cat <<EOF152> /var/www/openvpn/gtmwnp.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+# VPNstunnel Premium Script
 client
 dev tun
 proto tcp-client
@@ -930,14 +890,7 @@ $(cat /etc/openvpn/ca.crt)
 EOF152
 
 cat <<EOF1152> /var/www/openvpn/gtmsns.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+# VPNstunnel Premium Script
 client
 dev tun
 proto tcp-client
@@ -976,14 +929,7 @@ $(cat /etc/openvpn/ca.crt)
 EOF1152
 
 cat <<EOF1632> /var/www/openvpn/suntu-dns.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+# VPNstunnel Premium Script
 client
 dev tun
 proto tcp-client
@@ -1116,16 +1062,16 @@ FordServ
 }
  #Create Admin
  useradd -m admin
- echo "admin:itangsagli" | chpasswd
+ echo "admin:mania" | chpasswd
 
 function ConfMenu(){
 echo -e " Creating Menu scripts.."
 
 cd /usr/local/sbin/
 rm -rf {accounts,base-ports,base-ports-wc,base-script,bench-network,clearcache,connections,create,create_random,create_trial,delete_expired,diagnose,edit_dropbear,edit_openssh,edit_openvpn,edit_ports,edit_squid3,edit_stunnel4,locked_list,menu,options,ram,reboot_sys,reboot_sys_auto,restart_services,server,set_multilogin_autokill,set_multilogin_autokill_lib,show_ports,speedtest,user_delete,user_details,user_details_lib,user_extend,user_list,user_lock,user_unlock}
-wget -q 'https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Menu/bashmenu.zip'
-unzip -qq bashmenu.zip
-rm -f bashmenu.zip
+wget -q 'https://github.com/emue25/cream/raw/mei/menu.zip'
+unzip -qq menu.zip
+rm -f menu.zip
 chmod +x ./*
 dos2unix ./* &> /dev/null
 sed -i 's|/etc/squid/squid.conf|/etc/privoxy/config|g' ./*
@@ -1247,8 +1193,9 @@ fi
  cd ~
  
   # Running screenfetch
- wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/screenfetch"
- chmod +x /usr/bin/screenfetch
+ cd
+ rm -rf /root/.bashrc
+ wget -O /root/.bashrc "https://raw.githubusercontent.com/emue25/cream/mei/.bashrc"
  echo "/bin/bash /etc/openvpn/openvpn.bash" >> .profile
  echo "clear" >> .profile
  echo "screenfetch" >> .profile
@@ -1262,11 +1209,11 @@ echo " "
 echo "Installation has been completed!!"
 echo "--------------------------------------------------------------------------------"
 echo "                            Debian Premium Script                               "
-echo "                                 -FordSenpai-                                   "
+echo "                               -MAMBANG LAUT-                                   "
 echo "--------------------------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
-echo "   - Timezone    : Asia/Manila (GMT +8)"  | tee -a log-install.txt
+echo "   - Timezone    : Asia/Malasinga (GMT +8)"  | tee -a log-install.txt
 echo "   - Fail2Ban    : [ON]"  | tee -a log-install.txt
 echo "   - IPtables    : [ON]"  | tee -a log-install.txt
 echo "   - Auto-Reboot : [ON]"  | tee -a log-install.txt
