@@ -25,7 +25,7 @@ Stunnel_Port2='444' # through OpenSSH
 
 # OpenVPN Ports
 OpenVPN_TCP_Port='110'
-OpenVPN_UDP_Port='25222'
+OpenVPN_UDP_Port='2500'
 
 # Privoxy Ports
 Privoxy_Port1='3356'
@@ -1115,8 +1115,8 @@ cd ~
 function ScriptMessage(){
  echo -e " [\e[1;32m$MyScriptName VPS Installer\e[0m]"
  echo -e ""
- echo -e " https://fb.com/johndesu090"
- echo -e "[GCASH] 09206200840 [PAYPAL] johnford090@gmail.com"
+ echo -e " https://VPNastunnel"
+ echo -e "DONATION VIA DAIMON"
  echo -e ""
 }
 
