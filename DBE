@@ -1,13 +1,5 @@
 #!/bin/bash
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
-
+# VPN Premium Script
 #############################
 #############################
 # Variables (Can be changed depends on your preferred values)
@@ -19,7 +11,7 @@ SSH_Port1='22'
 SSH_Port2='226'
 
 # Your SSH Banner
-SSH_Banner='https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/banner'
+SSH_Banner='https://raw.githubusercontent.com/emue25/cream/mei/bannerssh'
 
 # Dropbear Ports
 Dropbear_Port1='445'
@@ -34,18 +26,18 @@ OpenVPN_Port2='587' # through OpenVPN
 OpenVPN_Port1='110' # take note when you change this port, openvpn sun noload config will not work
 
 # Privoxy Ports
-Privoxy_Port1='3356'
-Privoxy_Port2='8086'
+Privoxy_Port1='3129'
+Privoxy_Port2='8081'
 
 # Squid Ports
-Squid_Port1='3355'
-Squid_Port2='8085'
+Squid_Port1='3128'
+Squid_Port2='8080'
 
 # OpenVPN Config Download Port
 OvpnDownload_Port='86' # Before changing this value, please read this document. It contains all unsafe ports for Google Chrome Browser, please read from line #23 to line #89: https://chromium.googlesource.com/chromium/src.git/+/refs/heads/master/net/base/port_util.cc
 
 # Server local time
-MyVPS_Time='Asia/Manila'
+MyVPS_Time='Asia/Malaysia'
 #############################
 
 
@@ -69,7 +61,7 @@ function InstUpdates(){
 
  
  # Installing some important machine essentials
- apt-get install nano wget curl zip unzip tar gzip p7zip-full bc rc openssl cron net-tools dnsutils dos2unix screen bzip2 ccrypt -y
+ apt-get install nano wget curl zip unzip tar gzip p7zip-full bc rc openssl cron net-tools dnsutils dos2unix screen bzip2 ccrypt boxes -y
  
  # Now installing all our wanted services
  apt-get install dropbear stunnel4 privoxy squid ca-certificates nginx ruby apt-transport-https lsb-release screenfetch -y
@@ -322,11 +314,11 @@ Certificate:
         Version: 3 (0x2)
         Serial Number: 1 (0x1)
     Signature Algorithm: sha256WithRSAEncryption
-        Issuer: C=PH, ST=Tarlac, L=Concepcion, O=JohnFordTV, OU=JohnFordTV, CN=DebianVPN/name=John Ford Mangiliman/emailAddress=admin@johnfordtv.me
+        Issuer: C=MY, ST=Johor, L=Squdai, O=VPNstunnel, OU=VPNstunnel, CN=DebianVPN/name=VPN stunnel/emailAddress=admin@VPNstunnel
         Validity
             Not Before: Nov 25 08:06:59 2019 GMT
             Not After : Nov 22 08:06:59 2029 GMT
-        Subject: C=PH, ST=Tarlac, L=Concepcion, O=JohnFordTV, OU=JohnFordTV, CN=DebianVPN/name=John Ford Mangiliman/emailAddress=admin@johnfordtv.me
+        Subject: C=MY, ST=Johor, L=Squdai, O=VPNstunnel, OU=VPNstunnel, CN=DebianVPN/name=VPN stunnel/emailAddress=admin@jVPNstunnel
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
                 Public-Key: (2048 bit)
@@ -361,7 +353,7 @@ Certificate:
                 50:31:04:C4:7A:47:C1:DA:46:CC:77:38:DE:1C:63:10:40:C3:80:22
             X509v3 Authority Key Identifier:
                 keyid:2D:71:9E:0D:00:4B:5C:23:C8:77:41:77:AF:FE:7C:14:30:A6:8C:2E
-                DirName:/C=PH/ST=Tarlac/L=Concepcion/O=JohnFordTV/OU=JohnFordTV/CN=DebianVPN/name=John Ford Mangiliman/emailAddress=admin@johnfordtv.me
+                DirName:/C=MY/ST=Johor/L=Squdai/O=VPNstunnel/OU=VPNstunnel/CN=DebianVPN/name=VPN stunnel/emailAddress=admin@VPNstunnel
                 serial:8C:5B:0D:CB:E1:EA:F3:C4
 
             X509v3 Extended Key Usage:
@@ -619,17 +611,11 @@ myNginxC
 
  # Now creating all of our OpenVPN Configs 
 cat <<EOF15> /var/www/openvpn/gtmpc.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+# VPN Premium Script
 client
 dev tun
 proto tcp-client
+setenv FRIENDLY_NAME "VPNstunnel"
 remote $IPADDR $OpenVPN_Port1
 nobind
 persist-key
@@ -677,6 +663,7 @@ cat <<EOF152> /var/www/openvpn/gtmcp.ovpn
 client
 dev tun
 proto tcp-client
+setenv FRIENDLY_NAME "VPNstunnel"
 remote $IPADDR $OpenVPN_Port1
 nobind
 persist-key
@@ -720,6 +707,7 @@ cat <<EOF1152> /var/www/openvpn/gtmsns.ovpn
 client
 dev tun
 proto tcp-client
+setenv FRIENDLY_NAME "VPNstunnel"
 remote $IPADDR $OpenVPN_Port1
 nobind
 persist-key
@@ -785,7 +773,7 @@ redirect-gateway def1
 setenv CLIENT_CERT 0
 dhcp-option DNS 1.1.1.1
 dhcp-option DNS 1.0.0.1
-http-proxy $IPADDR $Privoxy_Port1
+http-proxy $IPADDR $Squid_Port1
 http-proxy-option CUSTOM-HEADER ""
 http-proxy-option CUSTOM-HEADER "POST https://viber.com HTTP/1.1"
 http-proxy-option CUSTOM-HEADER "X-Forwarded-For: viber.com"
@@ -841,18 +829,13 @@ $(cat /etc/openvpn/ca.crt)
 EOF1632
 
 cat <<EOF17> /var/www/openvpn/sun-noload.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+# VPN Premium Script
 client
 dev tun
 proto tcp-client
+setenv FRIENDLY_NAME "VPNstunnel"
 remote $IPADDR $OpenVPN_Port1
+http-proxy $IPADDR $Squid_Port1 
 persist-key
 persist-tun
 comp-lzo
@@ -985,7 +968,7 @@ mySiteOvpn
  
  #Create Admin
  useradd admin
- echo "admin:itangsagli" | chpasswd
+ echo "admin:kopet" | chpasswd
  
  # Creating all .ovpn config archives
  cd /var/www/openvpn
@@ -1004,7 +987,7 @@ IPADDR="$(ip_address)"
 function ConfStartup(){
  # Daily reboot time of our machine
  # For cron commands, visit https://crontab.guru
- echo -e "0 4\t* * *\troot\treboot" > /etc/cron.d/b_reboot_job
+ echo -e "0 12\t* * *\troot\treboot" > /etc/cron.d/b_reboot_job
 
  # Creating directory for startup script
  rm -rf /etc/johnfordtv
@@ -1080,7 +1063,7 @@ function ScriptMessage(){
  echo -e " (｡◕‿◕｡) $MyScriptName VPS Installer"
  echo -e ""
  echo -e " Script by johnfordtv"
- echo -e ""
+ echo -e " Modif by VPNstunnel"
 }
 
 
@@ -1169,11 +1152,9 @@ fi
  cd ~
 
  # Running screenfetch
- wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/screenfetch"
- chmod +x /usr/bin/screenfetch
- echo "/bin/bash /etc/openvpn/openvpn.bash" >> .profile
- echo "clear" >> .profile
- echo "screenfetch" >> .profile
+ cd
+ rm -rf /root/.bashrc
+ wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
  
  # Showing script's banner message
  ScriptMessage
