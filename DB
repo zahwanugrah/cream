@@ -6,7 +6,7 @@
 #############################
 # Variables (Can be changed depends on your preferred values)
 # Script name
-MyScriptName='JohnFordTV-Premium Script'
+MyScriptName='VPNstunnel-Premium Script'
 
 # OpenSSH Ports
 SSH_Port1='22'
@@ -29,12 +29,12 @@ OpenVPN_UDP_Port='2500'
 
 # Privoxy Ports
 Privoxy_Port1='3356'
-Privoxy_Port2='8086'
+Privoxy_Port2='8085'
 
 # Squid Ports
 Squid_Port1='3128'
 Squid_Port2='8080'
-Squid_Port3='8000'
+Squid_Port3='8989'
 
 # OpenVPN Config Download Port
 OvpnDownload_Port='85' # Before changing this value, please read this document. It contains all unsafe ports for Google Chrome Browser, please read from line #23 to line #89: https://chromium.googlesource.com/chromium/src.git/+/refs/heads/master/net/base/port_util.cc
@@ -166,7 +166,7 @@ MySSHConfig
  cat <<'MyDropbear' > /etc/default/dropbear
 # My Dropbear Config
 NO_START=0
-DROPBEAR_PORT=PORT01
+DROPBEAR_PORT="PORT01"
 DROPBEAR_EXTRA_ARGS="-p PORT02"
 DROPBEAR_BANNER="/etc/banner"
 DROPBEAR_RSAKEY="/etc/dropbear/dropbear_rsa_host_key"
