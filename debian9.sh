@@ -1,14 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 #Script by Zhangzi
 cd /root
-
-MYIP2="s/xxxxxxxxx/$MYIP/g";
-ether=`ifconfig | cut -c 1-8 | sort | uniq -u | grep venet0 | grep -v venet0:`
-if [[ $ether = "" ]]; then
-        ether=eth0
-fi
-# go to root
-#cd
 
 # check registered ip
 wget -q -O IP https://raw.githubusercontent.com/emue25/mei/IP.txt
