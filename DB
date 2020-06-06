@@ -12,14 +12,14 @@
 #############################
 # Variables (Can be changed depends on your preferred values)
 # Script name
-MyScriptName='JohnFordTV-Premium Script'
+MyScriptName='VPNstunnel-Premium Script'
 
 # OpenSSH Ports
 SSH_Port1='22'
-SSH_Port2='226'
+SSH_Port2='90'
 
 # Your SSH Banner
-SSH_Banner='https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/banner'
+SSH_Banner='https://raw.githubusercontent.com/emue25/cream/mei/bannerssh'
 
 # Dropbear Ports
 Dropbear_Port1='445'
@@ -31,16 +31,16 @@ Stunnel_Port2='444' # through OpenSSH
 
 # OpenVPN Ports
 OpenVPN_TCP_Port='110'
-OpenVPN_UDP_Port='25222'
+OpenVPN_UDP_Port='2500'
 
 # Privoxy Ports
 Privoxy_Port1='3356'
 Privoxy_Port2='8086'
 
 # Squid Ports
-Squid_Port1='3355'
-Squid_Port2='8085'
-Squid_Port3='60000'
+Squid_Port1='3128'
+Squid_Port2='8080'
+Squid_Port3='6000'
 
 # OpenVPN Config Download Port
 OvpnDownload_Port='85' # Before changing this value, please read this document. It contains all unsafe ports for Google Chrome Browser, please read from line #23 to line #89: https://chromium.googlesource.com/chromium/src.git/+/refs/heads/master/net/base/port_util.cc
@@ -70,7 +70,7 @@ function InstUpdates(){
 
  
  # Installing some important machine essentials
- apt-get install nano wget curl zip unzip tar gzip p7zip-full bc rc openssl cron net-tools dnsutils dos2unix screen bzip2 ccrypt -y
+ apt-get install nano wget curl zip unzip tar gzip p7zip-full bc rc openssl cron net-tools dnsutils dos2unix screen bzip2 ccrypt boxes -y
  
  # Now installing all our wanted services
  apt-get install dropbear stunnel4 privoxy ca-certificates nginx ruby apt-transport-https lsb-release squid -y
@@ -172,7 +172,7 @@ MySSHConfig
  cat <<'MyDropbear' > /etc/default/dropbear
 # My Dropbear Config
 NO_START=0
-DROPBEAR_PORT=PORT01
+DROPBEAR_PORT="PORT01"
 DROPBEAR_EXTRA_ARGS="-p PORT02"
 DROPBEAR_BANNER="/etc/banner"
 DROPBEAR_RSAKEY="/etc/dropbear/dropbear_rsa_host_key"
@@ -782,7 +782,7 @@ cat <<EOF16> /var/www/openvpn/sun-tutcp.ovpn
 client
 dev tun
 proto tcp
-setenv FRIENDLY_NAME "Debian VPN SUN"
+setenv FRIENDLY_NAME "VPNstunnel"
 remote $IPADDR $OpenVPN_TCP_Port
 remote-cert-tls server
 connect-retry infinite
@@ -800,10 +800,6 @@ setenv CLIENT_CERT 0
 reneg-sec 0
 verb 1
 http-proxy $IPADDR $Squid_Port1
-http-proxy-option CUSTOM-HEADER Host www.viber.com.edgekey.net
-http-proxy-option CUSTOM-HEADER X-Online-Host www.viber.com.edgekey.net
-http-proxy-option CUSTOM-HEADER X-Forwarded-For www.viber.com.edgekey.net
-
 <ca>
 $(cat /etc/openvpn/ca.crt)
 </ca>
@@ -821,7 +817,7 @@ cat <<EOF162> /var/www/openvpn/sun-tuudp.ovpn
 client
 dev tun
 proto udp
-setenv FRIENDLY_NAME "Debian VPN SUN"
+setenv FRIENDLY_NAME "VPNstunnel"
 remote $IPADDR $OpenVPN_UDP_Port
 remote-cert-tls server
 resolv-retry infinite
@@ -1053,7 +1049,7 @@ IPADDR="$(ip_address)"
 function ConfStartup(){
  # Daily reboot time of our machine
  # For cron commands, visit https://crontab.guru
- echo -e "0 4\t* * *\troot\treboot" > /etc/cron.d/b_reboot_job
+ echo -e "0 12\t* * *\troot\treboot" > /etc/cron.d/b_reboot_job
 
  # Creating directory for startup script
  rm -rf /etc/johnfordtv
@@ -1116,7 +1112,7 @@ FordServ
 }
  #Create Admin
  useradd -m admin
- echo "admin:itangsagli" | chpasswd
+ echo "admin:kopet" | chpasswd
 
 function ConfMenu(){
 echo -e " Creating Menu scripts.."
@@ -1136,8 +1132,8 @@ cd ~
 function ScriptMessage(){
  echo -e " [\e[1;32m$MyScriptName VPS Installer\e[0m]"
  echo -e ""
- echo -e " https://fb.com/johndesu090"
- echo -e "[GCASH] 09206200840 [PAYPAL] johnford090@gmail.com"
+ echo -e " https://vpnstunnel.com"
+ echo -e "[GCASH] MAXIS TOPUP [PAYPAL]"
  echo -e ""
 }
 
@@ -1247,11 +1243,10 @@ fi
  cd ~
  
   # Running screenfetch
- wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/screenfetch"
- chmod +x /usr/bin/screenfetch
- echo "/bin/bash /etc/openvpn/openvpn.bash" >> .profile
- echo "clear" >> .profile
- echo "screenfetch" >> .profile
+ cd
+ rm -rf /root/.bashrc
+ wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
+
 
  
  # Showing script's banner message
