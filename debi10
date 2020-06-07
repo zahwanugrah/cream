@@ -254,18 +254,22 @@ function InsOpenVPN(){
 port 110
 proto tcp
 dev tun
-ca /etc/openvpn/ca.crt
-cert /etc/openvpn/server.crt
-key /etc/openvpn/server.key
-dh /etc/openvpn/dh2048.pem
+ca ca.crt
+cert server.crt
+key server.key
+dh dh1024.pem
 verify-client-cert none
 username-as-common-name
-key-direction 0
-plugin /etc/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 10.200.0.0 255.255.0.0
+plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
+server 192.168.10.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
+push "redirect-gateway def1 bypass-dhcp"
+push "dhcp-option DNS 8.8.8.8"
+push "dhcp-option DNS 8.8.4.4"
 push "route-method exe"
 push "route-delay 2"
+socket-flags TCP_NODELAY
+push "socket-flags TCP_NODELAY"
 keepalive 10 120
 comp-lzo
 user nobody
@@ -274,7 +278,7 @@ persist-key
 persist-tun
 status openvpn-status.log
 log openvpn.log
-verb 2
+verb 3
 ncp-disable
 cipher none
 auth none
@@ -480,7 +484,7 @@ fi
 
  # Iptables Rule for OpenVPN server
  PUBLIC_INET="$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)"
- IPCIDR='10.200.0.0/16'
+ IPCIDR='192.168.10.0/255.255.255.0'
  iptables -I FORWARD -s $IPCIDR -j ACCEPT
  iptables -t nat -A POSTROUTING -o $PUBLIC_INET -j MASQUERADE
  iptables -t nat -A POSTROUTING -s $IPCIDR -o $PUBLIC_INET -j MASQUERADE
@@ -613,46 +617,31 @@ myNginxC
 
  # Now creating all of our OpenVPN Configs 
 cat <<EOF15> /var/www/openvpn/gtmpc.ovpn
-# JohnFordTV's VPN Premium Script
-# Â© Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
+# Created by kopet
+# vpnshock.com & vpnstunnel.com
+auth-user-pass
 client
 dev tun
-proto tcp-client
-remote $IPADDR $OpenVPN_Port1
-nobind
+proto tcp
+remote $MYIP 110
+http-proxy $MYIP 8080
 persist-key
 persist-tun
+pull
+resolv-retry infinite
+nobind
+user nobody
 comp-lzo
-keepalive 10 120
-tls-client
 remote-cert-tls server
-verb 2
-auth-user-pass
+verb 3
+mute 2
+connect-retry 5 5
+connect-retry-max 8080
+mute-replay-warnings
+redirect-gateway def1
+script-security 2
 cipher none
 auth none
-auth-nocache
-auth-retry interact
-connect-retry 0 1
-nice -20
-reneg-sec 0
-redirect-gateway def1
-setenv CLIENT_CERT 0
-dhcp-option DNS 1.1.1.1
-dhcp-option DNS 1.0.0.1
-http-proxy $IPADDR $Privoxy_Port1
-http-proxy-option VERSION 1.1
-http-proxy-option CUSTOM-HEADER ""
-http-proxy-option CUSTOM-HEADER "GET https://storage.googleapis.com HTTP/1.1"
-http-proxy-option CUSTOM-HEADER Host storage.googleapis.com
-http-proxy-option CUSTOM-HEADER X-Forward-Host storage.googleapis.com
-http-proxy-option CUSTOM-HEADER X-Forwarded-For storage.googleapis.com
-http-proxy-option CUSTOM-HEADER Referrer storage.googleapis.com
 
 <ca>
 $(cat /etc/openvpn/ca.crt)
