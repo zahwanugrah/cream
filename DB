@@ -86,24 +86,24 @@ function InstUpdates(){
  wget -qO - http://build.openvpn.net/debian/openvpn/stable/pubkey.gpg|apt-key add -
  apt-get update
  apt-get install openvpn -y
-}
+#}
 
-function InstWebmin(){
+#function InstWebmin(){
  # Download the webmin .deb package
  # You may change its webmin version depends on the link you've loaded in this variable(.deb file only, do not load .zip or .tar.gz file):
- WebminFile='https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/webmin_1.920_all.deb'
- wget -qO webmin.deb "$WebminFile"
+ #WebminFile='https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/webmin_1.920_all.deb'
+# wget -qO webmin.deb "$WebminFile"
  
  # Installing .deb package for webmin
- dpkg --install webmin.deb
+ #dpkg --install webmin.deb
  
- rm -rf webmin.deb
+# rm -rf webmin.deb
  
  # Configuring webmin server config to use only http instead of https
- sed -i 's|ssl=1|ssl=0|g' /etc/webmin/miniserv.conf
+ #sed -i 's|ssl=1|ssl=0|g' /etc/webmin/miniserv.conf
  
  # Then restart to take effect
- systemctl restart webmin
+# systemctl restart webmin
 }
 
 function InstSSH(){
@@ -258,7 +258,7 @@ verify-client-cert none
 username-as-common-name
 key-direction 0
 plugin /etc/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 192.168.10.0 255.255.0.0
+server 10.200.0.0 255.255.0.0
 ifconfig-pool-persist ipp.txt
 push "route-method exe"
 push "route-delay 2"
@@ -289,7 +289,7 @@ verify-client-cert none
 username-as-common-name
 key-direction 0
 plugin /etc/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 192.168.20.0 255.255.0.0
+server 10.201.0.0 255.255.0.0
 ifconfig-pool-persist ipp.txt
 push "route-method exe"
 push "route-delay 2"
@@ -537,8 +537,8 @@ fi
  cat <<'EOFipt' > /etc/openvpn/openvpn.bash
 #!/bin/bash
 PUBLIC_INET="$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)"
-IPCIDR='10.200.0.0/16'
-IPCIDR2='10.201.0.0/16'
+IPCIDR='10.200.0.0/24'
+IPCIDR2='10.201.0.0/24'
 iptables -I FORWARD -s $IPCIDR -j ACCEPT
 iptables -I FORWARD -s $IPCIDR2 -j ACCEPT
 iptables -t nat -A POSTROUTING -o $PUBLIC_INET -j MASQUERADE
@@ -955,18 +955,12 @@ $(cat /etc/openvpn/ca.crt)
 EOF1152
 
 cat <<EOF1632> /var/www/openvpn/suntu-dns.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
+# VPN Premium Script
 # Thanks for using this script, Enjoy Highspeed OpenVPN Service
 client
 dev tun
 proto tcp-client
-setenv FRIENDLY_NAME "Debian VPN SUN"
+setenv FRIENDLY_NAME "VPNstunnel"
 remote $IPADDR $OpenVPN_TCP_Port
 nobind
 persist-key
@@ -988,7 +982,7 @@ redirect-gateway def1
 setenv CLIENT_CERT 0
 dhcp-option DNS 1.1.1.1
 dhcp-option DNS 1.0.0.1
-http-proxy $IPADDR 3356
+http-proxy $IPADDR 3128
 http-proxy-option CUSTOM-HEADER ""
 http-proxy-option CUSTOM-HEADER "POST https://viber.com HTTP/1.1"
 http-proxy-option CUSTOM-HEADER "X-Forwarded-For: viber.com"
@@ -1032,7 +1026,7 @@ IPADDR="$(ip_address)"
 function ConfStartup(){
  # Daily reboot time of our machine
  # For cron commands, visit https://crontab.guru
- echo -e "0 12\t* * *\troot\treboot" > /etc/cron.d/b_reboot_job
+ echo -e "0 4\t* * *\troot\treboot" > /etc/cron.d/b_reboot_job
 
  # Creating directory for startup script
  rm -rf /etc/johnfordtv
@@ -1116,7 +1110,7 @@ function ScriptMessage(){
  echo -e " [\e[1;32m$MyScriptName VPS Installer\e[0m]"
  echo -e ""
  echo -e " https://VPNastunnel"
- echo -e "DONATION VIA DAIMON"
+ echo -e "DONATION VIA DIAMON"
  echo -e ""
 }
 
