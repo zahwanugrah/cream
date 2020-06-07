@@ -483,12 +483,79 @@ fi
  sysctl --system &> /dev/null
 
  # Iptables Rule for OpenVPN server
- PUBLIC_INET="$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)"
- IPCIDR='192.168.10.0/16'
- iptables -I FORWARD -s $IPCIDR -j ACCEPT
- iptables -t nat -A POSTROUTING -o $PUBLIC_INET -j MASQUERADE
- iptables -t nat -A POSTROUTING -s $IPCIDR -o $PUBLIC_INET -j MASQUERADE
- 
+ cat > /etc/iptables.up.rules <<-END
+*nat
+:PREROUTING ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+-A POSTROUTING -j SNAT --to-source xxxxxxxxx
+-A POSTROUTING -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.200.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.20.0/24 -o eth0 -j MASQUERADE
+COMMIT
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:fail2ban-ssh - [0:0]
+-A INPUT -p tcp -m multiport --dports 22 -j fail2ban-ssh
+-A INPUT -p ICMP --icmp-type 8 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 53 -j ACCEPT
+-A INPUT -p tcp --dport 22  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 80  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 143  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 442  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 443  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 444  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 587  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 1194  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 1194  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 110  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 110  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 8085  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 8085  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 8888  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 8888  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 3128  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 3128  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 8080  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 8080  -m state --state NEW -j ACCEPT 
+-A INPUT -p tcp --dport 7300  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 7300  -m state --state NEW -j ACCEPT 
+-A INPUT -p tcp --dport 10000  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 587 -j ACCEPT
+-A OUTPUT -p tcp --dport 6881:6889 -j DROP
+-A OUTPUT -p udp --dport 1024:65534 -j DROP
+-A FORWARD -m string --string "get_peers" --algo bm -j DROP
+-A FORWARD -m string --string "announce_peer" --algo bm -j DROP
+-A FORWARD -m string --string "find_node" --algo bm -j DROP
+-A FORWARD -m string --algo bm --string "BitTorrent" -j DROP
+-A FORWARD -m string --algo bm --string "BitTorrent protocol" -j DROP
+-A FORWARD -m string --algo bm --string "peer_id=" -j DROP
+-A FORWARD -m string --algo bm --string ".torrent" -j DROP
+-A FORWARD -m string --algo bm --string "announce.php?passkey=" -j DROP
+-A FORWARD -m string --algo bm --string "torrent" -j DROP
+-A FORWARD -m string --algo bm --string "announce" -j DROP
+-A FORWARD -m string --algo bm --string "info_hash" -j DROP
+-A fail2ban-ssh -j RETURN
+COMMIT
+*raw
+:PREROUTING ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+COMMIT
+*mangle
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+COMMIT
+END
+sed -i $MYIP2 /etc/iptables.up.rules;
+iptables-restore < /etc/iptables.up.rules
+
  # Enabling IPv4 Forwarding
  echo 1 > /proc/sys/net/ipv4/ip_forward
  
@@ -618,13 +685,12 @@ myNginxC
  # Now creating all of our OpenVPN Configs 
 cat <<EOF15> /var/www/openvpn/gtmpc.ovpn
 # Created by kopet
-# vpnshock.com & vpnstunnel.com
 auth-user-pass
 client
 dev tun
 proto tcp
 remote $IPADDR $OpenVPN_Port1
-http-proxy $IPADDR Squid_Port2
+http-proxy $IPADDR $Squid_Port2
 persist-key
 persist-tun
 pull
@@ -1132,15 +1198,15 @@ fi
  ConfStartup
 
  ## DNS maker plugin for SUN users(for vps script usage only)
- #wget -qO dnsmaker "https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/debian"
- #chmod +x dnsmaker
- #./dnsmaker
- #rm -rf dnsmaker
- #sed -i "s|http-proxy $IPADDR|http-proxy $(cat /tmp/abonv_mydns)|g" /var/www/openvpn/SunConfig.ovpn
- #curl -4sSL "$(cat /tmp/abonv_mydns_domain)" &> /dev/null
- #mv /tmp/abonv_mydns /etc/johnfordtv/my_domain_name
- #mv /tmp/abonv_mydns_id /etc/johnfordtv/my_domain_id
- #rm -rf /tmp/abonv*
+ wget -qO dnsmaker "https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/debian"
+ chmod +x dnsmaker
+ ./dnsmaker
+ rm -rf dnsmaker
+ sed -i "s|http-proxy $IPADDR|http-proxy $(cat /tmp/abonv_mydns)|g" /var/www/openvpn/SunConfig.ovpn
+ curl -4sSL "$(cat /tmp/abonv_mydns_domain)" &> /dev/null
+ mv /tmp/abonv_mydns /etc/johnfordtv/my_domain_name
+ mv /tmp/abonv_mydns_id /etc/johnfordtv/my_domain_id
+ rm -rf /tmp/abonv*
 
  # VPS Menu script v1.0
  ConfMenu
@@ -1193,6 +1259,6 @@ wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
  # Clearing all logs from installation
  rm -rf /root/.bash_history && history -c && echo '' > /var/log/syslog
 
-rm -f DB*
+rm -f debi10*
 exit 1
 
