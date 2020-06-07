@@ -258,7 +258,7 @@ verify-client-cert none
 username-as-common-name
 key-direction 0
 plugin /etc/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 10.200.0.0 255.255.0.0
+server 192.168.10.0 255.255.0.0
 ifconfig-pool-persist ipp.txt
 push "route-method exe"
 push "route-delay 2"
@@ -289,7 +289,7 @@ verify-client-cert none
 username-as-common-name
 key-direction 0
 plugin /etc/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 10.201.0.0 255.255.0.0
+server 192.168.50.0 255.255.0.0
 ifconfig-pool-persist ipp.txt
 push "route-method exe"
 push "route-delay 2"
@@ -537,8 +537,8 @@ fi
  cat <<'EOFipt' > /etc/openvpn/openvpn.bash
 #!/bin/bash
 PUBLIC_INET="$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)"
-IPCIDR='10.200.0.0/24'
-IPCIDR2='10.201.0.0/24'
+IPCIDR='192.168.10.0/24'
+IPCIDR2='192.168.50.0/24'
 iptables -I FORWARD -s $IPCIDR -j ACCEPT
 iptables -I FORWARD -s $IPCIDR2 -j ACCEPT
 iptables -t nat -A POSTROUTING -o $PUBLIC_INET -j MASQUERADE
