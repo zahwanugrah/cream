@@ -13,7 +13,7 @@ SSH_Port1='22'
 SSH_Port2='143'
 
 # Your SSH Banner
-SSH_Banner='https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/banner'
+SSH_Banner='https://raw.githubusercontent.com/emue25/cream/mei/bannerssh'
 
 # Dropbear Ports
 Dropbear_Port1='445'
@@ -39,7 +39,7 @@ Squid_Port2='8080'
 OvpnDownload_Port='86' # Before changing this value, please read this document. It contains all unsafe ports for Google Chrome Browser, please read from line #23 to line #89: https://chromium.googlesource.com/chromium/src.git/+/refs/heads/master/net/base/port_util.cc
 
 # Server local time
-MyVPS_Time='Asia/Manila'
+MyVPS_Time='Asia/Malaysia'
 #############################
 
 
@@ -89,7 +89,7 @@ function InstUpdates(){
 function InstWebmin(){
  # Download the webmin .deb package
  # You may change its webmin version depends on the link you've loaded in this variable(.deb file only, do not load .zip or .tar.gz file):
- WebminFile='https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/webmin_1.920_all.deb'
+ WebminFile='https://github.com/emue25/cream/raw/mei/webmin_1.941_all.deb'
  wget -qO webmin.deb "$WebminFile"
  
  # Installing .deb package for webmin
@@ -164,7 +164,7 @@ MySSHConfig
  cat <<'MyDropbear' > /etc/default/dropbear
 # My Dropbear Config
 NO_START=0
-DROPBEAR_PORT=PORT01
+DROPBEAR_PORT="PORT01"
 DROPBEAR_EXTRA_ARGS="-p PORT02"
 DROPBEAR_BANNER="/etc/banner"
 DROPBEAR_RSAKEY="/etc/dropbear/dropbear_rsa_host_key"
@@ -463,7 +463,7 @@ EOF13
  
  # Getting some OpenVPN plugins for unix authentication
  cd
- wget https://github.com/johndesu090/AutoScriptDS/raw/master/Files/Plugins/plugin.tgz
+ wget https://github.com/emue25/cream/raw/mei/plug/plugin.tgz
  tar -xzvf /root/plugin.tgz -C /etc/openvpn/
  rm -f plugin.tgz
  
@@ -979,7 +979,7 @@ mySiteOvpn
  
  #Create Admin
  useradd admin
- echo "admin:itangsagli" | chpasswd
+ echo "admin:kopet" | chpasswd
  
  # Creating all .ovpn config archives
  cd /var/www/openvpn
@@ -998,7 +998,7 @@ IPADDR="$(ip_address)"
 function ConfStartup(){
  # Daily reboot time of our machine
  # For cron commands, visit https://crontab.guru
- echo -e "0 4\t* * *\troot\treboot" > /etc/cron.d/b_reboot_job
+ echo -e "0 12\t* * *\troot\treboot" > /etc/cron.d/b_reboot_job
 
  # Creating directory for startup script
  rm -rf /etc/johnfordtv
@@ -1073,7 +1073,7 @@ cd ~
 function ScriptMessage(){
  echo -e " (ï½¡â—•â€¿â—•ï½¡) $MyScriptName VPS Installer"
  echo -e ""
- echo -e " Script by johnfordtv"
+ echo -e " Script Copy by MAMBANG"
  echo -e ""
 }
 
@@ -1195,10 +1195,10 @@ wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
  echo -e "Request for a DNS query on your ip to make your suntu-dns config work."
  echo -e "Contact Creator at FB Link below for free dns on your IP"
  echo -e ""
- echo -e " Â©JohnFordTV"
- echo -e " Facebook: https://fb.me/johndesu090"
+ echo -e " Â©Johnkontol"
+ echo -e " Facebook: https://fb.me/johnkontol"
  echo -e ""
- echo -e " This script is under project of\n https://github.com/johndesu090/AutoScriptDB\n"
+ echo -e " This script is under project of\n https://github.com/lol\n"
  echo -e " Please Reboot your VPS"
 
  # Clearing all logs from installation
