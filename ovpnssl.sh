@@ -126,7 +126,7 @@ http {
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://sshfast.net/"
+wget -O /home/vps/public_html/index.html "https://vpnstunnel.com/"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
@@ -162,7 +162,16 @@ service nginx restart
 sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
 sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
-service ssh restart
+/etc/init.d/ssh restart
+
+#dropbear
+# install dropbear
+sudo apt-get -y install dropbear
+sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 555 -p 777"/g' /etc/default/dropbear
+echo "/bin/false" >> /etc/shells
+/etc/init.d/dropbear restart
 
 # install vnstat gui
 cd /home/vps/public_html/
@@ -180,7 +189,7 @@ cd
 
 # install fail2ban
 apt-get -y install fail2ban
-service fail2ban restart
+/etc/init.d/fail2ban restart
 
 # install squid3
 apt-get -y install squid3
@@ -217,20 +226,20 @@ refresh_pattern . 0 20% 4320
 visible_hostname ZhangZi
 END
 sed -i $MYIP2 /etc/squid3/squid.conf;
-service squid3 restart
+/etc/init.d/squid restart
 
 # install webmin
 cd
 apt-get -y update && apt-get -y upgrade
 apt-get -y install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python
-wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.930_all.deb
+wget -O webmin-current.deb http://prdownloads.sourceforge.net/webadmin/webmin_1.941_all.deb
 #wget -O webmin-current.deb https://raw.githubusercontent.com/cream/mei/webmin-current.deb
 dpkg -i --force-all webmin-current.deb
 apt-get -y -f install;
 sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
 rm -f /root/webmin-current.deb
 #apt-get -y --force-yes -f install libxml-parser-perl
-service webmin restart
+/et/init.d/webmin restart
 
 #install PPTP
 apt-get -y install pptpd
@@ -292,7 +301,7 @@ cp /etc/openvpn/easy-rsa/keys/server.key /etc/openvpn/server.key
 cp /etc/openvpn/easy-rsa/keys/ca.crt /etc/openvpn/ca.crt
 # Setting Server
 cat > /etc/openvpn/server.conf <<-END
-port 55
+port 110
 proto tcp
 dev tun
 ca ca.crt
@@ -332,7 +341,7 @@ cat > /home/vps/public_html/client.ovpn <<-END
 client
 dev tun
 proto tcp
-remote $MYIP 55
+remote $MYIP 110
 http-proxy $MYIP 8080
 persist-key
 persist-tun
@@ -408,13 +417,14 @@ tar -czf /home/vps/public_html/clientssl.tar.gz clientssl.ovpn
 cd
 # Restart openvpn
 /etc/init.d/openvpn restart
-service openvpn start
-service openvpn status
+/etc/init.d/openvpn start
+/etc/init.d/openvpn status
 
 #Setting USW
 apt-get install ufw
 ufw allow ssh
-ufw allow 55/tcp
+ufw allow 110/tcp
+ufw allow 443/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 cat > /etc/ufw/before.rules <<-END
@@ -440,9 +450,9 @@ wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/brantbell/cream
 if [ "$OS" == "x86_64" ]; then
   wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/brantbell/cream/mei/badvpn-udpgw64"
 fi
-sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
+sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
-screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200
 
 # install ddos deflate
 cd
@@ -458,8 +468,8 @@ rm /etc/issue.net
 wget -O /etc/issue.net "https://raw.githubusercontent.com/brantbell/cream/mei/bannerssh"
 sed -i 's@#Banner@Banner@g' /etc/ssh/sshd_config
 sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
-service ssh restart
-service dropbear restart
+/etc/init.d/ssh restart
+/etc/init.d/dropbear restart
 
 #Setting IPtables
 cat > /etc/iptables.up.rules <<-END
@@ -470,7 +480,7 @@ cat > /etc/iptables.up.rules <<-END
 -A POSTROUTING -j SNAT --to-source xxxxxxxxx
 -A POSTROUTING -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
--A POSTROUTING -s 10.1.0.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 10.100.0.0/24 -o eth0 -j MASQUERADE
 COMMIT
 
 *filter
@@ -506,8 +516,8 @@ COMMIT
 -A INPUT -p tcp --dport 8080  -m state --state NEW -j ACCEPT
 -A INPUT -p udp --dport 8080  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 10000  -m state --state NEW -j ACCEPT
--A INPUT -p tcp --dport 55  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 55  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 110  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 110  -m state --state NEW -j ACCEPT
 -A INPUT -p tcp --dport 587 -j ACCEPT
 -A fail2ban-ssh -j RETURN
 COMMIT
@@ -531,7 +541,7 @@ iptables-restore < /etc/iptables.up.rules
 
 #install ssl
 sudo apt update
-sudo apt full-upgrade
+sudo apt full-upgrade -y
 sudo apt install -y stunnel4
 cd /etc/stunnel/
 openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
@@ -539,7 +549,7 @@ sudo touch stunnel.conf
 echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "accept = 443" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "connect = 127.0.0.1:55" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "connect = 127.0.0.1:110" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
 sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 iptables -A INPUT -p tcp --dport 443 -j ACCEPT
@@ -561,22 +571,23 @@ echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 # finalizing
 apt-get -y autoremove
 chown -R www-data:www-data /home/vps/public_html
-service nginx start
-service php5-fpm start
-service vnstat restart
-service openvpn restart
-service snmpd restart
-service ssh restart
-#service dropbear restart
-service fail2ban restart
-service squid3 restart
-service webmin restart
-service pptpd restart
+/etc/init.d/nginx start
+/etc/init.d/php5-fpm start
+/etc/init.d/vnstat restart
+/etc/init.d/openvpn restart
+/etc/init.d/snmpd restart
+/etc/init.d/ssh restart
+/etc/init.d/dropbear restart
+/etc/init.d/fail2ban restart
+/etc/init.d/squid restart
+/etc/init.d/webmin restart
+/etc/init.d/pptpd restart
 sysv-rc-conf rc.local on
 
 #clearing history
 history -c
-
+rm -rf /root/*
+cd /root
 # info
 clear
 echo " "
