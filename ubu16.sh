@@ -110,8 +110,8 @@ plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
 server 192.168.10.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
-push "dhcp-option DNS 8.8.8.8"
-push "dhcp-option DNS 8.8.4.4"
+push "dhcp-option DNS 1.1.1.1"
+push "dhcp-option DNS 1.1.0.0"
 push "route-method exe"
 push "route-delay 2"
 duplicate-cn
@@ -461,10 +461,10 @@ iptables-restore < /etc/iptables.up.rules
 echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 # add dns server ipv4
-echo "nameserver 8.8.8.8" > /etc/resolv.conf
-echo "nameserver 8.8.4.4" >> /etc/resolv.conf
-sed -i '$ i\echo "nameserver 8.8.8.8" > /etc/resolv.conf' /etc/rc.local
-sed -i '$ i\echo "nameserver 8.8.4.4" >> /etc/resolv.conf' /etc/rc.local
+echo "nameserver 1.1.1.1" > /etc/resolv.conf
+echo "nameserver 1.1.0.0" >> /etc/resolv.conf
+sed -i '$ i\echo "nameserver 1.1.1.1" > /etc/resolv.conf' /etc/rc.local
+sed -i '$ i\echo "nameserver 1.1.0.0" >> /etc/resolv.conf' /etc/rc.local
 # set time GMT +8
 ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 #iptables
@@ -516,7 +516,7 @@ sudo touch stunnel.conf
 echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "accept = 443" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "connect = 127.0.0.1:55" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "connect = 127.0.0.1:1194" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
 
 sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
@@ -538,4 +538,10 @@ apt-get -y autoremove
 chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/squid restart
 /etc/init.d/openvpn restart
+
+#fint
+rm -rf /root/.bash_history && history -c
+
+rm -f ubu16.sh*
+exit 1
 
