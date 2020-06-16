@@ -97,7 +97,7 @@ cp /etc/openvpn/easy-rsa/keys/server.key /etc/openvpn/server.key
 cp /etc/openvpn/easy-rsa/keys/ca.crt /etc/openvpn/ca.crt
 # setting server
 cat > /etc/openvpn/server.conf <<-END
-port 55
+port 110
 proto tcp
 dev tun
 ca ca.crt
@@ -126,38 +126,7 @@ verb 3
 cipher none
 END
 systemctl start openvpn@server.service
-#vpn2
-cat > /etc/openvpn/server2.conf <<-END
-port 1194
-proto tcp
-dev tun
-ca ca.crt
-cert server.crt
-key server.key
-dh dh1024.pem
-client-cert-not-required
-username-as-common-name
-plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
-ifconfig 192.168.100.0 255.255.255.0
-ifconfig-pool-persist ipp.txt
-server-bridge 172.13.23.1 255.255.255.0 172.13.23.100 172.13.23.200
-push "redirect-gateway def1 bypass-dhcp"
-push "dhcp-option DNS 8.8.8.8"
-push "dhcp-option DNS 8.8.4.4"
-push "route-method exe"
-push "route-delay 2"
-duplicate-cn
-push "route-method exe"
-push "route-delay 2"
-keepalive 10 120
-persist-key
-persist-tun
-status openvpn-status.log
-log openvpn.log
-verb 3
-cipher none
-END
-systemctl start openvpn@server2.service
+
 
 # create openvpn config
 mkdir -p /home/vps/public_html
@@ -166,8 +135,8 @@ cat > /home/vps/public_html/openvpn.ovpn <<-END
 client
 dev tun
 proto tcp
-remote $IPADDRESS 1194
-http-proxy $IPADDRESS 3128
+remote $IPADDRESS 110
+http-proxy $IPADDRESS 80
 persist-key
 persist-tun
 dev tun
@@ -478,7 +447,7 @@ cat > /etc/ufw/before.rules <<-END
 # END OPENVPN RULES
 END
 ufw allow ssh
-ufw allow 55/tcp
+ufw allow 110/tcp
 ufw allow 1194/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
@@ -516,7 +485,7 @@ sudo touch stunnel.conf
 echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "accept = 443" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "connect = 127.0.0.1:1194" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "connect = 127.0.0.1:110" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
 
 sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
@@ -538,10 +507,4 @@ apt-get -y autoremove
 chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/squid restart
 /etc/init.d/openvpn restart
-
-#fint
-rm -rf /root/.bash_history && history -c
-
-rm -f ubu16.sh*
-exit 1
 
