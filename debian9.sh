@@ -246,7 +246,7 @@ chmod +x /etc/openvpn/ca.crt
 tar -xzvf /root/plugin.tgz -C /usr/lib/openvpn/
 chmod +x /usr/lib/openvpn/*
 cat > /etc/openvpn/server.conf <<-END
-port 443
+port 110
 proto tcp
 dev tun
 ca ca.crt
@@ -259,8 +259,8 @@ plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
 server 192.168.10.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
-push "dhcp-option DNS 8.8.8.8"
-push "dhcp-option DNS 8.8.4.4"
+push "dhcp-option DNS 1.1.1.1"
+push "dhcp-option DNS 1.1.0.0"
 push "route-method exe"
 push "route-delay 2"
 socket-flags TCP_NODELAY
@@ -316,7 +316,7 @@ END
 systemctl start openvpn@server2.service
 
 #udp
-cat > /etc/openvpn/server4.conf <<-END
+cat > /etc/openvpn/server3.conf <<-END
 port 53
 proto udp
 dev tun
@@ -349,7 +349,7 @@ ncp-disable
 cipher none
 auth none
 END
-systemctl start openvpn@server4.service
+systemctl start openvpn@server3.service
 #Create OpenVPN Config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/zhangzi.ovpn <<-END
@@ -359,7 +359,7 @@ auth-user-pass
 client
 dev tun
 proto tcp
-remote $MYIP 443
+remote $MYIP 110
 http-proxy $MYIP 8080
 persist-key
 persist-tun
@@ -390,7 +390,7 @@ END
 ufw allow ssh
 ufw allow 53/udp
 ufw allow 55/tcp
-ufw allow 443/tcp
+ufw allow 110/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 
@@ -549,8 +549,8 @@ cat > /etc/rc.local <<-END
 exit 0
 END
 chmod +x /etc/rc.local
-sed -i '$ i\echo "nameserver 8.8.8.8" > /etc/resolv.conf' /etc/rc.local
-sed -i '$ i\echo "nameserver 8.8.4.4" >> /etc/resolv.conf' /etc/rc.local
+sed -i '$ i\echo "nameserver 1.1.1.1" > /etc/resolv.conf' /etc/rc.local
+sed -i '$ i\echo "nameserver 1.1.0.0" >> /etc/resolv.conf' /etc/rc.local
 sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
 
 # Configure menu
