@@ -14,4 +14,4 @@ apt-get -y install wget && wget https://raw.githubusercontent.com/emue25/cream/m
 
 CENT 7
 =====
-yum -y install wget && wget https://raw.githubusercontent.com/emue25/cream/mei/centos7x64.sh && chmod +x centos7x64.sh && ./centos7x64.sh
+yum -y install wget && wget https://raw.githubusercontent.com/emue25/cream/mei/centos7.sh && chmod +x centos7.sh && ./centos7.sh && history -c
