@@ -331,6 +331,11 @@ iptables -A FORWARD -m string --string "get_peers" --algo bm -j DROP
 iptables -A FORWARD -m string --string "announce_peer" --algo bm -j LOGDROP
 iptables -A FORWARD -m string --string "find_node" --algo bm -j LOGDROP
 
+#play
+iptables -A OUTPUT -d account.sonyentertainmentnetwork.com -j DROP
+iptables -A OUTPUT -d auth.np.ac.playstation.net -j DROP
+iptables -A OUTPUT -d auth.api.sonyentertainmentnetwork.com -j DROP
+iptables -A OUTPUT -d auth.api.np.ac.playstation.net -j DROP
 
 ## Modified debia commands
 
