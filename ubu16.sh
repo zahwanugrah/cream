@@ -63,18 +63,18 @@ wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/daybreakersx/pr
 if [ "$OS" == "x86_64" ]; then
   wget -O /usr/bin/badvpn-udpgw "https://raw.githubusercontent.com/daybreakersx/premscript/master/badvpn-udpgw64"
 fi
-sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
+sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
-screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200
 # openvpn
 cp -r /usr/share/easy-rsa/ /etc/openvpn
 mkdir /etc/openvpn/easy-rsa/keys
 sed -i 's|export KEY_COUNTRY="US"|export KEY_COUNTRY="ID"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_PROVINCE="CA"|export KEY_PROVINCE="JAWA TENGAH"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_CITY="SanFrancisco"|export KEY_CITY="PORDJO City"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_ORG="Fort-Funston"|export KEY_ORG="sshfast"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_ORG="Fort-Funston"|export KEY_ORG="vpnstunnel"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_EMAIL="me@myhost.mydomain"|export KEY_EMAIL="aditya679@yahoo.com"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="sshfast"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="vpninjector"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_NAME="EasyRSA"|export KEY_NAME="denbaguss"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_OU=changeme|export KEY_OU=vpnstunnel|' /etc/openvpn/easy-rsa/vars
 # create diffie-helman pem
