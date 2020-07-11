@@ -260,6 +260,9 @@ key-direction 0
 plugin /etc/openvpn/plugins/openvpn-plugin-auth-pam.so login
 server 10.200.0.0 255.255.0.0
 ifconfig-pool-persist ipp.txt
+push "redirect-gateway def1 bypass-dhcp"
+push "dhcp-option DNS 1.1.1.1"
+push "dhcp-option DNS 1.0.0.1"
 push "route-method exe"
 push "route-delay 2"
 keepalive 10 120
@@ -291,6 +294,9 @@ key-direction 0
 plugin /etc/openvpn/plugins/openvpn-plugin-auth-pam.so login
 server 10.200.10.0 255.255.0.0
 ifconfig-pool-persist ipp.txt
+push "redirect-gateway def1 bypass-dhcp"
+push "dhcp-option DNS 1.1.1.1"
+push "dhcp-option DNS 1.0.0.1"
 push "route-method exe"
 push "route-delay 2"
 keepalive 10 120
@@ -551,6 +557,16 @@ EOFipt
  # Enabling IPv4 Forwarding
  echo 1 > /proc/sys/net/ipv4/ip_forward
  
+ # Create and Configure rc.local
+cat > /etc/rc.local <<-END
+#!/bin/sh -e
+exit 0
+END
+chmod +x /etc/rc.local
+sed -i '$ i\echo "nameserver 1.1.1.1" > /etc/resolv.conf' /etc/rc.local
+sed -i '$ i\echo "nameserver 1.0.0.1" >> /etc/resolv.conf' /etc/rc.local
+sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
+
  # Starting OpenVPN server
  systemctl start openvpn@server_tcp
  systemctl enable openvpn@server_tcp
