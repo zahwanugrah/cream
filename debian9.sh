@@ -23,20 +23,11 @@ wget "https://raw.githubusercontent.com/emue25/VPSauto/master/tool/plugin.tgz"
 tar -xzvf plugin.tgz
 
 # disable ipv6
-echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
+#echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 
 
 # set time GMT +8
 ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
-
-# install webmin
-#cd
-#wget "https://github.com/mzkin/script/raw/auto/webmin_1.930_all.deb"
-#dpkg --install webmin_1.930_all.deb;
-#apt-get -y -f install;
-#sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-#rm /root/webmin_1.930_all.deb
-#/etc/init.d/webmin restart
 
 # install screenfetch
 cd
@@ -610,7 +601,15 @@ echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
 echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
-# add eth0 to vnstat
+# install webmin
+cd
+wget "https://github.com/mzkin/script/raw/auto/webmin_1.930_all.deb"
+dpkg --install webmin_1.930_all.deb;
+apt-get -y -f install;
+sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
+rm /root/webmin_1.930_all.deb
+/etc/init.d/webmin restart
+add eth0 to vnstat
 vnstat -u -i eth0
 
 # compress configs
