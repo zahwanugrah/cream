@@ -27,7 +27,7 @@ wget "https://raw.githubusercontent.com/emue25/VPSauto/master/tool/plugin.tgz"
 tar -xzvf plugin.tgz
 
 # disable ipv6
-#echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
+echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 
 #text gambar
 apt-get -y install boxes
@@ -461,9 +461,6 @@ sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/d
 echo 1 > /proc/sys/net/ipv4/ip_forward
 sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
 
-#Create Admin
-#useradd admin
-#echo "admin:kopet" | chpasswd
 # download script
 cd
 #wget https://raw.githubusercontent.com/emue25/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
