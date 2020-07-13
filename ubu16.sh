@@ -467,7 +467,8 @@ sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
 # download script
 cd
 #wget https://raw.githubusercontent.com/emue25/cream/mei/install-premiumscript.sh -O - -o /dev/null|sh
-apt-get install unzip
+sudo apt-get install zip
+sudo apt-get install unzip
 cd /usr/local/bin/
 wget "https://github.com/emue25/cream/raw/mei/menu.zip"
 unzip menu.zip
@@ -481,9 +482,9 @@ echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 # clean repo
 apt-get clean
 # stunnel
-apt-get -y update
-apt-get -y full-upgrade
-apt-get -y install stunnel4
+sudo apt-get -y update
+sudo apt-get -y full-upgrade
+sudo apt-get -y install stunnel4
 cd /etc/stunnel/
 openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
 sudo touch stunnel.conf
@@ -499,6 +500,7 @@ sudo cp /etc/stunnel/stunnel.pem ~
 # download stunnel.pem from home directory. It is needed by client.
 /etc/init.d/stunnel4 restart
 # install ddos deflate
+sudo apt-get install grepcidr
 cd
 sudo apt-get -y install dnsutils dsniff
 wget https://github.com/jgmdev/ddos-deflate/archive/master.zip
@@ -514,7 +516,6 @@ chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/openvpn restart
 
 #clearing history
-history -c
 rm -rf /root/*
 cd /root
 # info
