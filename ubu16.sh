@@ -516,6 +516,7 @@ chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/openvpn restart
 
 #clearing history
+history -c
 rm -rf /root/*
 cd /root
 # info
