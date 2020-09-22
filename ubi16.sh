@@ -1,22 +1,13 @@
 #!/bin/sh
 
-# Script Created by Jerome Laliag <jeromelaliag@yahoo.com>
+#!/bin/sh
+# Script Created kopet
+# initialisasi var
+export DEBIAN_FRONTEND=noninteractive
+OS=`uname -m`;
+#MYIP=$(wget -qO- ipv4.icanhazip.com);
 
-# extract ip address
-if [ -z "$1" ]; then
-clear
-echo
-echo "Error: Payload not found! Please execute again with payload."
-echo
-echo "Example: $0<space><payloadhere>"
-echo
-echo "or execute the command like this."
-echo
-echo "$0 m.facebook.com"
-echo
-echo "Note: m.facebook.com payload is example."
-echo
-else
+# ipvp
 IPADDRESS=`ifconfig | grep 'inet addr:' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | cut -d: -f2 | awk '{print $1}' | head -1`
 IPADD="s/ipaddresxxx/$IPADDRESS/g";
 # clean repo
@@ -33,17 +24,17 @@ echo "client = no" > /etc/stunnel/stunnel.conf
 echo "pid = /var/run/stunnel.pid" >> /etc/stunnel/stunnel.conf
 echo "[openvpn]" >> /etc/stunnel/stunnel.conf
 echo "accept = 443" >> /etc/stunnel/stunnel.conf
-echo "connect = 127.0.0.1:1194" >> /etc/stunnel/stunnel.conf
+echo "connect = 127.0.0.1:110" >> /etc/stunnel/stunnel.conf
 echo "cert = /etc/stunnel/stunnel.pem" >> /etc/stunnel/stunnel.conf
 sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 sudo cp /etc/stunnel/stunnel.pem ~
-echo "client = yes\ndebug = 6\n[openvpn]\naccept = 127.0.0.1:1194\nconnect = $IPADDRESS:443\nTIMEOUTclose = 0\nverify = 0\nsni = $1" > /var/www/html/stunnel.conf
+echo "client = yes\ndebug = 6\n[openvpn]\naccept = 127.0.0.1:110\nconnect = $IPADDRESS:443\nTIMEOUTclose = 0\nverify = 0\nsni = $1" > /var/www/html/stunnel.conf
 # openvpn
 cp -r /usr/share/easy-rsa/ /etc/openvpn
 mkdir /etc/openvpn/easy-rsa/keys
-sed -i 's|export KEY_COUNTRY="US"|export KEY_COUNTRY="PH"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_PROVINCE="CA"|export KEY_PROVINCE="BTG"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_COUNTRY="US"|export KEY_COUNTRY="ID"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_PROVINCE="CA"|export KEY_PROVINCE="JATENG"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_CITY="SanFrancisco"|export KEY_CITY="Batangas City"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_ORG="Fort-Funston"|export KEY_ORG="GROME"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_EMAIL="me@myhost.mydomain"|export KEY_EMAIL="jeromelaliag@yahoo.com"|' /etc/openvpn/easy-rsa/vars
@@ -71,7 +62,7 @@ cp /etc/openvpn/easy-rsa/keys/server.key /etc/openvpn/server.key
 cp /etc/openvpn/easy-rsa/keys/ca.crt /etc/openvpn/ca.crt
 # setting server
 cat > /etc/openvpn/server.conf <<-END
-port 1194
+port 110
 proto tcp
 dev tun
 ca ca.crt
@@ -104,7 +95,8 @@ cat > /var/www/html/openvpn.ovpn <<-END
 client
 dev tun
 proto tcp
-remote $IPADDRESS:1194@$1 1194
+remote $IPADDRESS:110
+http-proxy $IPADDRESS 8080
 persist-key
 persist-tun
 dev tun
@@ -122,14 +114,7 @@ route 0.0.0.0 0.0.0.0
 route-method exe
 route-delay 2
 cipher none
-http-proxy $IPADDRESS 8080
-http-proxy-option CUSTOM-HEADER CONNECT HTTP/1.0
-http-proxy-option CUSTOM-HEADER Host $1
-http-proxy-option CUSTOM-HEADER X-Online-Host $1
-http-proxy-option CUSTOM-HEADER X-Forward-Host $1
-http-proxy-option CUSTOM-HEADER Connection keep-alive
-http-proxy-option CUSTOM-HEADER Proxy-Connection keep-alive
-http-proxy-retry
+
 
 END
 echo '<ca>' >> /var/www/html/openvpn.ovpn
@@ -140,7 +125,7 @@ cat > /var/www/html/openvpnssl.ovpn <<-END
 client
 dev tun
 proto tcp
-remote 127.0.0.1 1194
+remote 127.0.0.1 110
 persist-key
 persist-tun
 dev tun
@@ -167,8 +152,8 @@ echo '</ca>' >> /var/www/html/openvpnssl.ovpn
 cd /var/www/html/
 tar -zcvf /var/www/html/openvpn.tgz openvpn.ovpn openvpnssl.ovpn stunnel.conf
 # install squid3
-apt-get -y install squid3
-cat > /etc/squid/squid.conf <<-END
+#apt-get -y install squid3
+#cat > /etc/squid/squid.conf <<-END
 acl localhost src 127.0.0.1/32 ::1
 acl to_localhost dst 127.0.0.0/8 0.0.0.0/32 ::1
 acl SSL_ports port 443
@@ -199,7 +184,7 @@ refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
 refresh_pattern . 0 20% 4320
 visible_hostname jeromelaliag
 END
-sed -i $IPADD /etc/squid/squid.conf;
+#sed -i $IPADD /etc/squid/squid.conf;
 # setting iptables
 cat > /etc/iptables.up.rules <<-END
 *nat
@@ -284,18 +269,18 @@ ufw disable
 echo 1 > /proc/sys/net/ipv4/ip_forward
 sed -i 's|#net.ipv4.ip_forward=1|net.ipv4.ip_forward=1|' /etc/sysctl.conf
 # restart apps
-service squid stop
-service squid3 stop
-service squid4 stop
-service squid start
-service squid3 start
-service squid4 start
+#service squid stop
+#service squid3 stop
+#service squid4 stop
+#service squid start
+#service squid3 start
+#service squid4 start
 service stunnel4 restart
 service openvpn stop
 service openvpn start
 # create openvpn account
 useradd openvpn
-echo "openvpn:0p3nvpn123" | chpasswd
+echo "zhangzi:mania" | chpasswd
 clear
 echo "######### Download your config files here! #########"
 echo "~> http://$IPADDRESS/openvpn.ovpn - Normal config"
