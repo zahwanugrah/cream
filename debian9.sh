@@ -191,7 +191,7 @@ persist-key
 persist-tun
 status openvpn-status.log
 log openvpn.log
-verb 3
+verb 4
 ncp-disable
 cipher none
 auth none
@@ -210,15 +210,13 @@ dh dh1024.pem
 verify-client-cert none
 username-as-common-name
 plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 10.200.0.0 255.255.255.0
+server 10.1.2.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 1.1.1.1"
 push "dhcp-option DNS 1.0.0.1"
 push "route-method exe"
 push "route-delay 2"
-socket-flags UDP_NODELAY
-push "socket-flags UDP_NODELAY"
 keepalive 10 120
 comp-lzo
 user nobody
@@ -227,7 +225,7 @@ persist-key
 persist-tun
 status openvpn-status.log
 log openvpn.log
-verb 3
+verb 4
 ncp-disable
 cipher none
 auth none
@@ -237,7 +235,7 @@ systemctl start openvpn@server2.service
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/zhangzi.ovpn <<-END
 # Created by kopet
-# vpnshock.com & vpnstunnel.com
+# vpnstunnel.com
 auth-user-pass
 client
 dev tun
@@ -252,8 +250,8 @@ nobind
 user nobody
 comp-lzo
 remote-cert-tls server
-verb 3
-mute 2
+verb 4
+mute 20
 connect-retry 5 5
 connect-retry-max 8080
 mute-replay-warnings
@@ -538,7 +536,7 @@ sed -i 's/listen = \/var\/run\/php7.0-fpm.sock/listen = 127.0.0.1:9000/g' /etc/p
 
 #Create Admin
 useradd admin
-echo "admin:mania" | chpasswd
+echo "admin:kopet" | chpasswd
 
 
 # Create and Configure rc.local
@@ -547,8 +545,8 @@ cat > /etc/rc.local <<-END
 exit 0
 END
 chmod +x /etc/rc.local
-sed -i '$ i\echo "nameserver 8.8.8.8" > /etc/resolv.conf' /etc/rc.local
-sed -i '$ i\echo "nameserver 8.8.4.4" >> /etc/resolv.conf' /etc/rc.local
+sed -i '$ i\echo "nameserver 1.1.1.1" > /etc/resolv.conf' /etc/rc.local
+sed -i '$ i\echo "nameserver 1.0.0.1" >> /etc/resolv.conf' /etc/rc.local
 sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
 
 # Configure menu
@@ -593,7 +591,8 @@ unzip master.zip
 cd ddos-deflate-master
 ./install.sh
 rm -rf /root/master.zip
-
+apt install tcpdump
+apt install grepcidr
 # finalizing
 #vnstat -u -i eth0
 apt-get -y autoremove
