@@ -173,7 +173,8 @@ key server.key
 dh dh1024.pem
 verify-client-cert none
 username-as-common-name
-plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
+#plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
+plugin /usr/lib/x86_64-linux-gnu/openvpn/plugins/openvpn-plugin-auth-pam.so login
 server 192.168.10.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
@@ -191,7 +192,7 @@ persist-key
 persist-tun
 status openvpn-status.log
 log openvpn.log
-verb 4
+verb 3
 ncp-disable
 cipher none
 auth none
@@ -217,6 +218,8 @@ push "dhcp-option DNS 1.1.1.1"
 push "dhcp-option DNS 1.0.0.1"
 push "route-method exe"
 push "route-delay 2"
+socket-flags TCP_NODELAY
+push "socket-flags TCP_NODELAY"
 keepalive 10 120
 comp-lzo
 user nobody
@@ -225,7 +228,7 @@ persist-key
 persist-tun
 status openvpn-status.log
 log openvpn.log
-verb 4
+verb 3
 ncp-disable
 cipher none
 auth none
