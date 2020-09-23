@@ -506,7 +506,7 @@ http {
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "https://vpnshock.com/"
+wget -O /home/vps/public_html/index.html "api-cua.maxis.com.my.lolo.sg-22.vpnstunnel.com"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
@@ -582,7 +582,8 @@ zip configz.zip zhangzi.ovpn
 
 # install libxml-parser
 apt-get install libxml-parser-perl -y -f
-
+apt install tcpdump
+apt install grepcidr
 # install ddos deflate
 cd
 apt-get -y install dnsutils dsniff
@@ -591,8 +592,6 @@ unzip master.zip
 cd ddos-deflate-master
 ./install.sh
 rm -rf /root/master.zip
-apt install tcpdump
-apt install grepcidr
 # finalizing
 #vnstat -u -i eth0
 apt-get -y autoremove
