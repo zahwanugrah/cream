@@ -45,40 +45,6 @@ sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 777"/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
-#upgrade
-#apt-get install zlib1g-dev
-#wget https://raw.githubusercontent.com/emue25/VPSauto/master/dropbear-2019.78.tar.bz2
-#bzip2 -cd dropbear-2019.78.tar.bz2 | tar xvf -
-#cd dropbear-2019.78
-#./configure
-#make && make install
-# install privoxy
-cat > /etc/privoxy/config <<-END
-user-manual /usr/share/doc/privoxy/user-manual
-confdir /etc/privoxy
-logdir /var/log/privoxy
-filterfile default.filter
-logfile logfile
-listen-address  0.0.0.0:3128
-listen-address  0.0.0.0:8000
-toggle  1
-enable-remote-toggle  0
-enable-remote-http-toggle  0
-enable-edit-actions 0
-enforce-blocks 0
-buffer-limit 4096
-enable-proxy-authentication-forwarding 1
-forwarded-connect-retries  1
-accept-intercepted-requests 1
-allow-cgi-request-crunching 1
-split-large-forms 0
-keep-alive-timeout 5
-tolerate-pipelining 1
-socket-timeout 300
-permit-access 0.0.0.0/0 xxxxxxxxx
-END
-sed -i $MYIP2 /etc/privoxy/config;
-
 #install PPTP
 apt-get -y install pptpd
 cat > /etc/ppp/pptpd-options <<END
@@ -88,8 +54,8 @@ refuse-chap
 refuse-mschap
 require-mschap-v2
 require-mppe-128
-ms-dns 8.8.8.8
-ms-dns 8.8.4.4
+ms-dns 1.1.1.1
+ms-dns 1.0.0.1
 proxyarp
 nodefaultroute
 lock
@@ -130,7 +96,7 @@ http_access allow localhost
 http_access deny all
 http_port 8080
 http_port 8000
-http_port 81
+http_port 80
 http_port 3128
 coredump_dir /var/spool/squid3
 refresh_pattern ^ftp: 1440 20% 10080
@@ -155,9 +121,9 @@ wget -O /usr/bin/badvpn-udpgw "https://github.com/emue25/AutoScriptDebianStretch
 if [ "$OS" == "x86_64" ]; then
   wget -O /usr/bin/badvpn-udpgw "https://github.com/emue25/AutoScriptDebianStretch/raw/master/Files/Plugins/badvpn-udpgw64"
 fi
-sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200' /etc/rc.local
+sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
 chmod +x /usr/bin/badvpn-udpgw
-screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
 
 #install OpenVPN
 cp -r /usr/share/easy-rsa/ /etc/openvpn
@@ -169,8 +135,8 @@ sed -i 's|export KEY_PROVINCE="CA"|export KEY_PROVINCE="JAWA TENGAH"|' /etc/open
 sed -i 's|export KEY_CITY="SanFrancisco"|export KEY_CITY="PURWOREJO"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_ORG="Fort-Funston"|export KEY_ORG="ZhangZi"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_EMAIL="me@myhost.mydomain"|export KEY_EMAIL="vpnstunnel@email.com"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="vpnshock.com"|' /etc/openvpn/easy-rsa/vars
-sed -i 's|export KEY_NAME="EasyRSA"|export KEY_NAME="denbaguss"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_OU="MyOrganizationalUnit"|export KEY_OU="vpnstunnel.com"|' /etc/openvpn/easy-rsa/vars
+sed -i 's|export KEY_NAME="EasyRSA"|export KEY_NAME="denb4gus"|' /etc/openvpn/easy-rsa/vars
 sed -i 's|export KEY_OU=changeme|export KEY_OU=ZhangZi|' /etc/openvpn/easy-rsa/vars
 #Create Diffie-Helman Pem
 openssl dhparam -out /etc/openvpn/dh1024.pem 1024
@@ -244,15 +210,15 @@ dh dh1024.pem
 verify-client-cert none
 username-as-common-name
 plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 192.168.20.0 255.255.255.0
+server 10.200.0.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
-push "dhcp-option DNS 8.8.8.8"
-push "dhcp-option DNS 8.8.4.4"
+push "dhcp-option DNS 1.1.1.1"
+push "dhcp-option DNS 1.0.0.1"
 push "route-method exe"
 push "route-delay 2"
-socket-flags TCP_NODELAY
-push "socket-flags TCP_NODELAY"
+socket-flags UDP_NODELAY
+push "socket-flags UDP_NODELAY"
 keepalive 10 120
 comp-lzo
 user nobody
