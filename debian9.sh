@@ -164,8 +164,8 @@ chmod +x /etc/openvpn/ca.crt
 tar -xzvf /root/plugin.tgz -C /usr/lib/openvpn/
 chmod +x /usr/lib/openvpn/*
 cat > /etc/openvpn/server.conf <<-END
-port 110
-proto tcp
+port 53
+proto udp
 dev tun
 ca ca.crt
 cert server.crt
@@ -200,8 +200,8 @@ systemctl start openvpn@server.service
 
 #udp
 cat > /etc/openvpn/server2.conf <<-END
-port 53
-proto udp
+port 110
+proto tcp
 dev tun
 ca ca.crt
 cert server.crt
@@ -210,7 +210,7 @@ dh dh1024.pem
 verify-client-cert none
 username-as-common-name
 plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 10.1.2.0 255.255.255.0
+server 192.168.20.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 1.1.1.1"
