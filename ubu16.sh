@@ -194,8 +194,8 @@ echo '</ca>' >> /home/vps/public_html/openvpnssl.ovpn
 # compress config
 cd /home/vps/public_html/
 tar -zcvf /home/vps/public_html/openvpn.tgz openvpn.ovpn openvpnssl.ovpn stunnel.conf
-# install squid3
-apt-get -y install squid3
+# install squid
+apt-get -y install squid
 cat > /etc/squid/squid.conf <<-END
 acl localhost src 127.0.0.1/32 ::1
 acl to_localhost dst 127.0.0.0/8 0.0.0.0/32 ::1
@@ -225,7 +225,7 @@ refresh_pattern ^ftp: 1440 20% 10080
 refresh_pattern ^gopher: 1440 0% 1440
 refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
 refresh_pattern . 0 20% 4320
-visible_hostname jeromelaliag
+visible_hostname VPNstunnel
 END
 sed -i $IPADD /etc/squid/squid.conf;
 # setting iptables
