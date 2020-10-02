@@ -137,7 +137,7 @@ client
 dev tun
 proto tcp
 remote $IPADDRESS 110
-http-proxy $IPADDRESS 80
+http-proxy $IPADDRESS 8080
 persist-key
 persist-tun
 dev tun
@@ -218,7 +218,7 @@ http_access deny manager
 http_access allow localhost
 http_access deny all
 http_port 8080
-http_port 80
+http_port 8000
 http_port 3128
 coredump_dir /var/spool/squid
 refresh_pattern ^ftp: 1440 20% 10080
