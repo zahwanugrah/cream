@@ -137,7 +137,7 @@ client
 dev tun
 proto tcp
 remote $IPADDRESS 110
-http-proxy $IPADDRESS 80
+http-proxy $IPADDRESS 8080
 persist-key
 persist-tun
 dev tun
