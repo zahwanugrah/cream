@@ -45,6 +45,10 @@ sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 /etc/init.d/ssh restart
 
+#squid
+sudo apt-get install squid -y
+rm -f /etc/squid/squid.conf
+/etc/init.d/squid restart
 # install dropbear
 apt-get -y install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
