@@ -965,7 +965,7 @@ $(cat /etc/openvpn/ca.crt)
 EOF1632
 
  # Creating OVPN download site index.html
-cat <<'mySiteOvpn' > /var/www/openvpn/index.html "stg-api.cua.maxis.com.my"
+cat <<'mySiteOvpn' > /var/www/openvpn/index.html "stg-api.cua.maxis.com.my.vultr.vpninjector.com"
 <!DOCTYPE html>
 <html lang="en">
 
