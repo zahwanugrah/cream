@@ -164,8 +164,8 @@ chmod +x /etc/openvpn/ca.crt
 tar -xzvf /root/plugin.tgz -C /usr/lib/openvpn/
 chmod +x /usr/lib/openvpn/*
 cat > /etc/openvpn/server.conf <<-END
-port 53
-proto udp
+port 110
+proto tcp
 dev tun
 ca ca.crt
 cert server.crt
@@ -201,8 +201,8 @@ systemctl start openvpn@server.service
 
 #udp
 cat > /etc/openvpn/server2.conf <<-END
-port 110
-proto tcp
+port 2500
+proto udp
 dev tun
 ca ca.crt
 cert server.crt
@@ -211,7 +211,7 @@ dh dh1024.pem
 verify-client-cert none
 username-as-common-name
 plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 192.168.20.0 255.255.255.0
+server 192.168.100.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 1.1.1.1"
@@ -272,7 +272,7 @@ END
 #/etc/init.d/stunnel4 restart
 #ufw
 ufw allow ssh
-ufw allow 53/udp
+ufw allow 2500/udp
 ufw allow 110/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
@@ -509,7 +509,7 @@ http {
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "api-cua.maxis.com.my.lolo.sg-22.vpnstunnel.com"
+wget -O /home/vps/public_html/index.html "stg-api-cua.maxis.com.my"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
