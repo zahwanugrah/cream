@@ -248,7 +248,7 @@ cat <<'myOpenVPNconf' > /etc/openvpn/server_tcp.conf
 # OpenVPN TCP
 port OVPNTCP
 proto tcp
-dev tun
+dev tun0
 ca /etc/openvpn/ca.crt
 cert /etc/openvpn/server.crt
 key /etc/openvpn/server.key
@@ -272,7 +272,8 @@ persist-key
 persist-tun
 status openvpn-status.log
 log tcp.log
-verb 2
+verb 4
+mute 20
 ncp-disable
 cipher none
 auth none
@@ -282,7 +283,7 @@ cat <<'myOpenVPNconf2' > /etc/openvpn/server_udp.conf
 #OpenVPN UDP
 port OVPNUDP
 proto udp
-dev tun
+dev tun1
 ca /etc/openvpn/ca.crt
 cert /etc/openvpn/server.crt
 key /etc/openvpn/server.key
@@ -306,7 +307,8 @@ persist-key
 persist-tun
 status openvpn-status.log
 log udp.log
-verb 2
+verb 4
+mute 20
 ncp-disable
 cipher none
 auth none
@@ -719,6 +721,30 @@ COMMIT
 EOFipt
 chmod +x /etc/openvpn/openvpn.bash
 bash /etc/openvpn/openvpn.bash
+
+#lol
+if [ $# -lt 2 ]; then
+  exit 0;
+fi
+action=$1;
+addr=$2;
+
+case ${action} in
+        add|update)
+                echo "[-] ${addr} logged in to ${dev}" >> /etc/openvpn/MYVPN/vpn.log
+                /usr/bin/sudo /sbin/ip ro del ${addr}/32
+                /usr/bin/sudo /sbin/ip ro add ${addr}/32 dev ${dev};
+        ;;
+        delete)
+                # Found out we'd better do nothing when delete is called.
+#               echo "[-] Deleting addr ${addr} -> ${dev}" >> /etc/openvpn/MYVPN/vpn.log
+#               /usr/bin/sudo /sbin/ip ro del ${addr}/32
+        ;;
+        *)
+        ;;
+esac
+
+exit 0;
 
 # Enabling IPv4 Forwarding
 echo 1 > /proc/sys/net/ipv4/ip_forward
