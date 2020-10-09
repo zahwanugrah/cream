@@ -722,30 +722,6 @@ EOFipt
 chmod +x /etc/openvpn/openvpn.bash
 bash /etc/openvpn/openvpn.bash
 
-#lol
-if [ $# -lt 2 ]; then
-  exit 0;
-fi
-action=$1;
-addr=$2;
-
-case ${action} in
-        add|update)
-                echo "[-] ${addr} logged in to ${dev}" >> /etc/openvpn/MYVPN/vpn.log
-                /usr/bin/sudo /sbin/ip ro del ${addr}/32
-                /usr/bin/sudo /sbin/ip ro add ${addr}/32 dev ${dev};
-        ;;
-        delete)
-                # Found out we'd better do nothing when delete is called.
-#               echo "[-] Deleting addr ${addr} -> ${dev}" >> /etc/openvpn/MYVPN/vpn.log
-#               /usr/bin/sudo /sbin/ip ro del ${addr}/32
-        ;;
-        *)
-        ;;
-esac
-
-exit 0;
-
 # Enabling IPv4 Forwarding
 echo 1 > /proc/sys/net/ipv4/ip_forward
  
