@@ -179,7 +179,7 @@ server 192.168.10.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
 push "dhcp-option DNS 1.1.1.1"
-push "dhcp-option DNS 1.1.0.0"
+push "dhcp-option DNS 1.0.0.1"
 push "route-method exe"
 push "route-delay 2"
 socket-flags TCP_NODELAY
@@ -210,7 +210,8 @@ key server.key
 dh dh1024.pem
 verify-client-cert none
 username-as-common-name
-plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
+#plugin /usr/lib/openvpn/plugins/openvpn-plugin-auth-pam.so login
+plugin /usr/lib/x86_64-linux-gnu/openvpn/plugins/openvpn-plugin-auth-pam.so login
 server 192.168.100.0 255.255.255.0
 ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1 bypass-dhcp"
@@ -253,7 +254,7 @@ nobind
 user nobody
 comp-lzo
 remote-cert-tls server
-verb 4
+verb 3
 mute 20
 connect-retry 5 5
 connect-retry-max 8080
@@ -290,9 +291,9 @@ cat > /etc/iptables.up.rules <<-END
 -A POSTROUTING -j SNAT --to-source xxxxxxxxx
 -A POSTROUTING -o eth0 -j MASQUERADE
 -A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
--A POSTROUTING -s 192.168.100.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.100.0/24 -o eth1 -j MASQUERADE
 -A POSTROUTING -s 192.168.200.0/24 -o eth0 -j MASQUERADE
--A POSTROUTING -s 192.168.20.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.20.0/24 -o eth1 -j MASQUERADE
 COMMIT
 *filter
 :INPUT ACCEPT [0:0]
