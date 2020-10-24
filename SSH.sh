@@ -390,4 +390,4 @@ echo "========================================================="
 #/etc/init.d/openvpn restart
 
 # Delete script
-#rm -f /root/openvpn.sh
+rm -f /root/SSH.sh
