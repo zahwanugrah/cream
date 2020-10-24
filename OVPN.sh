@@ -419,11 +419,11 @@ chmod +x /etc/network/if-up.d/iptables
 # chmod +x /etc/rc.local
 
 # install squid3
-cd
-apt-get -y install squid3
-wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/squid3.conf"
-sed -i $MYIP2 /etc/squid/squid.conf;
-/etc/init.d/squid restart
+#cd
+#apt-get -y install squid3
+#wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/squid3.conf"
+#sed -i $MYIP2 /etc/squid/squid.conf;
+#/etc/init.d/squid restart
 
 # download script
 
