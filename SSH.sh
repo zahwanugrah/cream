@@ -174,8 +174,8 @@ sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 /etc/init.d/stunnel4 restart
 
 # common password debian 
-wget -O /etc/pam.d/common-password "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/common-password-deb9"
-chmod +x /etc/pam.d/common-password
+#wget -O /etc/pam.d/common-password "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/common-password-deb9"
+#chmod +x /etc/pam.d/common-password
 
 #instal sslh
 cd
@@ -385,7 +385,7 @@ echo "========================================================="
 /etc/init.d/dropbear restart
 /etc/init.d/stunnel4 restart
 /etc/init.d/squid restart
-/etc/init.d/nginx restart
+#/etc/init.d/nginx restart
 #/etc/init.d/php5.6-fpm restart
 #/etc/init.d/openvpn restart
 
