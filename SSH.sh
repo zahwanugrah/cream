@@ -299,7 +299,18 @@ echo 'Config file is at /usr/local/ddos/ddos.conf'
 echo 'Please send in your comments and/or suggestions to zaf@vsnl.com'
 
 # download script
-
+sudo apt-get install zip
+sudo apt-get install unzip
+cd /usr/local/bin/
+wget "https://github.com/emue25/cream/raw/mei/menu.zip"
+unzip menu.zip
+chmod +x /usr/local/bin/*
+# cronjob
+echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
+echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
+echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
+echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
+echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
 # finishing
 cd
