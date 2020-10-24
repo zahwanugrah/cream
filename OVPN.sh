@@ -79,8 +79,8 @@ mkdir /etc/openvpn/easy-rsa/keys
 
 # Kemudian edit file variabel easy-rsa
 # nano /etc/openvpn/easy-rsa/vars
-wget -O /etc/openvpn/easy-rsa/vars "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/vars.conf"
-# edit projek export KEY_NAME="white-vps"
+wget -O /etc/openvpn/easy-rsa/vars "https://raw.githubusercontent.com/emue25/cream/mei/vars.conf"
+# edit projek export KEY_NAME="VPNstunnel"
 # Save dan keluar dari editor
 
 # generate Diffie hellman parameters
@@ -103,7 +103,7 @@ echo "unique_subject = no" >> keys/index.txt.attr
 ./build-ca
 
 # buat server key name yang telah kita buat sebelum nya yakni "white-vps"
-./build-key-server white-vps
+./build-key-server VPNstunnel
 
 # generate ta.key
 openvpn --genkey --secret keys/ta.key
