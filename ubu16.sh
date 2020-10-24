@@ -512,5 +512,7 @@ apt-get -y autoremove
 chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/squid restart
 /etc/init.d/openvpn restart
+# delete script
+rm -f /etc/ubu16.sh
 
 
