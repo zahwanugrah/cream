@@ -426,7 +426,13 @@ chmod +x /etc/network/if-up.d/iptables
 #/etc/init.d/squid restart
 
 # download script
-
+cd
+apt-get install zip
+apt-get install unzip
+cd /usr/local/bin/
+wget "https://github.com/emue25/cream/raw/mei/menu.zip"
+unzip menu.zip
+chmod +x /usr/local/bin/*
 # restart opevpn
 /etc/init.d/openvpn restart
 
