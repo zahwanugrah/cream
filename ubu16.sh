@@ -61,8 +61,9 @@ sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dr
 /etc/init.d/dropbear restart
 
 # Configure Nginx
+apt-get -y install nginx php5-fpm php5-cli
+# install webserver
 cd
-sudo apt-get -y install nginx
 rm /etc/nginx/sites-enabled/default
 rm /etc/nginx/sites-available/default
 cat > /etc/nginx/nginx.conf <<END3
@@ -124,20 +125,9 @@ server {
   }
 }
 END4
-# instal nginx php5.6 
-apt-get -y install nginx php5.6-fpm
-apt-get -y install nginx php5.6-cli
-apt-get -y install nginx php5.6-mysql
-apt-get -y install nginx php5.6-mcrypt
-sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/5.6/cli/php.ini
-
-# cari config php fpm dengan perintah berikut "php --ini |grep Loaded"
-sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/5.6/cli/php.ini
-
-# Cari config php fpm www.conf dengan perintah berikut "find / \( -iname "php.ini" -o -name "www.conf" \)"
-sed -i 's/listen = \/run\/php\/php5.6-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php/5.6/fpm/pool.d/www.conf
-cd
-
+sed -i 's/listen = \/var\/run\/php5-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php5/fpm/pool.d/www.conf
+/etc/init.d/php5-fpm restart
+/etc/init.d/nginx restart
 # openvpn
 cp -r /usr/share/easy-rsa/ /etc/openvpn
 mkdir /etc/openvpn/easy-rsa/keys
