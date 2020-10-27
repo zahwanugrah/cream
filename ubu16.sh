@@ -525,7 +525,7 @@ cd ddos-deflate-master
 ./install.sh
 rm -rf /root/master.zip
 # Configure Nginx
-apt-get -y install nginx php5-fpm php5-cli
+apt-get -y install nginx 
 # finalizing
 apt-get -y autoremove
 chown -R www-data:www-data /home/vps/public_html
