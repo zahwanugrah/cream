@@ -218,7 +218,7 @@ persist-tun
 status server-udp-1194.log
 verb 3
 END
-
+systemctl start openvpn@server-udp.service
 # create openvpn config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/openvpn.ovpn <<-END
