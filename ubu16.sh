@@ -121,31 +121,7 @@ cipher none
 END
 systemctl start openvpn@server.service
 
-#udp
-cat > /etc/openvpn/server-udp.conf <<-END
-port 1194
-proto udp
-dev tun
-ca easy-rsa/keys/ca.crt
-cert easy-rsa/keys/white-vps.crt
-key easy-rsa/keys/white-vps.key
-dh dh2048.pem
-plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
-client-cert-not-required
-username-as-common-name
-server 192.168.20.0 255.255.255.0
-ifconfig-pool-persist ipp.txt
-push "redirect-gateway def1"
-push "dhcp-option DNS 1.1.1.1"
-push "dhcp-option DNS 1.0.0.1"
-keepalive 5 30
-comp-lzo
-persist-key
-persist-tun
-status server-udp-1194.log
-verb 3
-END
-systemctl start openvpn@server-udp.service
+
 # create openvpn config
 mkdir -p /home/vps/public_html
 cat > /home/vps/public_html/openvpn.ovpn <<-END
