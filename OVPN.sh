@@ -457,9 +457,9 @@ chmod +x /etc/network/if-up.d/iptables
 useradd admin
 echo "admin:kopet" | chpasswd
 
-# install squid3
+# install squid
 cd
-apt-get -y install squid3
+apt-get -y install squid
 wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/emue25/sshtunnel/master/debian9/squid3.conf"
 sed -i $MYIP2 /etc/squid/squid.conf;
 /etc/init.d/squid restart
