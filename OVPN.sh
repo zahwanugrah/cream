@@ -31,7 +31,7 @@ sudo gem install lolcat
 # update repository
 apt update -y
 
-# Install PHP 5.6
+# Install PHP 7.0
 usermod -aG sudo root
 
 sudo apt -y install ca-certificates apt-transport-https
@@ -39,8 +39,8 @@ wget -q https://packages.sury.org/php/apt.gpg -O- | sudo apt-key add -
 echo "deb https://packages.sury.org/php/ stretch main" | sudo tee /etc/apt/sources.list.d/php.list
 
 sudo apt update -y
-sudo apt install php5.6 -y
-sudo apt install php5.6-mcrypt php5.6-mysql php5.6-fpm php5.6-cli php5.6-common php5.6-curl php5.6-mbstring php5.6-mysqlnd php5.6-xml -y
+sudo apt install php7.0 -y
+sudo apt install php7.0-mcrypt php7.0-mysql php7.0-fpm php7.0-cli php7.0-common php7.0-curl php7.0-mbstring php7.0-mysqlnd php7.0-xml -y
 
 # install webserver
 cd
@@ -53,18 +53,18 @@ echo "<?php phpinfo() ?>" > /home/vps/public_html/info.php
 wget -O /etc/nginx/conf.d/vps.conf "https://raw.githubusercontent.com/emue25/sshtunnel/master/debian9/vhost-nginx.conf"
 /etc/init.d/nginx restart
 
-# instal nginx php5.6 
-apt-get -y install nginx php5.6-fpm
-apt-get -y install nginx php5.6-cli
-apt-get -y install nginx php5.6-mysql
-apt-get -y install nginx php5.6-mcrypt
-sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/5.6/cli/php.ini
+# instal nginx php7.0 
+apt-get -y install nginx php7.0-fpm
+apt-get -y install nginx php7.0-cli
+apt-get -y install nginx php7.0-mysql
+apt-get -y install nginx php7.0-mcrypt
+sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/7.0/cli/php.ini
 
 # cari config php fpm dengan perintah berikut "php --ini |grep Loaded"
-sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/5.6/cli/php.ini
+sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/7.0/cli/php.ini
 
 # Cari config php fpm www.conf dengan perintah berikut "find / \( -iname "php.ini" -o -name "www.conf" \)"
-sed -i 's/listen = \/run\/php\/php5.6-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php/5.6/fpm/pool.d/www.conf
+sed -i 's/listen = \/run\/php\/php7.0-fpm.sock/listen = 127.0.0.1:9000/g' /etc/php/7.0/fpm/pool.d/www.conf
 cd
 
 
@@ -76,6 +76,14 @@ wget -O /etc/apache2/sites-enabled/000-default.conf "https://raw.githubuserconte
 
 # restart apache2
 /etc/init.d/apache2 restart
+
+# install squid
+cd
+apt-get -y install squid
+wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/emue25/sshtunnel/master/debian9/squid3.conf"
+sed -i $MYIP2 /etc/squid/squid.conf;
+/etc/init.d/squid restart
+
 
 # Install OpenVPN dan Easy-RSA
 apt install openvpn easy-rsa -y
@@ -162,10 +170,6 @@ ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1"
 push "dhcp-option DNS 1.1.1.1"
 push "dhcp-option DNS 1.0.0.1"
-push "route-method exe"
-push "route-delay 2"
-socket-flags TCP_NODELAY
-push "socket-flags TCP_NODELAY"
 keepalive 5 30
 comp-lzo
 persist-key
@@ -191,10 +195,6 @@ ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1"
 push "dhcp-option DNS 1.1.1.1"
 push "dhcp-option DNS 1.0.0.1"
-push "route-method exe"
-push "route-delay 2"
-socket-flags TCP_NODELAY
-push "socket-flags TCP_NODELAY"
 keepalive 5 30
 comp-lzo
 persist-key
@@ -220,10 +220,6 @@ ifconfig-pool-persist ipp.txt
 push "redirect-gateway def1"
 push "dhcp-option DNS 1.1.1.1"
 push "dhcp-option DNS 1.0.0.1"
-push "route-method exe"
-push "route-delay 2"
-socket-flags TCP_NODELAY
-push "socket-flags TCP_NODELAY"
 keepalive 5 30
 comp-lzo
 persist-key
@@ -456,13 +452,6 @@ chmod +x /etc/network/if-up.d/iptables
 #Create Admin
 useradd admin
 echo "admin:kopet" | chpasswd
-
-# install squid
-cd
-apt-get -y install squid
-wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/emue25/sshtunnel/master/debian9/squid3.conf"
-sed -i $MYIP2 /etc/squid/squid.conf;
-/etc/init.d/squid restart
 
 #remove
 apt-get -y remove --purge unscd
