@@ -459,7 +459,8 @@ apt-get -y install dnsutils
 
 # download script
 cd
-sudo apt-get install zip
+apt-get install zip -y
+apt-get install unzip-y
 cd /usr/local/bin/
 wget "https://github.com/emue25/cream/raw/mei/menu.zip"
 unzip menu.zip
@@ -479,14 +480,21 @@ openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127
 sudo touch stunnel.conf
 echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "accept = 443" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "accept = 444" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "connect = 127.0.0.1:110" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "accept = 445" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "connect = 127.0.0.1:25" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
 sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+iptables -A INPUT -p tcp --dport 444 -j ACCEPT
+iptables -A INPUT -p tcp --dport 445 -j ACCEPT
 sudo cp /etc/stunnel/stunnel.pem ~
 /etc/init.d/stunnel4 restart
 
+#sslh
+apt install sslh -y
 #auto delete
 wget -O /usr/local/bin/userdelexpired "https://www.dropbox.com/s/cwe64ztqk8w622u/userdelexpired?dl=1" && chmod +x /usr/local/bin/userdelexpired
 
