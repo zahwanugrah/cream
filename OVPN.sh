@@ -78,12 +78,42 @@ wget -O /etc/apache2/sites-enabled/000-default.conf "https://raw.githubuserconte
 /etc/init.d/apache2 restart
 
 # install squid
-cd
-apt-get -y install squid
-wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/emue25/sshtunnel/master/debian9/squid3.conf"
+cat > /etc/squid/squid.conf <<-END
+acl localhost src 127.0.0.1/32 ::1
+acl to_localhost dst 127.0.0.0/8 0.0.0.0/32 ::1
+acl SSL_ports port 443
+acl Safe_ports port 80
+acl Safe_ports port 21
+acl Safe_ports port 442
+acl Safe_ports port 443
+acl Safe_ports port 444
+acl Safe_ports port 70
+acl Safe_ports port 210
+acl Safe_ports port 1025-65535
+acl Safe_ports port 280
+acl Safe_ports port 488
+acl Safe_ports port 591
+acl Safe_ports port 777
+acl CONNECT method CONNECT
+acl SSH dst xxxxxxxxx-xxxxxxxxx/32
+http_access allow SSH
+http_access allow manager localhost
+http_access deny manager
+http_access allow localhost
+http_access deny all
+http_port 8080
+http_port 8000
+http_port 8989
+http_port 3128
+coredump_dir /var/spool/squid3
+refresh_pattern ^ftp: 1440 20% 10080
+refresh_pattern ^gopher: 1440 0% 1440
+refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
+refresh_pattern . 0 20% 4320
+visible_hostname kopet
+END
 sed -i $MYIP2 /etc/squid/squid.conf;
-/etc/init.d/squid restart
-
+/etc/init.d/squid.restart
 
 # Install OpenVPN dan Easy-RSA
 apt install openvpn easy-rsa -y
@@ -134,8 +164,8 @@ port 110
 proto udp
 dev tun
 ca easy-rsa/keys/ca.crt
-cert easy-rsa/keys/white-vps.crt
-key easy-rsa/keys/white-vps.key
+cert easy-rsa/keys/vpnstunnel.crt
+key easy-rsa/keys/vpnstunnel.key
 dh dh2048.pem
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
 client-cert-not-required
@@ -159,8 +189,8 @@ port 110
 proto tcp
 dev tun
 ca easy-rsa/keys/ca.crt
-cert easy-rsa/keys/white-vps.crt
-key easy-rsa/keys/white-vps.key
+cert easy-rsa/keys/vpnstunnel.crt
+key easy-rsa/keys/vpnstunnel.key
 dh dh2048.pem
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
 client-cert-not-required
@@ -184,8 +214,8 @@ port 25
 proto udp
 dev tun
 ca easy-rsa/keys/ca.crt
-cert easy-rsa/keys/white-vps.crt
-key easy-rsa/keys/white-vps.key
+cert easy-rsa/keys/vpnstunnel.crt
+key easy-rsa/keys/vpnstunnel.key
 dh dh2048.pem
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
 client-cert-not-required
@@ -209,8 +239,8 @@ port 25
 proto tcp
 dev tun
 ca easy-rsa/keys/ca.crt
-cert easy-rsa/keys/white-vps.crt
-key easy-rsa/keys/white-vps.key
+cert easy-rsa/keys/vpnstunnel.crt
+key easy-rsa/keys/vpnstunnel.key
 dh dh2048.pem
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
 client-cert-not-required
@@ -230,7 +260,7 @@ END
 
 cd
 
-cp /etc/openvpn/easy-rsa/keys/{white-vps.crt,white-vps.key,ca.crt,ta.key} /etc/openvpn
+cp /etc/openvpn/easy-rsa/keys/{vpnstunnel.crt,vpnstunnel.key,ca.crt,ta.key} /etc/openvpn
 ls /etc/openvpn
 
 # nano /etc/default/openvpn
@@ -250,7 +280,7 @@ sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
 
 # Konfigurasi dan Setting untuk Client
 mkdir clientconfig
-cp /etc/openvpn/easy-rsa/keys/{white-vps.crt,white-vps.key,ca.crt,ta.key} clientconfig/
+cp /etc/openvpn/easy-rsa/keys/{vpnstunnel.crt,vpnstunnel.key,ca.crt,ta.key} clientconfig/
 cd clientconfig
 
 # Buat config client UDP 110
@@ -454,8 +484,8 @@ useradd admin
 echo "admin:kopet" | chpasswd
 
 #remove
-apt-get -y remove --purge unscd
-apt-get -y install dnsutils
+#apt-get -y remove --purge unscd
+#apt-get -y install dnsutils
 
 # download script
 cd
