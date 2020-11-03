@@ -78,6 +78,7 @@ wget -O /etc/apache2/sites-enabled/000-default.conf "https://raw.githubuserconte
 /etc/init.d/apache2 restart
 
 # install squid
+apt install squid -y
 cat > /etc/squid/squid.conf <<-END
 acl localhost src 127.0.0.1/32 ::1
 acl to_localhost dst 127.0.0.0/8 0.0.0.0/32 ::1
