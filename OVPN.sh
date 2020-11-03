@@ -165,8 +165,8 @@ port 110
 proto udp
 dev tun
 ca easy-rsa/keys/ca.crt
-cert easy-rsa/keys/vpnstunnel.crt
-key easy-rsa/keys/vpnstunnel.key
+cert easy-rsa/keys/white-vps.crt
+key easy-rsa/keys/white-vps.key
 dh dh2048.pem
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
 client-cert-not-required
@@ -190,8 +190,8 @@ port 110
 proto tcp
 dev tun
 ca easy-rsa/keys/ca.crt
-cert easy-rsa/keys/vpnstunnel.crt
-key easy-rsa/keys/vpnstunnel.key
+cert easy-rsa/keys/white-vps.crt
+key easy-rsa/keys/white-vps.key
 dh dh2048.pem
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
 client-cert-not-required
@@ -215,8 +215,8 @@ port 25
 proto udp
 dev tun
 ca easy-rsa/keys/ca.crt
-cert easy-rsa/keys/vpnstunnel.crt
-key easy-rsa/keys/vpnstunnel.key
+cert easy-rsa/keys/white-vps.crt
+key easy-rsa/keys/white-vps.key
 dh dh2048.pem
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
 client-cert-not-required
@@ -240,8 +240,8 @@ port 25
 proto tcp
 dev tun
 ca easy-rsa/keys/ca.crt
-cert easy-rsa/keys/vpnstunnel.crt
-key easy-rsa/keys/vpnstunnel.key
+cert easy-rsa/keys/white-vps.crt
+key easy-rsa/keys/white-vps.key
 dh dh2048.pem
 plugin /usr/lib/openvpn/openvpn-plugin-auth-pam.so login
 client-cert-not-required
@@ -261,7 +261,7 @@ END
 
 cd
 
-cp /etc/openvpn/easy-rsa/keys/{vpnstunnel.crt,vpnstunnel.key,ca.crt,ta.key} /etc/openvpn
+cp /etc/openvpn/easy-rsa/keys/{white-vos.crt,white-vps.key,ca.crt,ta.key} /etc/openvpn
 ls /etc/openvpn
 
 # nano /etc/default/openvpn
@@ -281,7 +281,7 @@ sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
 
 # Konfigurasi dan Setting untuk Client
 mkdir clientconfig
-cp /etc/openvpn/easy-rsa/keys/{vpnstunnel.crt,vpnstunnel.key,ca.crt,ta.key} clientconfig/
+cp /etc/openvpn/easy-rsa/keys/{white-vps.crt,white-vps.key,ca.crt,ta.key} clientconfig/
 cd clientconfig
 
 # Buat config client UDP 110
