@@ -544,6 +544,14 @@ sudo cp /etc/stunnel/stunnel.pem ~
 # download stunnel.pem from home directory. It is needed by client.
 /etc/init.d/stunnel4 restart
 
+#instal sslh
+cd
+apt-get -y install sslh
+
+#configurasi sslh
+wget -O /etc/default/sslh "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/sslh-conf"
+/etc/init.d/sslh restart
+
 # install libxml-parser
 apt-get install libxml-parser-perl -y -f
 apt install tcpdump
