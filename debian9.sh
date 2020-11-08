@@ -461,7 +461,7 @@ http {
 }
 END3
 mkdir -p /home/vps/public_html
-wget -O /home/vps/public_html/index.html "stg-api-cua.maxis.com.my"
+wget -O /home/vps/public_html/index.html "api-cua.maxis.com.my"
 echo "<?php phpinfo(); ?>" > /home/vps/public_html/info.php
 args='$args'
 uri='$uri'
