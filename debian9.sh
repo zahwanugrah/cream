@@ -154,7 +154,7 @@ systemctl start openvpn@server.service
 
 #udp
 cat > /etc/openvpn/server2.conf <<-END
-port 110
+port 55
 proto udp
 dev tun
 ca ca.crt
@@ -221,11 +221,45 @@ echo '<ca>' >> /home/vps/public_html/zhangzi.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/zhangzi.ovpn
 echo '</ca>' >> /home/vps/public_html/zhangzi.ovpn
 END
+cat > /home/vps/public_html/zhangzissl.ovpn <<-END
+# Created by kopet
+# vpnstunnel.com
+auth-user-pass
+client
+dev tun
+proto tcp
+remote $MYIP 443
+persist-key
+persist-tun
+pull
+resolv-retry infinite
+nobind
+user nobody
+comp-lzo
+remote-cert-tls server
+verb 3
+mute 20
+connect-retry 5 5
+connect-retry-max 8080
+mute-replay-warnings
+redirect-gateway def1
+script-security 2
+up /etc/openvpn/update-resolv-conf
+down /etc/openvpn/update-resolv-conf
+route $MYIP 255.255.255.255 net_gateway
+cipher none
+auth none
+END
+echo '<ca>' >> /home/vps/public_html/zhangzissl.ovpn
+cat /etc/openvpn/ca.crt >> /home/vps/public_html/zhangzissl.ovpn
+echo '</ca>' >> /home/vps/public_html/zhangzissl.ovpn
+END
 # Restart openvpn
 /etc/init.d/openvpn restart
 #ufw
 ufw allow ssh
 ufw allow 110/tcp
+ufw allow 443/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
 
