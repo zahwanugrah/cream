@@ -7,7 +7,7 @@ echo "deb http://build.openvpn.net/debian/openvpn/release/2.4 stretch main" > /e
 #Requirement
 apt update -y
 apt upgrade -y
-apt install openvpn nginx php7.0-fpm stunnel4 squid3 dropbear easy-rsa vnstat ufw build-essential fail2ban zip -y
+apt install openvpn nginx php7.0-fpm stunnel4 squid3 easy-rsa ufw build-essential fail2ban zip -y
 
 # initializing var
 MYIP=$(wget -qO- ipv4.icanhazip.com);
@@ -40,36 +40,6 @@ apt-get -y install boxes
 apt-get -y install ruby
 sudo gem install lolcat
 
-# install dropbear
-sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 777"/g' /etc/default/dropbear
-echo "/bin/false" >> /etc/shells
-#install PPTP
-apt-get -y install pptpd
-cat > /etc/ppp/pptpd-options <<END
-name pptpd
-refuse-pap
-refuse-chap
-refuse-mschap
-require-mschap-v2
-require-mppe-128
-ms-dns 1.1.1.1
-ms-dns 1.0.0.1
-proxyarp
-nodefaultroute
-lock
-nobsdcomp
-END
-echo "option /etc/ppp/pptpd-options" > /etc/pptpd.conf
-echo "logwtmp" >> /etc/pptpd.conf
-echo "localip 10.1.0.1" >> /etc/pptpd.conf
-echo "remoteip 10.1.0.5-100" >> /etc/pptpd.conf
-cat >> /etc/ppp/ip-up <<END
-ifconfig ppp0 mtu 1400
-END
-mkdir /var/lib/premium-script
-/etc/init.d/pptpd restart
 # install squid3
 cat > /etc/squid/squid.conf <<-END
 acl localhost src 127.0.0.1/32 ::1
@@ -107,23 +77,6 @@ visible_hostname ZhangZi
 END
 sed -i $MYIP2 /etc/squid/squid.conf;
 /etc/init.d/squid.restart
-
-# setting banner
-rm /etc/issue.net
-wget -O /etc/issue.net "https://raw.githubusercontent.com/emue25/cream/mei/bannerssh"
-sed -i 's@#Banner@Banner@g' /etc/ssh/sshd_config
-sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
-/etc/init.d/ssh restart
-/etc/init.d/dropbear restart
-
-# install badvpn
-wget -O /usr/bin/badvpn-udpgw "https://github.com/emue25/AutoScriptDebianStretch/raw/master/Files/Plugins/badvpn-udpgw"
-if [ "$OS" == "x86_64" ]; then
-  wget -O /usr/bin/badvpn-udpgw "https://github.com/emue25/AutoScriptDebianStretch/raw/master/Files/Plugins/badvpn-udpgw64"
-fi
-sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
-chmod +x /usr/bin/badvpn-udpgw
-screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
 
 #install OpenVPN
 cp -r /usr/share/easy-rsa/ /etc/openvpn
@@ -201,7 +154,7 @@ systemctl start openvpn@server.service
 
 #udp
 cat > /etc/openvpn/server2.conf <<-END
-port 2500
+port 110
 proto udp
 dev tun
 ca ca.crt
@@ -268,12 +221,10 @@ echo '<ca>' >> /home/vps/public_html/zhangzi.ovpn
 cat /etc/openvpn/ca.crt >> /home/vps/public_html/zhangzi.ovpn
 echo '</ca>' >> /home/vps/public_html/zhangzi.ovpn
 END
-# Restart openvpn ssl
+# Restart openvpn
 /etc/init.d/openvpn restart
-#/etc/init.d/stunnel4 restart
 #ufw
 ufw allow ssh
-ufw allow 2500/udp
 ufw allow 110/tcp
 sed -i 's|DEFAULT_INPUT_POLICY="DROP"|DEFAULT_INPUT_POLICY="ACCEPT"|' /etc/default/ufw
 sed -i 's|DEFAULT_FORWARD_POLICY="DROP"|DEFAULT_FORWARD_POLICY="ACCEPT"|' /etc/default/ufw
@@ -569,20 +520,29 @@ echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
 echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
-# install webmin
-cd
-wget "https://github.com/mzkin/script/raw/auto/webmin_1.930_all.deb"
-dpkg --install webmin_1.930_all.deb;
-apt-get -y -f install;
-sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-rm /root/webmin_1.930_all.deb
-/etc/init.d/webmin restart
-add eth0 to vnstat
-vnstat -u -i eth0
-
 # compress configs
 cd /home/vps/public_html
 zip configz.zip zhangzi.ovpn
+
+#openvpnssl
+# stunnel
+sudo apt-get -y update
+sudo apt-get -y upgrade
+sudo apt-get -y install stunnel4
+cd /etc/stunnel/
+openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
+sudo touch stunnel.conf
+echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "accept = 443" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "connect = 127.0.0.1:110" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
+
+sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+sudo cp /etc/stunnel/stunnel.pem ~
+# download stunnel.pem from home directory. It is needed by client.
+/etc/init.d/stunnel4 restart
 
 # install libxml-parser
 apt-get install libxml-parser-perl -y -f
@@ -602,9 +562,7 @@ apt-get -y autoremove
 chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/nginx start
 /etc/init.d/php7.0-fpm start
-/etc/init.d/vnstat restart
 /etc/init.d/openvpn restart
-/etc/init.d/dropbear restart
 /etc/init.d/fail2ban restart
 /etc/init.d/squid restart
 #/etc/init.d/stunnel4 restart
