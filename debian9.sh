@@ -547,7 +547,6 @@ sudo cp /etc/stunnel/stunnel.pem ~
 #instal sslh
 cd
 apt-get -y install sslh
-
 #configurasi sslh
 wget -O /etc/default/sslh "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/sslh-conf"
 /etc/init.d/sslh restart
@@ -564,6 +563,8 @@ unzip master.zip
 cd ddos-deflate-master
 ./install.sh
 rm -rf /root/master.zip
+#auto delete akun exp
+wget -O /usr/local/bin/userdelexpired "https://www.dropbox.com/s/cwe64ztqk8w622u/userdelexpired?dl=1" && chmod +x /usr/local/bin/userdelexpired
 # finalizing
 #vnstat -u -i eth0
 apt-get -y autoremove
@@ -590,17 +591,17 @@ echo "                                 -modifikasi by zhangzi-                  
 echo "--------------------------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
-echo "   - Timezone    : Asia/Malay Babi (GMT +8)"  | tee -a log-install.txt
+echo "   - Timezone    : Asia/Malaysia Babi (GMT +8)"  | tee -a log-install.txt
 echo "   - Fail2Ban    : [ON]"  | tee -a log-install.txt
 echo "   - IPtables    : [ON]"  | tee -a log-install.txt
 echo "   - Auto-Reboot : [OFF]"  | tee -a log-install.txt
 echo "   - IPv6        : [OFF]"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "Application & Port Information"  | tee -a log-install.txt
-echo "   - OpenVPN		: TCP 443 55 1195"  | tee -a log-install.txt
-echo "   - Dropbear		: 442, 777"  | tee -a log-install.txt
-echo "   - BadVPN  	        : 7200"  | tee -a log-install.txt
-echo "   - Squid Proxy	: 8080, 8000, 3128, 81 (limit to IP Server)"  | tee -a log-install.txt
+echo "   - OpenVPN		: TCP 443/110"  | tee -a log-install.txt
+echo "   - Dropbear		: "  | tee -a log-install.txt
+echo "   - BadVPN  	        : 7300"  | tee -a log-install.txt
+echo "   - Squid Proxy	: 8080, 8000, 3128, 80 (limit to IP Server)"  | tee -a log-install.txt
 echo "   - Nginx		: 85"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
