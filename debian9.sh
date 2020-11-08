@@ -7,7 +7,7 @@ echo "deb http://build.openvpn.net/debian/openvpn/release/2.4 stretch main" > /e
 #Requirement
 apt update -y
 apt upgrade -y
-apt install openvpn nginx php7.0-fpm stunnel4 squid3 easy-rsa ufw build-essential fail2ban zip -y
+apt install openvpn nginx php7.0-fpm stunnel4 squid easy-rsa ufw build-essential fail2ban zip -y
 
 # initializing var
 MYIP=$(wget -qO- ipv4.icanhazip.com);
