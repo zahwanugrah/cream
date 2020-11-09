@@ -76,6 +76,7 @@ refresh_pattern . 0 20% 4320
 visible_hostname ZhangZi
 END
 sed -i $MYIP2 /etc/squid/squid.conf;
+#squid restart
 /etc/init.d/squid.restart
 
 #install OpenVPN
@@ -568,7 +569,7 @@ openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127
 sudo touch stunnel.conf
 echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "accept = 443" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "accept = 777" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "connect = 127.0.0.1:110" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
 
@@ -582,7 +583,7 @@ sudo cp /etc/stunnel/stunnel.pem ~
 cd
 apt-get -y install sslh
 #configurasi sslh
-wget -O /etc/default/sslh "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/sslh-conf"
+wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/sshtunnel/master/sslh-conf"
 /etc/init.d/sslh restart
 
 # install libxml-parser
