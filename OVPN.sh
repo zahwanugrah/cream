@@ -493,7 +493,7 @@ cd
 apt-get install zip -y
 apt-get install unzip-y
 cd /usr/local/bin/
-wget "https://github.com/emue25/cream/raw/mei/menu.zip"
+wget "https://github.com/emue25/cream/raw/mei/plug/menu.zip"
 unzip menu.zip
 chmod +x /usr/local/bin/*
 
