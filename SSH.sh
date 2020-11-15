@@ -24,7 +24,7 @@ echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 
 # set time GMT +7 jakarta
-ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 
 # set locale
 sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
@@ -78,10 +78,17 @@ make install
 make PREFIX=/usr/local install
 make PREFIX=/boot/home/config/non-packaged install
 make -i install
-apt-get -y install neofetch
+#apt-get -y install neofetch
 cd
-echo "clear" >> .bashrc
-echo "neofetch" >> .bashrc
+rm -rf /root/.bashrc
+wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
+
+#text gambar
+apt install sudo
+apt-get install boxes
+# text pelangi
+sudo apt-get install ruby -y
+sudo gem install lolcat
 
 # instal php5.6 ubuntu 16.04 64bit
 apt-get -y update
@@ -102,7 +109,7 @@ echo "========================================================="
 # install dropbear
 apt-get -y install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=44/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 77 "/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 echo "/usr/sbin/nologin" >> /etc/shells
@@ -183,7 +190,7 @@ apt-get -y install sslh
 
 #configurasi sslh
 wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/cream/mei/sslh-conf"
-service sslh restart
+/etc/init.d/sslh restart
 
 echo "=================  Install badVPn (VC and Game) ======================"
 echo "========================================================="
@@ -269,7 +276,7 @@ echo "DROPBEAR_BANNER="/etc/issue.net"" >> /etc/default/dropbear
 
 # install fail2ban
 apt-get -y install fail2ban
-service fail2ban restart
+/etc/init.d/fail2ban restart
 
 # Instal DDOS Flate
 if [ -d '/usr/local/ddos' ]; then
@@ -309,7 +316,7 @@ chmod +x /usr/local/bin/*
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
 echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
 echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
-echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
+#echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
 # finishing
