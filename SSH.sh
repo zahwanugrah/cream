@@ -129,7 +129,7 @@ chown -R vnstat:vnstat /var/lib/vnstat
 # install squid3
 cd
 apt-get -y install squid3
-wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/emue25/cream/mei/squid3.conf"
+wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/emue25/cream/mei/squid.conf"
 sed -i $MYIP2 /etc/squid/squid.conf;
 /etc/init.d/squid restart
 
@@ -333,53 +333,53 @@ echo "unset HISTFILE" >> /etc/profile
 
 # info
 clear
-echo "Autoscript Include:" | tee log-install.txt
-echo "===========================================" | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "Service"  | tee -a log-install.txt
-echo "-------"  | tee -a log-install.txt
-echo "OpenSSH   : 22,143"  | tee -a log-install.txt
-echo "Dropbear  : 109,456"  | tee -a log-install.txt
-echo "SSL       : 443"  | tee -a log-install.txt
-echo "Squid3    : 80,8080,3128 (limit to IP SSH)"  | tee -a log-install.txt
-echo "badvpn    : badvpn-udpgw port 7300"  | tee -a log-install.txt
-echo "nginx     : 81"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "Script"  | tee -a log-install.txt
-echo "------"  | tee -a log-install.txt
-echo "menu      : Menampilkan daftar perintah yang tersedia"  | tee -a log-install.txt
-echo "usernew   : Membuat Akun SSH"  | tee -a log-install.txt
-echo "trial     : Membuat Akun Trial"  | tee -a log-install.txt
-echo "hapus     : Menghapus Akun SSH"  | tee -a log-install.txt
-echo "cek       : Cek User Login"  | tee -a log-install.txt
-echo "member    : Cek Member SSH"  | tee -a log-install.txt
-echo "jurus69   : Restart Service dropbear, squid3, stunnel4, vpn, ssh)"  | tee -a log-install.txt
-echo "reboot    : Reboot VPS"  | tee -a log-install.txt
-echo "speedtest : Speedtest VPS"  | tee -a log-install.txt
-echo "info      : Menampilkan Informasi Sistem"  | tee -a log-install.txt
-echo "delete    : auto Delete user expired"  | tee -a log-install.txt
-echo "about     : Informasi tentang script auto install"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
+#echo "Autoscript Include:" | tee log-install.txt
+#echo "===========================================" | tee -a log-install.txt
+#echo ""  | tee -a log-install.txt
+#echo "Service"  | tee -a log-install.txt
+#echo "-------"  | tee -a log-install.txt
+#echo "OpenSSH   : 22,143"  | tee -a log-install.txt
+#echo "Dropbear  : 109,456"  | tee -a log-install.txt
+#echo "SSL       : 443"  | tee -a log-install.txt
+#echo "Squid3    : 80,8080,3128 (limit to IP SSH)"  | tee -a log-install.txt
+#echo "badvpn    : badvpn-udpgw port 7300"  | tee -a log-install.txt
+#echo "nginx     : 81"  | tee -a log-install.txt
+#echo ""  | tee -a log-install.txt
+#echo "Script"  | tee -a log-install.txt
+#echo "------"  | tee -a log-install.txt
+#echo "menu      : Menampilkan daftar perintah yang tersedia"  | tee -a log-install.txt
+#echo "usernew   : Membuat Akun SSH"  | tee -a log-install.txt
+#echo "trial     : Membuat Akun Trial"  | tee -a log-install.txt
+#echo "hapus     : Menghapus Akun SSH"  | tee -a log-install.txt
+#echo "cek       : Cek User Login"  | tee -a log-install.txt
+#echo "member    : Cek Member SSH"  | tee -a log-install.txt
+#echo "jurus69   : Restart Service dropbear, squid3, stunnel4, vpn, ssh)"  | tee -a log-install.txt
+#echo "reboot    : Reboot VPS"  | tee -a log-install.txt
+#echo "speedtest : Speedtest VPS"  | tee -a log-install.txt
+#echo "info      : Menampilkan Informasi Sistem"  | tee -a log-install.txt
+#echo "delete    : auto Delete user expired"  | tee -a log-install.txt
+#echo "about     : Informasi tentang script auto install"  | tee -a log-install.txt
+#echo ""  | tee -a log-install.txt
 
-echo "Fitur lain"  | tee -a log-install.txt
-echo "----------"  | tee -a log-install.txt
-echo "Timezone  : Asia/Jakarta (GMT +7)"  | tee -a log-install.txt
-echo "IPv6      : [off]"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "Modified by hidessh"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "Log Instalasi --> /root/log-install.txt"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "VPS AUTO REBOOT TIAP JAM 12 MALAM"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "==========================================="  | tee -a log-install.txt
+#echo "Fitur lain"  | tee -a log-install.txt
+#echo "----------"  | tee -a log-install.txt
+#echo "Timezone  : Asia/Jakarta (GMT +7)"  | tee -a log-install.txt
+#echo "IPv6      : [off]"  | tee -a log-install.txt
+#echo ""  | tee -a log-install.txt
+#echo "Modified by hidessh"  | tee -a log-install.txt
+#echo ""  | tee -a log-install.txt
+#echo "Log Instalasi --> /root/log-install.txt"  | tee -a log-install.txt
+#echo ""  | tee -a log-install.txt
+#echo "VPS AUTO REBOOT TIAP JAM 12 MALAM"  | tee -a log-install.txt
+#echo ""  | tee -a log-install.txt
+#echo "==========================================="  | tee -a log-install.txt
 cd
 
 # auto Delete Acount SSH Expired
 wget -O /usr/local/bin/userdelexpired "https://www.dropbox.com/s/cwe64ztqk8w622u/userdelexpired?dl=1" && chmod +x /usr/local/bin/userdelexpired
 
 
-rm -f /root/openssh.sh
+#rm -f /root/SSH.sh
 
 echo "================  install OPENVPN  saya disable======================"
 echo "========================================================="
