@@ -116,6 +116,14 @@ echo "/usr/sbin/nologin" >> /etc/shells
 /etc/init.d/ssh restart
 /etc/init.d/dropbear restart
 
+#ugrade
+apt-get install zlib1g-dev
+wget https://github.com/emue25/cream/blob/raw/dropbear-2020.81.tar.bz2
+bzip2 -cd dropbear-2020.81.tar.bz2 | tar xvf -
+cd dropbear-2020.81
+./configure
+make && make install
+
 echo "=================  install Squid3  ======================"
 echo "========================================================="
 
