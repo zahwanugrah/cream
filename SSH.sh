@@ -154,7 +154,7 @@ accept = 222
 connect = 127.0.0.1:22
 [dropbear]
 accept = 80
-connect = 127.0.0.1:44
+connect = 127.0.0.1:442
 [dropbear]
 accept = 777
 connect = 127.0.0.1:77
@@ -182,7 +182,7 @@ cd
 apt-get -y install sslh
 
 #configurasi sslh
-wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/sshtunnel/master/sslh-conf"
+wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/cream/mei/sslh-conf"
 service sslh restart
 
 echo "=================  Install badVPn (VC and Game) ======================"
