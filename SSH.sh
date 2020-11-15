@@ -319,6 +319,10 @@ echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
 #echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
+#Create Admin
+useradd admin
+echo "admin:kopet" | chpasswd
+
 # finishing
 cd
 chown -R www-data:www-data /home/vps/public_html
