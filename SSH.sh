@@ -72,13 +72,13 @@ apt-get -y install git
 apt-get -y install screen
 apt-get -y install unzip
 apt-get -y install curl
-#git clone https://github.com/dylanaraps/neofetch
-#cd neofetch
-#make install
-#make PREFIX=/usr/local install
-#make PREFIX=/boot/home/config/non-packaged install
-#make -i install
-#apt-get -y install neofetch
+git clone https://github.com/dylanaraps/neofetch
+cd neofetch
+make install
+make PREFIX=/usr/local install
+make PREFIX=/boot/home/config/non-packaged install
+make -i install
+apt-get -y install neofetch
 
 cd
 rm -rf /root/.bashrc
@@ -118,12 +118,12 @@ echo "/usr/sbin/nologin" >> /etc/shells
 /etc/init.d/dropbear restart
 
 #ugrade
-#apt-get install zlib1g-dev
-#wget https://github.com/emue25/cream/raw/mei/dropbear-2020.81.tar.bz2
-#bzip2 -cd dropbear-2020.81.tar.bz2 | tar xvf -
-#cd dropbear-2020.81
-#./configure
-#make && make install
+apt -y install zlib1g-dev
+wget https://github.com/emue25/cream/raw/mei/dropbear-2020.81.tar.bz2
+bzip2 -cd dropbear-2020.81.tar.bz2 | tar xvf -
+cd dropbear-2020.81
+./configure
+make && make install
 
 echo "=================  install Squid3  ======================"
 echo "========================================================="
