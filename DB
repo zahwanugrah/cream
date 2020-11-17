@@ -16,11 +16,11 @@ SSH_Port2='90'
 SSH_Banner='https://raw.githubusercontent.com/emue25/cream/mei/bannerssh'
 
 # Dropbear Ports
-Dropbear_Port1='445'
+Dropbear_Port1='77'
 Dropbear_Port2='442'
 
 # Stunnel Ports
-Stunnel_Port1='443' # through Dropbear
+Stunnel_Port1='777' # through Dropbear
 Stunnel_Port2='444' # through OpenSSH
 
 # OpenVPN Ports
@@ -914,7 +914,7 @@ comp-lzo
 keepalive 10 120
 tls-client
 remote-cert-tls server
-verb 2
+verb 4
 auth-user-pass
 cipher none
 auth none
@@ -954,8 +954,8 @@ comp-lzo
 redirect-gateway def1
 setenv CLIENT_CERT 0
 reneg-sec 0
-verb 1
-http-proxy $IPADDR $Squid_Port1
+verb 4
+http-proxy $IPADDR $Squid_Port2
 
 <ca>
 $(cat /etc/openvpn/ca.crt)
