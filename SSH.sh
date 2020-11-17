@@ -391,7 +391,8 @@ cd
 # auto Delete Acount SSH Expired
 wget -O /usr/local/bin/userdelexpired "https://www.dropbox.com/s/cwe64ztqk8w622u/userdelexpired?dl=1" && chmod +x /usr/local/bin/userdelexpired
 
-
+#autokill
+wget https://raw.githubusercontent.com/emue25/cream/mei/autokill.sh && chmod +x autokill.sh && ./autokill.sh
 #rm -f /root/SSH.sh
 
 echo "================  install OPENVPN  saya disable======================"
