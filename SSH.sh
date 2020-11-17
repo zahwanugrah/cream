@@ -137,7 +137,7 @@ chown -R vnstat:vnstat /var/lib/vnstat
 
 # install squid3
 cd
-apt-get -y install squid3
+apt -y install squid
 wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/emue25/cream/mei/squid.conf"
 sed -i $MYIP2 /etc/squid/squid.conf;
 /etc/init.d/squid restart
