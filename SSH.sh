@@ -100,9 +100,9 @@ apt-get -y update
 
 # setting port ssh
 cd
-#sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
-#sed -i 's/#Port 22/Port 22/g' /etc/ssh/sshd_config
-#/etc/init.d/ssh restart
+sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
+sed -i 's/#Port 22/Port 22/g' /etc/ssh/sshd_config
+/etc/init.d/ssh restart
 
 echo "================  install Dropbear ======================"
 echo "========================================================="
@@ -133,12 +133,10 @@ cd
 apt install squid -y
 # Removing Duplicate Squid config
 rm -rf /etc/squid/squid.con*
- # Setting machine's IP Address inside of our Squid config(security that only allows this machine to use this proxy server)
-sed -i "s|IP-ADDRESS|$IPADDR|g" /etc/squid/squid.conf
 # Creating Squid server config using cat eof tricks
 cat <<'mySquid' > /etc/squid/squid.conf
 # My Squid Proxy Server Config
-acl VPN dst IP-ADDRESS/32
+acl VPN dst xxxxxxxxx/32
 http_access allow VPN
 http_access deny all 
 http_port 0.0.0.0:3128
