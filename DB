@@ -16,7 +16,6 @@ MyScriptName='VPNstunnel'
 
 # OpenSSH Ports
 SSH_Port1='22'
-SSH_Port2='226'
 
 # Your SSH Banner
 SSH_Banner='https://raw.githubusercontent.com/emue25/cream/mei/bannerssh'
@@ -1119,9 +1118,9 @@ echo -e " Creating Menu scripts.."
 
 cd /usr/local/sbin/
 rm -rf {accounts,base-ports,base-ports-wc,base-script,bench-network,clearcache,connections,create,create_random,create_trial,delete_expired,diagnose,edit_dropbear,edit_openssh,edit_openvpn,edit_ports,edit_squid3,edit_stunnel4,locked_list,menu,options,ram,reboot_sys,reboot_sys_auto,restart_services,server,set_multilogin_autokill,set_multilogin_autokill_lib,show_ports,speedtest,user_delete,user_details,user_details_lib,user_extend,user_list,user_lock,user_unlock}
-wget -q 'https://github.com/emue25/cream/raw/mei/plug/menu.zip'
-unzip -qq menu.zip
-rm -f menu.zip
+wget -q 'https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Menu/bashmenu.zip'
+unzip -qq bashmenu.zip
+rm -f bashmenu.zip
 chmod +x ./*
 dos2unix ./* &> /dev/null
 sed -i 's|/etc/squid/squid.conf|/etc/privoxy/config|g' ./*
@@ -1252,9 +1251,6 @@ apt-get -y install sslh
 #configurasi sslh
 wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/cream/mei/sslh-conf"
 /etc/init.d/sslh restart
-
-#autokill
-wget https://raw.githubusercontent.com/emue25/cream/mei/autokill.sh && chmod +x autokill.sh && ./autokill.sh
 
 #auto dellet exp
 wget -O /usr/local/bin/userdelexpired "https://www.dropbox.com/s/cwe64ztqk8w622u/userdelexpired?dl=1" && chmod +x /usr/local/bin/userdelexpired
