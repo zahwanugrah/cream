@@ -140,7 +140,8 @@ cd
 apt install squid -y
 # Removing Duplicate Squid config
 rm -rf /etc/squid/squid.con*
- 
+ # Setting machine's IP Address inside of our Squid config(security that only allows this machine to use this proxy server)
+sed -i "s|IP-ADDRESS|$IPADDR|g" /etc/squid/squid.conf
 # Creating Squid server config using cat eof tricks
 cat <<'mySquid' > /etc/squid/squid.conf
 # My Squid Proxy Server Config
@@ -220,8 +221,7 @@ refresh_pattern . 0 20% 4320
 visible_hostname zhanzgi
 mySquid
 
-# Setting machine's IP Address inside of our Squid config(security that only allows this machine to use this proxy server)
-sed -i "s|IP-ADDRESS|$IPADDR|g" /etc/squid/squid.conf
+
 #squid restart
 /etc/init.d/squid.restart
  
