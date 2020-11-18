@@ -4,8 +4,11 @@
 # initialisasi var
 export DEBIAN_FRONTEND=noninteractive
 OS=`uname -m`;
-MYIP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0'`;
-MYIP2="s/xxxxxxxxx/$MYIP/g";
+#MYIP=$(wget -qO- ipv4.icanhazip.com);
+
+# ipvp
+IPADDRESS=`ifconfig | grep 'inet addr:' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | cut -d: -f2 | awk '{print $1}' | head -1`
+IPADD="s/ipaddresxxx/$IPADDRESS/g";
 
 # detail nama perusahaan
 country=ID
@@ -27,7 +30,10 @@ sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 
 # set locale
-sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
+# setting port ssh
+sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
+sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
+sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 /etc/init.d/ssh restart
 
 # Edit file /etc/systemd/system/rc-local.service
@@ -93,16 +99,6 @@ sudo gem install lolcat
 
 # instal php5.6 ubuntu 16.04 64bit
 apt-get -y update
-
-# set repo webmin
-#sh -c 'echo "deb http://download.webmin.com/download/repository sarge contrib" > /etc/apt/sources.list.d/webmin.list'
-#wget -qO - http://www.webmin.com/jcameron-key.asc | apt-key add -
-
-# setting port ssh
-cd
-sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
-sed -i 's/#Port 22/Port 22/g' /etc/ssh/sshd_config
-/etc/init.d/ssh restart
 
 echo "================  install Dropbear ======================"
 echo "========================================================="
