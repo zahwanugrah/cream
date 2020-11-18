@@ -23,14 +23,44 @@ tar -xzvf plugin.tgz
 # set time GMT +8
 ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 
+# Edit file /etc/systemd/system/rc-local.service
+cat > /etc/systemd/system/rc-local.service <<-END
+[Unit]
+Description=/etc/rc.local
+ConditionPathExists=/etc/rc.local
+[Service]
+Type=forking
+ExecStart=/etc/rc.local start
+TimeoutSec=0
+StandardOutput=tty
+RemainAfterExit=yes
+SysVStartPriority=99
+[Install]
+WantedBy=multi-user.target
+END
+
+# nano /etc/rc.local
+cat > /etc/rc.local <<-END
+#!/bin/sh -e
+# rc.local
+# By default this script does nothing.
+exit 0
+END
+
+# Ubah izin akses
+chmod +x /etc/rc.local
+
+# enable rc local
+systemctl enable rc-local
+systemctl start rc-local.service
 # install webmin
-cd
-wget "https://github.com/emue25/VPSauto/raw/master/webmin_1.930_all.deb"
-dpkg --install webmin_1.930_all.deb;
-apt-get -y -f install;
-sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-rm /root/webmin_1.930_all.deb
-/etc/init.d/webmin restart
+#cd
+#wget "https://github.com/emue25/VPSauto/raw/master/webmin_1.930_all.deb"
+#dpkg --install webmin_1.930_all.deb;
+#apt-get -y -f install;
+#sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
+#rm /root/webmin_1.930_all.deb
+#/etc/init.d/webmin restart
 
 # install screenfetch
 cd
@@ -46,7 +76,7 @@ sudo apt gem install lolcat
 # install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
-sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 777 -p 110"/g' /etc/default/dropbear
+sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 77 -p 44"/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 
 
@@ -76,7 +106,7 @@ http_access allow localhost
 http_access deny all
 http_port 8080
 http_port 8000
-http_port 80
+http_port 8888
 http_port 3128
 coredump_dir /var/spool/squid3
 refresh_pattern ^ftp: 1440 20% 10080
@@ -97,13 +127,66 @@ sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dr
 /etc/init.d/dropbear restart
 
 # install badvpn
-wget -O /usr/bin/badvpn-udpgw "https://github.com/emue25/AutoScriptDebianStretch/raw/master/Files/Plugins/badvpn-udpgw"
-if [ "$OS" == "x86_64" ]; then
-  wget -O /usr/bin/badvpn-udpgw "https://github.com/emue25/AutoScriptDebianStretch/raw/master/Files/Plugins/badvpn-udpgw64"
-fi
-sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
-chmod +x /usr/bin/badvpn-udpgw
-screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
+#wget -O /usr/bin/badvpn-udpgw "https://github.com/emue25/AutoScriptDebianStretch/raw/master/Files/Plugins/badvpn-udpgw"
+#if [ "$OS" == "x86_64" ]; then
+ # wget -O /usr/bin/badvpn-udpgw "https://github.com/emue25/AutoScriptDebianStretch/raw/master/Files/Plugins/badvpn-udpgw64"
+#fi
+#sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
+#chmod +x /usr/bin/badvpn-udpgw
+#screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
+#instal sslh
+cd
+apt-get -y install sslh
+
+#configurasi sslh
+wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/cream/mei/sslh-conf"
+/etc/init.d/sslh restart
+
+echo "=================  Install badVPn (VC and Game) ======================"
+echo "========================================================="
+
+# buat directory badvpn
+
+echo "================= Disable badVPN V 1  ======================"
+cd
+
+echo "================= Auto Installer Disable badVPN V 2  ======================"
+
+echo "================= Auto Installer Disable badVPN V 3  ======================"
+# buat directory badvpn
+cd /usr/bin
+mkdir build
+cd build
+wget https://github.com/ambrop72/badvpn/archive/1.999.130.tar.gz
+tar xvzf 1.999.130.tar.gz
+cd badvpn-1.999.130
+cmake -DBUILD_NOTHING_BY_DEFAULT=1 -DBUILD_TUN2SOCKS=1 -DBUILD_UDPGW=1
+make install
+make -i install
+
+# auto start badvpn single port
+sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300 --max-clients 1000 --max-connections-for-client 10' /etc/rc.local
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300 --max-clients 500 --max-connections-for-client 20 &
+cd
+
+# auto start badvpn second port
+#cd /usr/bin/build/badvpn-1.999.130
+sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200 --max-clients 1000 --max-connections-for-client 10' /etc/rc.local
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200 --max-clients 500 --max-connections-for-client 20 &
+cd
+
+# auto start badvpn second port
+sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7100 --max-clients 1000 --max-connections-for-client 10' /etc/rc.local
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7100 --max-clients 500 --max-connections-for-client 20 &
+cd
+
+# permition
+chmod +x /usr/local/bin/badvpn-udpgw
+chmod +x /usr/local/share/man/man7/badvpn.7
+chmod +x /usr/local/bin/badvpn-tun2socks
+chmod +x /usr/local/share/man/man8/badvpn-tun2socks.8
+chmod +x /usr/bin/build
+chmod +x /etc/rc.local
 
 # Configure Stunnel
 sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
@@ -116,10 +199,22 @@ socket = r:TCP_NODELAY=1
 client = no
 
 [dropbear]
-accept = 443
+accept = 80
 connect = 127.0.0.1:442
 cert = /etc/stunnel/stunnel.pem
+[openssh]
+accept = 777
+connect = 127.0.0.1:22
+cert = /etc/stunnel/stunnel.pem
 END
+
+#instal sslh
+cd
+apt-get -y install sslh
+
+#configurasi sslh
+wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/cream/mei/sslh-conf"
+/etc/init.d/sslh restart
 
 # set ipv4 forward
 echo 1 > /proc/sys/net/ipv4/ip_forward
@@ -224,6 +319,8 @@ chmod +x /usr/local/bin/*
 
 # install ddos deflate
 cd
+apt install tcpdump -y
+apt install grepcidr -y
 apt-get -y install dnsutils dsniff
 wget https://github.com/jgmdev/ddos-deflate/archive/master.zip
 unzip master.zip
@@ -234,8 +331,8 @@ rm -rf /root/master.zip
 echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
 echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
 echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
-echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
-echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
+#echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
+#echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 # add eth0 to vnstat
 vnstat -u -i eth0
 
