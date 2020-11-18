@@ -1224,13 +1224,12 @@ fi
  clear
  cd ~
  
-  # Running screenfetch
- wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/screenfetch"
- chmod +x /usr/bin/screenfetch
- echo "/bin/bash /etc/openvpn/openvpn.bash" >> .profile
- echo "clear" >> .profile
- echo "screenfetch" >> .profile
-
+ #text gambar
+apt-get install boxes
+ # Running screenfetch
+cd
+rm -rf /root/.bashrc
+wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
  
  # Showing script's banner message
  ScriptMessage
@@ -1240,7 +1239,7 @@ echo " "
 echo "Installation has been completed!!"
 echo "--------------------------------------------------------------------------------"
 echo "                            Debian Premium Script                               "
-echo "                                 -FordSenpai-                                   "
+echo "                             -MODIF BY ZHANGZI-                                 "
 echo "--------------------------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
