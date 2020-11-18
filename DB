@@ -1,35 +1,41 @@
 #!/bin/bash
-# VPN Premium Script
+# JohnFordTV's VPN Premium Script
+# © Github.com/johndesu090
+# Official Repository: https://github.com/johndesu090/AutoScriptDB
+# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
+# For Donations, Im accepting prepaid loads or GCash transactions:
+# Smart: 09206200840
+# Facebook: https://fb.me/johndesu090
 # Thanks for using this script, Enjoy Highspeed OpenVPN Service
 
 #############################
 #############################
 # Variables (Can be changed depends on your preferred values)
 # Script name
-MyScriptName='VPNstunnel-Premium Script'
+MyScriptName='JohnFordTV-Premium Script'
 
 # OpenSSH Ports
 SSH_Port1='22'
-SSH_Port2='90'
+SSH_Port2='226'
 
 # Your SSH Banner
 SSH_Banner='https://raw.githubusercontent.com/emue25/cream/mei/bannerssh'
 
 # Dropbear Ports
-Dropbear_Port1='77'
+Dropbear_Port1='44'
 Dropbear_Port2='442'
 
 # Stunnel Ports
-Stunnel_Port1='777' # through Dropbear
-Stunnel_Port2='80' # through OpenSSH
+Stunnel_Port1='80' # through Dropbear
+Stunnel_Port2='777' # through OpenSSH
 
 # OpenVPN Ports
 OpenVPN_TCP_Port='110'
-OpenVPN_UDP_Port='1194'
+OpenVPN_UDP_Port='55'
 
 # Privoxy Ports
 Privoxy_Port1='3356'
-Privoxy_Port2='8085'
+Privoxy_Port2='8086'
 
 # Squid Ports
 Squid_Port1='3128'
@@ -55,62 +61,66 @@ MyVPS_Time='Asia/Kuala_Lumpur'
 #############################
 
 function InstUpdates(){
-export DEBIAN_FRONTEND=noninteractive
-apt-get update
-apt-get upgrade -y
+ export DEBIAN_FRONTEND=noninteractive
+ apt-get update
+ apt-get upgrade -y
  
-# Removing some firewall tools that may affect other services
-apt-get remove --purge ufw firewalld -y
+ # Removing some firewall tools that may affect other services
+ apt-get remove --purge ufw firewalld -y
 
  
-# Installing some important machine essentials
-apt-get install nano wget curl zip unzip tar gzip p7zip-full bc rc openssl cron net-tools dnsutils dos2unix screen bzip2 ccrypt boxes -y
+ # Installing some important machine essentials
+ apt-get install nano wget curl zip unzip tar gzip p7zip-full bc rc openssl cron net-tools dnsutils dos2unix screen bzip2 ccrypt -y
  
-# Now installing all our wanted services
-apt-get install dropbear stunnel4 privoxy ca-certificates nginx ruby apt-transport-https lsb-release squid -y
+ # Now installing all our wanted services
+ apt-get install dropbear stunnel4 privoxy ca-certificates nginx ruby apt-transport-https lsb-release squid -y
 
-# Installing all required packages to install Webmin
-apt-get install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python dbus libxml-parser-perl -y
-apt-get install shared-mime-info jq fail2ban -y
+ # Installing all required packages to install Webmin
+ apt-get install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python dbus libxml-parser-perl -y
+ apt-get install shared-mime-info jq fail2ban -y
 
  
 # Installing a text colorizer
 gem install lolcat
-
+#text gambar
+apt-get install boxes
+# text pelangi
+apt-get install ruby -y
 # Trying to remove obsolette packages after installation
 apt-get autoremove -y
  
-# Installing OpenVPN by pulling its repository inside sources.list file 
-rm -rf /etc/apt/sources.list.d/openvpn*
-echo "deb http://build.openvpn.net/debian/openvpn/stable $(lsb_release -sc) main" > /etc/apt/sources.list.d/openvpn.list
-wget -qO - http://build.openvpn.net/debian/openvpn/stable/pubkey.gpg|apt-key add -
-apt-get update
-apt-get install openvpn -y
-#}
+ # Installing OpenVPN by pulling its repository inside sources.list file 
+ rm -rf /etc/apt/sources.list.d/openvpn*
+ echo "deb http://build.openvpn.net/debian/openvpn/stable $(lsb_release -sc) main" > /etc/apt/sources.list.d/openvpn.list
+ wget -qO - http://build.openvpn.net/debian/openvpn/stable/pubkey.gpg|apt-key add -
+ apt-get update
+ apt-get install openvpn -y
+}
 
-#function InstWebmin(){
+function InstWebmin(){
  # Download the webmin .deb package
  # You may change its webmin version depends on the link you've loaded in this variable(.deb file only, do not load .zip or .tar.gz file):
-WebminFile='https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/webmin_1.920_all.deb'
-wget -qO webmin.deb "$WebminFile"
+ WebminFile='https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/webmin_1.920_all.deb'
+ wget -qO webmin.deb "$WebminFile"
  
-# Installing .deb package for webmin
-dpkg --install webmin.deb
-rm -rf webmin.deb
+ # Installing .deb package for webmin
+ dpkg --install webmin.deb
  
-# Configuring webmin server config to use only http instead of https
-sed -i 's|ssl=1|ssl=0|g' /etc/webmin/miniserv.conf
+ rm -rf webmin.deb
  
-# Then restart to take effect
-systemctl restart webmin
+ # Configuring webmin server config to use only http instead of https
+ sed -i 's|ssl=1|ssl=0|g' /etc/webmin/miniserv.conf
+ 
+ # Then restart to take effect
+ systemctl restart webmin
 }
 
 function InstSSH(){
  # Removing some duplicated sshd server configs
-rm -f /etc/ssh/sshd_config*
+ rm -f /etc/ssh/sshd_config*
  
-# Creating a SSH server config using cat eof tricks
-cat <<'MySSHConfig' > /etc/ssh/sshd_config
+ # Creating a SSH server config using cat eof tricks
+ cat <<'MySSHConfig' > /etc/ssh/sshd_config
 # My OpenSSH Server config
 Port myPORT1
 Port myPORT2
@@ -136,36 +146,36 @@ AcceptEnv LANG LC_*
 Subsystem   sftp  /usr/lib/openssh/sftp-server
 MySSHConfig
 
-# Now we'll put our ssh ports inside of sshd_config
-sed -i "s|myPORT1|$SSH_Port1|g" /etc/ssh/sshd_config
-sed -i "s|myPORT2|$SSH_Port2|g" /etc/ssh/sshd_config
+ # Now we'll put our ssh ports inside of sshd_config
+ sed -i "s|myPORT1|$SSH_Port1|g" /etc/ssh/sshd_config
+ sed -i "s|myPORT2|$SSH_Port2|g" /etc/ssh/sshd_config
 
-# Download our SSH Banner
-rm -f /etc/banner
-wget -qO /etc/banner "$SSH_Banner"
-dos2unix -q /etc/banner
+ # Download our SSH Banner
+ rm -f /etc/banner
+ wget -qO /etc/banner "$SSH_Banner"
+ dos2unix -q /etc/banner
 
-# My workaround code to remove `BAD Password error` from passwd command, it will fix password-related error on their ssh accounts.
-sed -i '/password\s*requisite\s*pam_cracklib.s.*/d' /etc/pam.d/common-password
-sed -i 's/use_authtok //g' /etc/pam.d/common-password
+ # My workaround code to remove `BAD Password error` from passwd command, it will fix password-related error on their ssh accounts.
+ sed -i '/password\s*requisite\s*pam_cracklib.s.*/d' /etc/pam.d/common-password
+ sed -i 's/use_authtok //g' /etc/pam.d/common-password
 
-# Some command to identify null shells when you tunnel through SSH or using Stunnel, it will fix user/pass authentication error on HTTP Injector, KPN Tunnel, eProxy, SVI, HTTP Proxy Injector etc ssh/ssl tunneling apps.
-sed -i '/\/bin\/false/d' /etc/shells
-sed -i '/\/usr\/sbin\/nologin/d' /etc/shells
-echo '/bin/false' >> /etc/shells
-echo '/usr/sbin/nologin' >> /etc/shells
+ # Some command to identify null shells when you tunnel through SSH or using Stunnel, it will fix user/pass authentication error on HTTP Injector, KPN Tunnel, eProxy, SVI, HTTP Proxy Injector etc ssh/ssl tunneling apps.
+ sed -i '/\/bin\/false/d' /etc/shells
+ sed -i '/\/usr\/sbin\/nologin/d' /etc/shells
+ echo '/bin/false' >> /etc/shells
+ echo '/usr/sbin/nologin' >> /etc/shells
  
-# Restarting openssh service
-systemctl restart ssh
+ # Restarting openssh service
+ systemctl restart ssh
  
-# Removing some duplicate config file
-rm -rf /etc/default/dropbear*
+ # Removing some duplicate config file
+ rm -rf /etc/default/dropbear*
  
-# creating dropbear config using cat eof tricks
-cat <<'MyDropbear' > /etc/default/dropbear
+ # creating dropbear config using cat eof tricks
+ cat <<'MyDropbear' > /etc/default/dropbear
 # My Dropbear Config
 NO_START=0
-DROPBEAR_PORT="PORT01"
+DROPBEAR_PORT=PORT01
 DROPBEAR_EXTRA_ARGS="-p PORT02"
 DROPBEAR_BANNER="/etc/banner"
 DROPBEAR_RSAKEY="/etc/dropbear/dropbear_rsa_host_key"
@@ -174,18 +184,18 @@ DROPBEAR_ECDSAKEY="/etc/dropbear/dropbear_ecdsa_host_key"
 DROPBEAR_RECEIVE_WINDOW=65536
 MyDropbear
 
-# Now changing our desired dropbear ports
-sed -i "s|PORT01|$Dropbear_Port1|g" /etc/default/dropbear
-sed -i "s|PORT02|$Dropbear_Port2|g" /etc/default/dropbear
+ # Now changing our desired dropbear ports
+ sed -i "s|PORT01|$Dropbear_Port1|g" /etc/default/dropbear
+ sed -i "s|PORT02|$Dropbear_Port2|g" /etc/default/dropbear
  
-# Restarting dropbear service
-systemctl restart dropbear
+ # Restarting dropbear service
+ systemctl restart dropbear
 }
 
 function InsStunnel(){
-StunnelDir=$(ls /etc/default | grep stunnel | head -n1)
+ StunnelDir=$(ls /etc/default | grep stunnel | head -n1)
 
-# Creating stunnel startup config using cat eof tricks
+ # Creating stunnel startup config using cat eof tricks
 cat <<'MyStunnelD' > /etc/default/$StunnelDir
 # My Stunnel Config
 ENABLED=1
@@ -197,15 +207,15 @@ PPP_RESTART=0
 RLIMITS=""
 MyStunnelD
 
-# Removing all stunnel folder contents
-rm -rf /etc/stunnel/*
+ # Removing all stunnel folder contents
+ rm -rf /etc/stunnel/*
  
-# Creating stunnel certifcate using openssl
-openssl req -new -x509 -days 9999 -nodes -subj "/C=PH/ST=NCR/L=Manila/O=$MyScriptName/OU=$MyScriptName/CN=$MyScriptName" -out /etc/stunnel/stunnel.pem -keyout /etc/stunnel/stunnel.pem &> /dev/null
+ # Creating stunnel certifcate using openssl
+ openssl req -new -x509 -days 9999 -nodes -subj "/C=PH/ST=NCR/L=Manila/O=$MyScriptName/OU=$MyScriptName/CN=$MyScriptName" -out /etc/stunnel/stunnel.pem -keyout /etc/stunnel/stunnel.pem &> /dev/null
 ##  > /dev/null 2>&1
 
-# Creating stunnel server config
-cat <<'MyStunnelC' > /etc/stunnel/stunnel.conf
+ # Creating stunnel server config
+ cat <<'MyStunnelC' > /etc/stunnel/stunnel.conf
 # My Stunnel Config
 pid = /var/run/stunnel.pid
 cert = /etc/stunnel/stunnel.pem
@@ -224,13 +234,13 @@ connect = 127.0.0.1:openssh_port_c
 MyStunnelC
 
  # setting stunnel ports
-sed -i "s|Stunnel_Port1|$Stunnel_Port1|g" /etc/stunnel/stunnel.conf
-sed -i "s|dropbear_port_c|$(netstat -tlnp | grep -i dropbear | awk '{print $4}' | cut -d: -f2 | xargs | awk '{print $2}' | head -n1)|g" /etc/stunnel/stunnel.conf
-sed -i "s|Stunnel_Port2|$Stunnel_Port2|g" /etc/stunnel/stunnel.conf
-sed -i "s|openssh_port_c|$(netstat -tlnp | grep -i ssh | awk '{print $4}' | cut -d: -f2 | xargs | awk '{print $2}' | head -n1)|g" /etc/stunnel/stunnel.conf
+ sed -i "s|Stunnel_Port1|$Stunnel_Port1|g" /etc/stunnel/stunnel.conf
+ sed -i "s|dropbear_port_c|$(netstat -tlnp | grep -i dropbear | awk '{print $4}' | cut -d: -f2 | xargs | awk '{print $2}' | head -n1)|g" /etc/stunnel/stunnel.conf
+ sed -i "s|Stunnel_Port2|$Stunnel_Port2|g" /etc/stunnel/stunnel.conf
+ sed -i "s|openssh_port_c|$(netstat -tlnp | grep -i ssh | awk '{print $4}' | cut -d: -f2 | xargs | awk '{print $2}' | head -n1)|g" /etc/stunnel/stunnel.conf
 
  # Restarting stunnel service
-systemctl restart $StunnelDir
+ systemctl restart $StunnelDir
 
 }
 
@@ -243,12 +253,12 @@ function InsOpenVPN(){
  # Removing all existing openvpn server files
  rm -rf /etc/openvpn/*
 
-# Creating server.conf, ca.crt, server.crt and server.key
-cat <<'myOpenVPNconf' > /etc/openvpn/server_tcp.conf
+ # Creating server.conf, ca.crt, server.crt and server.key
+ cat <<'myOpenVPNconf' > /etc/openvpn/server_tcp.conf
 # OpenVPN TCP
 port OVPNTCP
 proto tcp
-dev tun0
+dev tun
 ca /etc/openvpn/ca.crt
 cert /etc/openvpn/server.crt
 key /etc/openvpn/server.key
@@ -259,9 +269,6 @@ key-direction 0
 plugin /etc/openvpn/plugins/openvpn-plugin-auth-pam.so login
 server 10.200.0.0 255.255.0.0
 ifconfig-pool-persist ipp.txt
-push "redirect-gateway def1 bypass-dhcp"
-push "dhcp-option DNS 1.1.1.1"
-push "dhcp-option DNS 1.0.0.1"
 push "route-method exe"
 push "route-delay 2"
 keepalive 10 120
@@ -272,18 +279,17 @@ persist-key
 persist-tun
 status openvpn-status.log
 log tcp.log
-verb 4
-mute 20
+verb 2
 ncp-disable
 cipher none
 auth none
 myOpenVPNconf
 
 cat <<'myOpenVPNconf2' > /etc/openvpn/server_udp.conf
-#OpenVPN UDP
+# OpenVPN UDP
 port OVPNUDP
 proto udp
-dev tun1
+dev tun
 ca /etc/openvpn/ca.crt
 cert /etc/openvpn/server.crt
 key /etc/openvpn/server.key
@@ -292,11 +298,8 @@ verify-client-cert none
 username-as-common-name
 key-direction 0
 plugin /etc/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 10.200.10.0 255.255.0.0
+server 10.201.0.0 255.255.0.0
 ifconfig-pool-persist ipp.txt
-push "redirect-gateway def1 bypass-dhcp"
-push "dhcp-option DNS 1.1.1.1"
-push "dhcp-option DNS 1.0.0.1"
 push "route-method exe"
 push "route-delay 2"
 keepalive 10 120
@@ -307,8 +310,7 @@ persist-key
 persist-tun
 status openvpn-status.log
 log udp.log
-verb 4
-mute 20
+verb 2
 ncp-disable
 cipher none
 auth none
@@ -518,228 +520,51 @@ done
  # Script Updated by JohnFordTV
 NUovpn
 
-# setting openvpn server port
-sed -i "s|OVPNTCP|$OpenVPN_TCP_Port|g" /etc/openvpn/server_tcp.conf
-sed -i "s|OVPNUDP|$OpenVPN_UDP_Port|g" /etc/openvpn/server_udp.conf
+ # setting openvpn server port
+ sed -i "s|OVPNTCP|$OpenVPN_TCP_Port|g" /etc/openvpn/server_tcp.conf
+ sed -i "s|OVPNUDP|$OpenVPN_UDP_Port|g" /etc/openvpn/server_udp.conf
  
-# Getting some OpenVPN plugins for unix authentication
-cd
-wget https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/plugin.tgz
-tar -xzvf /root/plugin.tgz -C /etc/openvpn/
-rm -f plugin.tgz
+ # Getting some OpenVPN plugins for unix authentication
+ cd
+ wget https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/plugin.tgz
+ tar -xzvf /root/plugin.tgz -C /etc/openvpn/
+ rm -f plugin.tgz
  
-# Some workaround for OpenVZ machines for "Startup error" openvpn service
-if [[ "$(hostnamectl | grep -i Virtualization | awk '{print $2}' | head -n1)" == 'openvz' ]]; then
-sed -i 's|LimitNPROC|#LimitNPROC|g' /lib/systemd/system/openvpn*
-systemctl daemon-reload
+ # Some workaround for OpenVZ machines for "Startup error" openvpn service
+ if [[ "$(hostnamectl | grep -i Virtualization | awk '{print $2}' | head -n1)" == 'openvz' ]]; then
+ sed -i 's|LimitNPROC|#LimitNPROC|g' /lib/systemd/system/openvpn*
+ systemctl daemon-reload
 fi
 
-# Allow IPv4 Forwarding
-sed -i '/net.ipv4.ip_forward.*/d' /etc/sysctl.conf
-sed -i '/net.ipv4.ip_forward.*/d' /etc/sysctl.d/*.conf
-echo 'net.ipv4.ip_forward=1' > /etc/sysctl.d/20-openvpn.conf
-sysctl --system &> /dev/null
+ # Allow IPv4 Forwarding
+ sed -i '/net.ipv4.ip_forward.*/d' /etc/sysctl.conf
+ sed -i '/net.ipv4.ip_forward.*/d' /etc/sysctl.d/*.conf
+ echo 'net.ipv4.ip_forward=1' > /etc/sysctl.d/20-openvpn.conf
+ sysctl --system &> /dev/null
 
-# Iptables Rule for OpenVPN server
-cat <<'EOFipt' > /etc/openvpn/openvpn.bash
+ # Iptables Rule for OpenVPN server
+ cat <<'EOFipt' > /etc/openvpn/openvpn.bash
 #!/bin/bash
 PUBLIC_INET="$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)"
-IPCIDR='10.200.0.0/24'
-IPCIDR2='10.200.10.0/24'
+IPCIDR='10.200.0.0/16'
+IPCIDR2='10.201.0.0/16'
 iptables -I FORWARD -s $IPCIDR -j ACCEPT
 iptables -I FORWARD -s $IPCIDR2 -j ACCEPT
 iptables -t nat -A POSTROUTING -o $PUBLIC_INET -j MASQUERADE
 iptables -t nat -A POSTROUTING -s $IPCIDR -o $PUBLIC_INET -j MASQUERADE
 iptables -t nat -A POSTROUTING -s $IPCIDR2 -o $PUBLIC_INET -j MASQUERADE
-COMMIT
-*filter
-:INPUT ACCEPT [19406:27313311]
-:FORWARD ACCEPT [0:0]
-:OUTPUT ACCEPT [9393:434129]
-:fail2ban-ssh - [0:0]
--A FORWARD -i eth0 -o ppp0 -m state --state RELATED,ESTABLISHED -j ACCEPT
--A FORWARD -i ppp0 -o eth0 -j ACCEPT
--A INPUT -p ICMP --icmp-type 8 -j ACCEPT
--A INPUT -p tcp -m tcp --dport 53 -j ACCEPT
--A INPUT -p tcp --dport 22  -m state --state NEW -j ACCEPT
--A INPUT -p tcp --dport 85  -m state --state NEW -j ACCEPT
--A INPUT -p tcp --dport 80  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 80  -m state --state NEW -j ACCEPT
--A INPUT -p tcp --dport 443  -m state --state NEW -j ACCEPT
--A INPUT -p tcp --dport 1194  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 1194  -m state --state NEW -j ACCEPT
--A INPUT -p tcp --dport 3128  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 3128  -m state --state NEW -j ACCEPT
--A INPUT -p tcp --dport 8000  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 8000  -m state --state NEW -j ACCEPT
--A INPUT -p tcp --dport 8080  -m state --state NEW -j ACCEPT
--A INPUT -p udp --dport 8080  -m state --state NEW -j ACCEPT
--A OUTPUT -p tcp --dport 6881:6889 -j DROP
--A OUTPUT -p udp --dport 1024:65534 -j DROP
--A FORWARD -m string --string "get_peers" --algo bm -j DROP
--A FORWARD -m string --string "announce_peer" --algo bm -j DROP
--A FORWARD -m string --string "find_node" --algo bm -j DROP
--A FORWARD -m string --algo bm --string "BitTorrent" -j DROP
--A FORWARD -m string --algo bm --string "BitTorrent protocol" -j DROP
--A FORWARD -m string --algo bm --string "peer_id=" -j DROP
--A FORWARD -m string --algo bm --string ".torrent" -j DROP
--A FORWARD -m string --algo bm --string "announce.php?passkey=" -j DROP
--A FORWARD -m string --algo bm --string "torrent" -j DROP
--A FORWARD -m string --algo bm --string "announce" -j DROP
--A FORWARD -m string --algo bm --string "info_hash" -j DROP
--A fail2ban-ssh -j RETURN
-COMMIT
-*raw
-:PREROUTING ACCEPT [158575:227800758]
-:OUTPUT ACCEPT [46145:2312668]
-COMMIT
-iptables -I INPUT -p udp --dport 1024:1193 -j DROP
-iptables -I INPUT -p udp --dport 1195:1644 -j DROP
-iptables -I INPUT -p udp --dport 1647:65534 -j ACCEPT
-## Allowing all neede ports for OpenVPN L2TP PPTP and RADIUS
-iptables -I OUTPUT -p udp --dport 1812 -j ACCEPT
-iptables -I OUTPUT -p udp --dport 1813 -j ACCEPT
-iptables -I OUTPUT -p udp --dport 1701 -j ACCEPT
-iptables -I OUTPUT -p udp --dport 4500 -j ACCEPT
-iptables -I OUTPUT -p udp --dport 500 -j ACCEPT
-iptables -I OUTPUT -p udp --dport 443 -j ACCEPT
-iptables -I OUTPUT -p tcp --dport 1723 -j ACCEPT
-## Drop torrents
-iptables -A OUTPUT -p tcp --dport 6881:6889 -j DROP
-iptables -A OUTPUT -p udp --dport 1024:65534 -j DROP
-## Set more radius (alt) ports
-iptables -I OUTPUT -p udp --dport 1645 -j ACCEPT
-iptables -I OUTPUT -p udp --dport 1646 -j ACCEPT
-## Try torrent name filters
-iptables -A FORWARD -m string --algo bm --string "BitTorrent" -j DROP
-## Trying forward
-iptables -A FORWARD -p tcp --dport 6881:6889 -j DROP
-iptables -A FORWARD -p udp --dport 1024:65534 -j DROP
-###### Found on web
-iptables -N LOGDROP > /dev/null 2> /dev/null
-iptables -F LOGDROP
-iptables -A LOGDROP -j DROP
-#Torrent
-iptables -D FORWARD -m string --algo bm --string "BitTorrent" -j LOGDROP 
-iptables -D FORWARD -m string --algo bm --string "BitTorrent protocol" -j LOGDROP
-iptables -D FORWARD -m string --algo bm --string "peer_id=" -j LOGDROP
-iptables -D FORWARD -m string --algo bm --string ".torrent" -j LOGDROP
-iptables -D FORWARD -m string --algo bm --string "announce.php?passkey=" -j LOGDROP 
-iptables -D FORWARD -m string --algo bm --string "torrent" -j LOGDROP
-iptables -D FORWARD -m string --algo bm --string "announce" -j LOGDROP
-iptables -D FORWARD -m string --algo bm --string "info_hash" -j LOGDROP
-# DHT keyword
-iptables -A FORWARD -m string --string "get_peers" --algo bm -j DROP
-iptables -A FORWARD -m string --string "announce_peer" --algo bm -j LOGDROP
-iptables -A FORWARD -m string --string "find_node" --algo bm -j LOGDROP
-#play
-iptables -A OUTPUT -d account.sonyentertainmentnetwork.com -j DROP
-iptables -A OUTPUT -d auth.np.ac.playstation.net -j DROP
-iptables -A OUTPUT -d auth.api.sonyentertainmentnetwork.com -j DROP
-iptables -A OUTPUT -d auth.api.np.ac.playstation.net -j DROP
-## Modified debia commands
-iptables -A FORWARD -p udp -m string --algo bm --string "BitTorrent" -j DROP
-iptables -A FORWARD -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
-iptables -A FORWARD -p udp -m string --algo bm --string "peer_id=" -j DROP
-iptables -A FORWARD -p udp -m string --algo bm --string ".torrent" -j DROP
-iptables -A FORWARD -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
-iptables -A FORWARD -p udp -m string --algo bm --string "torrent" -j DROP
-iptables -A FORWARD -p udp -m string --algo bm --string "announce" -j DROP
-iptables -A FORWARD -p udp -m string --algo bm --string "info_hash" -j DROP
-iptables -A FORWARD -p udp -m string --algo bm --string "tracker" -j DROP
-iptables -A INPUT -p udp -m string --algo bm --string "BitTorrent" -j DROP
-iptables -A INPUT -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
-iptables -A INPUT -p udp -m string --algo bm --string "peer_id=" -j DROP
-iptables -A INPUT -p udp -m string --algo bm --string ".torrent" -j DROP
-iptables -A INPUT -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
-iptables -A INPUT -p udp -m string --algo bm --string "torrent" -j DROP
-iptables -A INPUT -p udp -m string --algo bm --string "announce" -j DROP
-iptables -A INPUT -p udp -m string --algo bm --string "info_hash" -j DROP
-iptables -A INPUT -p udp -m string --algo bm --string "tracker" -j DROP
-iptables -I INPUT -p udp -m string --algo bm --string "BitTorrent" -j DROP
-iptables -I INPUT -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
-iptables -I INPUT -p udp -m string --algo bm --string "peer_id=" -j DROP
-iptables -I INPUT -p udp -m string --algo bm --string ".torrent" -j DROP
-iptables -I INPUT -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
-iptables -I INPUT -p udp -m string --algo bm --string "torrent" -j DROP
-iptables -I INPUT -p udp -m string --algo bm --string "announce" -j DROP
-iptables -I INPUT -p udp -m string --algo bm --string "info_hash" -j DROP
-iptables -I INPUT -p udp -m string --algo bm --string "tracker" -j DROP
-iptables -D INPUT -p udp -m string --algo bm --string "BitTorrent" -j DROP
-iptables -D INPUT -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
-iptables -D INPUT -p udp -m string --algo bm --string "peer_id=" -j DROP
-iptables -D INPUT -p udp -m string --algo bm --string ".torrent" -j DROP
-iptables -D INPUT -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
-iptables -D INPUT -p udp -m string --algo bm --string "torrent" -j DROP
-iptables -D INPUT -p udp -m string --algo bm --string "announce" -j DROP
-iptables -D INPUT -p udp -m string --algo bm --string "info_hash" -j DROP
-iptables -D INPUT -p udp -m string --algo bm --string "tracker" -j DROP
-iptables -I OUTPUT -p udp -m string --algo bm --string "BitTorrent" -j DROP
-iptables -I OUTPUT -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
-iptables -I OUTPUT -p udp -m string --algo bm --string "peer_id=" -j DROP
-iptables -I OUTPUT -p udp -m string --algo bm --string ".torrent" -j DROP
-iptables -I OUTPUT -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
-iptables -I OUTPUT -p udp -m string --algo bm --string "torrent" -j DROP
-iptables -I OUTPUT -p udp -m string --algo bm --string "announce" -j DROP
-iptables -I OUTPUT -p udp -m string --algo bm --string "info_hash" -j DROP
-iptables -I OUTPUT -p udp -m string --algo bm --string "tracker" -j DROP
-## Delete
-iptables -D INPUT -m string --algo bm --string "BitTorrent" -j DROP
-iptables -D INPUT -m string --algo bm --string "BitTorrent protocol" -j DROP
-iptables -D INPUT -m string --algo bm --string "peer_id=" -j DROP
-iptables -D INPUT -m string --algo bm --string ".torrent" -j DROP
-iptables -D INPUT -m string --algo bm --string "announce.php?passkey=" -j DROP 
-iptables -D INPUT -m string --algo bm --string "torrent" -j DROP
-iptables -D INPUT -m string --algo bm --string "announce" -j DROP
-iptables -D INPUT -m string --algo bm --string "info_hash" -j DROP
-iptables -D INPUT -m string --algo bm --string "tracker" -j DROP
-iptables -D OUTPUT -m string --algo bm --string "BitTorrent" -j DROP
-iptables -D OUTPUT -m string --algo bm --string "BitTorrent protocol" -j DROP
-iptables -D OUTPUT -m string --algo bm --string "peer_id=" -j DROP
-iptables -D OUTPUT -m string --algo bm --string ".torrent" -j DROP
-iptables -D OUTPUT -m string --algo bm --string "announce.php?passkey=" -j DROP 
-iptables -D OUTPUT -m string --algo bm --string "torrent" -j DROP
-iptables -D OUTPUT -m string --algo bm --string "announce" -j DROP
-iptables -D OUTPUT -m string --algo bm --string "info_hash" -j DROP
-iptables -D OUTPUT -m string --algo bm --string "tracker" -j DROP
-iptables -D FORWARD -m string --algo bm --string "BitTorrent" -j DROP
-iptables -D FORWARD -m string --algo bm --string "BitTorrent protocol" -j DROP
-iptables -D FORWARD -m string --algo bm --string "peer_id=" -j DROP
-iptables -D FORWARD -m string --algo bm --string ".torrent" -j DROP
-iptables -D FORWARD -m string --algo bm --string "announce.php?passkey=" -j DROP 
-iptables -D FORWARD -m string --algo bm --string "torrent" -j DROP
-iptables -D FORWARD -m string --algo bm --string "announce" -j DROP
-iptables -D FORWARD -m string --algo bm --string "info_hash" -j DROP
-iptables -D FORWARD -m string --algo bm --string "tracker" -j DROP  
-*mangle
-:PREROUTING ACCEPT [158575:227800758]
-:INPUT ACCEPT [158575:227800758]
-:FORWARD ACCEPT [0:0]
-:OUTPUT ACCEPT [46145:2312668]
-:POSTROUTING ACCEPT [46145:2312668]
-COMMIT
 EOFipt
-chmod +x /etc/openvpn/openvpn.bash
-bash /etc/openvpn/openvpn.bash
+ chmod +x /etc/openvpn/openvpn.bash
+ bash /etc/openvpn/openvpn.bash
 
-# Enabling IPv4 Forwarding
-echo 1 > /proc/sys/net/ipv4/ip_forward
+ # Enabling IPv4 Forwarding
+ echo 1 > /proc/sys/net/ipv4/ip_forward
  
-# Create and Configure rc.local
-cat > /etc/rc.local <<-END
-#!/bin/sh -e
-exit 0
-END
-chmod +x /etc/rc.local
-sed -i '$ i\echo "nameserver 1.1.1.1" > /etc/resolv.conf' /etc/rc.local
-sed -i '$ i\echo "nameserver 1.0.0.1" >> /etc/resolv.conf' /etc/rc.local
-sed -i '$ i\iptables-restore < /etc/iptables.up.rules' /etc/rc.local
-
  # Starting OpenVPN server
-systemctl start openvpn@server_tcp
-systemctl enable openvpn@server_tcp
-systemctl start openvpn@server_udp
-systemctl enable openvpn@server_udp
+ systemctl start openvpn@server_tcp
+ systemctl enable openvpn@server_tcp
+ systemctl start openvpn@server_udp
+ systemctl enable openvpn@server_udp
 
 }
 function InsProxy(){
@@ -774,18 +599,18 @@ socket-timeout 300
 permit-access 0.0.0.0/0 IP-ADDRESS
 privoxy
 
-# Setting machine's IP Address inside of our privoxy config(security that only allows this machine to use this proxy server)
-sed -i "s|IP-ADDRESS|$IPADDR|g" /etc/privoxy/config
+ # Setting machine's IP Address inside of our privoxy config(security that only allows this machine to use this proxy server)
+ sed -i "s|IP-ADDRESS|$IPADDR|g" /etc/privoxy/config
  
-# Setting privoxy ports
-sed -i "s|Privoxy_Port1|$Privoxy_Port1|g" /etc/privoxy/config
-sed -i "s|Privoxy_Port2|$Privoxy_Port2|g" /etc/privoxy/config
+ # Setting privoxy ports
+ sed -i "s|Privoxy_Port1|$Privoxy_Port1|g" /etc/privoxy/config
+ sed -i "s|Privoxy_Port2|$Privoxy_Port2|g" /etc/privoxy/config
 
-# Removing Duplicate Squid config
-rm -rf /etc/squid/squid.con*
+ # Removing Duplicate Squid config
+ rm -rf /etc/squid/squid.con*
  
-# Creating Squid server config using cat eof tricks
-cat <<'mySquid' > /etc/squid/squid.conf
+ # Creating Squid server config using cat eof tricks
+ cat <<'mySquid' > /etc/squid/squid.conf
 # My Squid Proxy Server Config
 acl VPN dst IP-ADDRESS/32
 http_access allow VPN
@@ -860,52 +685,52 @@ refresh_pattern ^ftp: 1440 20% 10080
 refresh_pattern ^gopher: 1440 0% 1440
 refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
 refresh_pattern . 0 20% 4320
-visible_hostname vpnstunnel
+visible_hostname JohnFordTV
 mySquid
 
-# Setting machine's IP Address inside of our Squid config(security that only allows this machine to use this proxy server)
-sed -i "s|IP-ADDRESS|$IPADDR|g" /etc/squid/squid.conf
+ # Setting machine's IP Address inside of our Squid config(security that only allows this machine to use this proxy server)
+ sed -i "s|IP-ADDRESS|$IPADDR|g" /etc/squid/squid.conf
  
-# Setting squid ports
-sed -i "s|Squid_Port1|$Squid_Port1|g" /etc/squid/squid.conf
-sed -i "s|Squid_Port2|$Squid_Port2|g" /etc/squid/squid.conf
-sed -i "s|Squid_Port3|$Squid_Port3|g" /etc/squid/squid.conf
+ # Setting squid ports
+ sed -i "s|Squid_Port1|$Squid_Port1|g" /etc/squid/squid.conf
+ sed -i "s|Squid_Port2|$Squid_Port2|g" /etc/squid/squid.conf
+ sed -i "s|Squid_Port3|$Squid_Port3|g" /etc/squid/squid.conf
 
-# Starting Proxy server
-echo -e "Restarting proxy server..."
-systemctl restart squid
+ # Starting Proxy server
+ echo -e "Restarting proxy server..."
+ systemctl restart squid
 }
 
 function OvpnConfigs(){
-# Creating nginx config for our ovpn config downloads webserver
-cat <<'myNginxC' > /etc/nginx/conf.d/johnfordtv-ovpn-config.conf
+ # Creating nginx config for our ovpn config downloads webserver
+ cat <<'myNginxC' > /etc/nginx/conf.d/johnfordtv-ovpn-config.conf
 # My OpenVPN Config Download Directory
 server {
-listen 0.0.0.0:myNginx;
-server_name localhost;
-root /var/www/openvpn;
-index index.html;
+ listen 0.0.0.0:myNginx;
+ server_name localhost;
+ root /var/www/openvpn;
+ index index.html;
 }
 myNginxC
 
-# Setting our nginx config port for .ovpn download site
-sed -i "s|myNginx|$OvpnDownload_Port|g" /etc/nginx/conf.d/johnfordtv-ovpn-config.conf
+ # Setting our nginx config port for .ovpn download site
+ sed -i "s|myNginx|$OvpnDownload_Port|g" /etc/nginx/conf.d/johnfordtv-ovpn-config.conf
 
-# Removing Default nginx page(port 80)
-rm -rf /etc/nginx/sites-*
+ # Removing Default nginx page(port 80)
+ rm -rf /etc/nginx/sites-*
 
-# Creating our root directory for all of our .ovpn configs
-rm -rf /var/www/openvpn
-mkdir -p /var/www/openvpn
+ # Creating our root directory for all of our .ovpn configs
+ rm -rf /var/www/openvpn
+ mkdir -p /var/www/openvpn
 
-# Now creating all of our OpenVPN Configs 
+ # Now creating all of our OpenVPN Configs 
 
 cat <<EOF15> /var/www/openvpn/gtmsnswnp.ovpn
-# JohnFordTV's VPN Premium Script
+# Thanks for using this script, Enjoy Highspeed OpenVPN Service
 client
 dev tun
 proto tcp
-setenv FRIENDLY_NAME "Debian VPN WNP"
+setenv FRIENDLY_NAME "VPNstunnel"
 remote $IPADDR $OpenVPN_TCP_Port
 nobind
 persist-key
@@ -914,7 +739,7 @@ comp-lzo
 keepalive 10 120
 tls-client
 remote-cert-tls server
-verb 4
+verb 2
 auth-user-pass
 cipher none
 auth none
@@ -927,18 +752,33 @@ redirect-gateway def1
 setenv CLIENT_CERT 0
 dhcp-option DNS 1.1.1.1
 dhcp-option DNS 1.0.0.1
+http-proxy $IPADDR $Privoxy_Port1
+http-proxy-option VERSION 1.1
+http-proxy-option CUSTOM-HEADER ""
+http-proxy-option CUSTOM-HEADER "GET https://storage.googleapis.com HTTP/1.1"
+http-proxy-option CUSTOM-HEADER Host storage.googleapis.com
+http-proxy-option CUSTOM-HEADER X-Forward-Host storage.googleapis.com
+http-proxy-option CUSTOM-HEADER X-Forwarded-For storage.googleapis.com
+http-proxy-option CUSTOM-HEADER Referrer storage.googleapis.com
+
 <ca>
 $(cat /etc/openvpn/ca.crt)
 </ca>
 EOF15
 
 cat <<EOF16> /var/www/openvpn/sun-tutcp.ovpn
-# VPN Premium Script
+# JohnFordTV's VPN Premium Script
+# © Github.com/johndesu090
+# Official Repository: https://github.com/johndesu090/AutoScriptDB
+# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
+# For Donations, Im accepting prepaid loads or GCash transactions:
+# Smart: 09206200840
+# Facebook: https://fb.me/johndesu090
 # Thanks for using this script, Enjoy Highspeed OpenVPN Service
 client
 dev tun
 proto tcp
-setenv FRIENDLY_NAME "VPNstunnel"
+setenv FRIENDLY_NAME "Debian VPN SUN"
 remote $IPADDR $OpenVPN_TCP_Port
 remote-cert-tls server
 connect-retry infinite
@@ -954,8 +794,11 @@ comp-lzo
 redirect-gateway def1
 setenv CLIENT_CERT 0
 reneg-sec 0
-verb 4
-http-proxy $IPADDR $Squid_Port2
+verb 1
+http-proxy $IPADDR $Squid_Port1
+http-proxy-option CUSTOM-HEADER Host www.viber.com.edgekey.net
+http-proxy-option CUSTOM-HEADER X-Online-Host www.viber.com.edgekey.net
+http-proxy-option CUSTOM-HEADER X-Forwarded-For www.viber.com.edgekey.net
 
 <ca>
 $(cat /etc/openvpn/ca.crt)
@@ -963,12 +806,18 @@ $(cat /etc/openvpn/ca.crt)
 EOF16
 
 cat <<EOF162> /var/www/openvpn/sun-tuudp.ovpn
-# VPN Premium Script
+# JohnFordTV's VPN Premium Script
+# © Github.com/johndesu090
+# Official Repository: https://github.com/johndesu090/AutoScriptDB
+# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
+# For Donations, Im accepting prepaid loads or GCash transactions:
+# Smart: 09206200840
+# Facebook: https://fb.me/johndesu090
 # Thanks for using this script, Enjoy Highspeed OpenVPN Service
 client
 dev tun
 proto udp
-setenv FRIENDLY_NAME "VPNstunnel"
+setenv FRIENDLY_NAME "Debian VPN SUN"
 remote $IPADDR $OpenVPN_UDP_Port
 remote-cert-tls server
 resolv-retry infinite
@@ -994,7 +843,14 @@ $(cat /etc/openvpn/ca.crt)
 EOF162
 
 cat <<EOF17> /var/www/openvpn/sun-noload.ovpn
-#JohnFordTV's VPN Premium Script
+# JohnFordTV's VPN Premium Script
+# © Github.com/johndesu090
+# Official Repository: https://github.com/johndesu090/AutoScriptDB
+# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
+# For Donations, Im accepting prepaid loads or GCash transactions:
+# Smart: 09206200840
+# Facebook: https://fb.me/johndesu090
+# Thanks for using this script, Enjoy Highspeed OpenVPN Service
 client
 dev tun
 proto tcp-client
@@ -1027,10 +883,17 @@ EOF17
 
 cat <<EOF152> /var/www/openvpn/gtmwnp.ovpn
 # JohnFordTV's VPN Premium Script
+# © Github.com/johndesu090
+# Official Repository: https://github.com/johndesu090/AutoScriptDB
+# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
+# For Donations, Im accepting prepaid loads or GCash transactions:
+# Smart: 09206200840
+# Facebook: https://fb.me/johndesu090
+# Thanks for using this script, Enjoy Highspeed OpenVPN Service
 client
 dev tun
 proto tcp-client
-setenv FRIENDLY_NAME "vpnstunnel"
+setenv FRIENDLY_NAME "Debian VPN WNP"
 remote $IPADDR $OpenVPN_TCP_Port
 nobind
 persist-key
@@ -1064,6 +927,13 @@ EOF152
 
 cat <<EOF1152> /var/www/openvpn/gtmsns.ovpn
 # JohnFordTV's VPN Premium Script
+# © Github.com/johndesu090
+# Official Repository: https://github.com/johndesu090/AutoScriptDB
+# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
+# For Donations, Im accepting prepaid loads or GCash transactions:
+# Smart: 09206200840
+# Facebook: https://fb.me/johndesu090
+# Thanks for using this script, Enjoy Highspeed OpenVPN Service
 client
 dev tun
 proto tcp-client
@@ -1089,18 +959,31 @@ redirect-gateway def1
 setenv CLIENT_CERT 0
 dhcp-option DNS 1.1.1.1
 dhcp-option DNS 1.0.0.1
+http-proxy $IPADDR $Privoxy_Port1
+http-proxy-option CUSTOM-HEADER CONNECT HTTP/1.0
+http-proxy-option CUSTOM-HEADER Host shopee.ph
+http-proxy-option CUSTOM-HEADER X-Online-Host shopee.ph
+http-proxy-option CUSTOM-HEADER X-Forward-Host shopee.ph
+http-proxy-option CUSTOM-HEADER Connection Keep-Alive
+
 <ca>
 $(cat /etc/openvpn/ca.crt)
 </ca>
 EOF1152
 
 cat <<EOF1632> /var/www/openvpn/suntu-dns.ovpn
-# VPN Premium Script
+# JohnFordTV's VPN Premium Script
+# © Github.com/johndesu090
+# Official Repository: https://github.com/johndesu090/AutoScriptDB
+# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
+# For Donations, Im accepting prepaid loads or GCash transactions:
+# Smart: 09206200840
+# Facebook: https://fb.me/johndesu090
 # Thanks for using this script, Enjoy Highspeed OpenVPN Service
 client
 dev tun
 proto tcp-client
-setenv FRIENDLY_NAME "VPNstunnel"
+setenv FRIENDLY_NAME "Debian VPN SUN"
 remote $IPADDR $OpenVPN_TCP_Port
 nobind
 persist-key
@@ -1122,7 +1005,7 @@ redirect-gateway def1
 setenv CLIENT_CERT 0
 dhcp-option DNS 1.1.1.1
 dhcp-option DNS 1.0.0.1
-http-proxy $IPADDR 3128
+http-proxy $IPADDR 3356
 http-proxy-option CUSTOM-HEADER ""
 http-proxy-option CUSTOM-HEADER "POST https://viber.com HTTP/1.1"
 http-proxy-option CUSTOM-HEADER "X-Forwarded-For: viber.com"
@@ -1133,7 +1016,7 @@ $(cat /etc/openvpn/ca.crt)
 EOF1632
 
  # Creating OVPN download site index.html
-cat <<'mySiteOvpn' > /var/www/openvpn/index.html "stg-api-cua.maxis.com.my"
+cat <<'mySiteOvpn' > /var/www/openvpn/index.html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -1142,17 +1025,17 @@ cat <<'mySiteOvpn' > /var/www/openvpn/index.html "stg-api-cua.maxis.com.my"
 <head><meta charset="utf-8" /><title>JohnFordTV OVPN Config Download</title><meta name="description" content="MyScriptName Server" /><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" /><meta name="theme-color" content="#000000" /><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"><link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"><link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.3/css/mdb.min.css" rel="stylesheet"></head><body><div class="container justify-content-center" style="margin-top:9em;margin-bottom:5em;"><div class="col-md"><div class="view"><img src="https://openvpn.net/wp-content/uploads/openvpn.jpg" class="card-img-top"><div class="mask rgba-white-slight"></div></div><div class="card"><div class="card-body"><h5 class="card-title">Config List</h5><br /><ul class="list-group"><li class="list-group-item justify-content-between align-items-center" style="margin-bottom:1em;"><p>For Sun <span class="badge light-blue darken-4">Android/iOS/PC/Modem</span><br /><small> UDP Server For TU/CTC/CTU Promos</small></p><a class="btn btn-outline-success waves-effect btn-sm" href="http://IP-ADDRESS:NGINXPORT/sun-tuudp.ovpn" style="float:right;"><i class="fa fa-download"></i> Download</a></li><li class="list-group-item justify-content-between align-items-center" style="margin-bottom:1em;"><p>For Sun <span class="badge light-blue darken-4">Android/iOS/PC/Modem</span><br /><small> TCP+Proxy Server For TU/CTC/CTU Promos</small></p><a class="btn btn-outline-success waves-effect btn-sm" href="http://IP-ADDRESS:NGINXPORT/sun-tuudp.ovpn" style="float:right;"><i class="fa fa-download"></i> Download</a></li><li class="list-group-item justify-content-between align-items-center" style="margin-bottom:1em;"><p>For Globe/TM <span class="badge light-blue darken-4">Android/iOS/PC/Modem</span><br /><small> For EasySURF/GoSURF/GoSAKTO Promos with WNP,SNS,FB and IG freebies</small></p><a class="btn btn-outline-success waves-effect btn-sm" href="http://IP-ADDRESS:NGINXPORT/gtmwnp.ovpn" style="float:right;"><i class="fa fa-download"></i> Download</a></li><li class="list-group-item justify-content-between align-items-center" style="margin-bottom:1em;"><p>For Sun <span class="badge light-blue darken-4">Modem</span><br /><small> Without Promo/Noload (Reconnecting Server, Use Low-latency VPS for fast reconnectivity)</small></p><a class="btn btn-outline-success waves-effect btn-sm" href="http://IP-ADDRESS:NGINXPORT/sun-noload.ovpn" style="float:right;"><i class="fa fa-download"></i> Download</a></li></ul></div></div></div></div></body></html>
 mySiteOvpn
  
-# Setting template's correct name,IP address and nginx Port
-sed -i "s|NGINXPORT|$OvpnDownload_Port|g" /var/www/openvpn/index.html "stg-api-cua.maxis.com.my"
-sed -i "s|IP-ADDRESS|$IPADDR|g" /var/www/openvpn/index.html "stg-api-cua.maxis.com.my"
+ # Setting template's correct name,IP address and nginx Port
+ sed -i "s|NGINXPORT|$OvpnDownload_Port|g" /var/www/openvpn/index.html
+ sed -i "s|IP-ADDRESS|$IPADDR|g" /var/www/openvpn/index.html
 
-# Restarting nginx service
-systemctl restart nginx
+ # Restarting nginx service
+ systemctl restart nginx
  
-# Creating all .ovpn config archives
-cd /var/www/openvpn
-zip -qq -r configs.zip *.ovpn
-cd
+ # Creating all .ovpn config archives
+ cd /var/www/openvpn
+ zip -qq -r configs.zip *.ovpn
+ cd
 }
 
 function ip_address(){
@@ -1166,15 +1049,15 @@ IPADDR="$(ip_address)"
 function ConfStartup(){
  # Daily reboot time of our machine
  # For cron commands, visit https://crontab.guru
-echo -e "0 4\t* * *\troot\treboot" > /etc/cron.d/b_reboot_job
+ echo -e "0 4\t* * *\troot\treboot" > /etc/cron.d/b_reboot_job
 
  # Creating directory for startup script
-rm -rf /etc/johnfordtv
-mkdir -p /etc/johnfordtv
-chmod -R 755 /etc/johnfordtv
+ rm -rf /etc/johnfordtv
+ mkdir -p /etc/johnfordtv
+ chmod -R 755 /etc/johnfordtv
  
  # Creating startup script using cat eof tricks
-cat <<'EOFSH' > /etc/johnfordtv/startup.sh
+ cat <<'EOFSH' > /etc/johnfordtv/startup.sh
 #!/bin/bash
 # Setting server local time
 ln -fs /usr/share/zoneinfo/MyVPS_Time /etc/localtime
@@ -1249,8 +1132,6 @@ cd ~
 function ScriptMessage(){
  echo -e " [\e[1;32m$MyScriptName VPS Installer\e[0m]"
  echo -e ""
- echo -e " https://VPNastunnel"
- echo -e "DONATION VIA DIAMON MOBILE LEGEND"
  echo -e ""
 }
 
@@ -1360,10 +1241,17 @@ fi
  cd ~
  
   # Running screenfetch
- cd
- rm -rf /root/.bashrc
- wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
+cd
+rm -rf /root/.bashrc
+wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
 
+#instal sslh
+cd
+apt-get -y install sslh
+
+#configurasi sslh
+wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/cream/mei/sslh-conf"
+/etc/init.d/sslh restart
  # Showing script's banner message
  ScriptMessage
  
@@ -1372,7 +1260,7 @@ echo " "
 echo "Installation has been completed!!"
 echo "--------------------------------------------------------------------------------"
 echo "                            Debian Premium Script                               "
-echo "                               -MAMBANG-KIMCIL-                                 "
+echo "                                 -FordSenpai-                                   "
 echo "--------------------------------------------------------------------------------"
 echo ""  | tee -a log-install.txt
 echo "Server Information"  | tee -a log-install.txt
@@ -1404,10 +1292,10 @@ echo ""  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
 echo "OpenVPN Configs Download"  | tee -a log-install.txt
 echo "   - Download Link           : http://$IPADDR:85/configs.zip"  | tee -a log-install.txt
-echo " ©JohnKopet"  | tee -a log-install.txt
-echo " Facebook: https://fb.me/johnasu"  | tee -a log-install.txt
+echo " ©JohnFordTV"  | tee -a log-install.txt
+echo " Facebook: https://fb.me/johndesu090"  | tee -a log-install.txt
 echo ""  | tee -a log-install.txt
-echo " This script is under project of https://github.com/kontol"  | tee -a log-install.txt
+echo " This script is under project of https://github.com/johndesu090/AutoScriptDB"  | tee -a log-install.txt
 echo " Please Reboot your VPS"
 
  # Clearing all logs from installation
