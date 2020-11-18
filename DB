@@ -94,7 +94,7 @@ apt-get autoremove -y
  wget -qO - http://build.openvpn.net/debian/openvpn/stable/pubkey.gpg|apt-key add -
  apt-get update
  apt-get install openvpn -y
-}
+
 
 #function InstWebmin(){
  # Download the webmin .deb package
@@ -112,7 +112,7 @@ apt-get autoremove -y
  
  # Then restart to take effect
 # systemctl restart webmin
-}
+
 
 function InstSSH(){
  # Removing some duplicated sshd server configs
@@ -188,7 +188,7 @@ MyDropbear
  
  # Restarting dropbear service
  systemctl restart dropbear
-}
+
 
 #function InsStunnel(){
  #StunnelDir=$(ls /etc/default | grep stunnel | head -n1)
@@ -240,7 +240,7 @@ MyDropbear
  # Restarting stunnel service
  #systemctl restart $StunnelDir
 
-}
+
 
 function InsOpenVPN(){
  # Checking if openvpn folder is accidentally deleted or purged
