@@ -12,11 +12,11 @@ wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg|apt-key add -
 #Requirement
 apt update
 apt upgrade -y
-apt install openvpn php7.3-fpm stunnel4 squid3 dropbear vnstat ufw build-essential fail2ban zip yum -y
+apt install stunnel4 squid dropbear fail2ban zip -y
 # disable ipv6
 echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 
-yum -y install make automake autoconf gcc gcc++
+apt -y install make automake autoconf gcc gcc++
 wget "https://raw.githubusercontent.com/emue25/VPSauto/master/tool/plugin.tgz"
 tar -xzvf plugin.tgz
 
@@ -70,7 +70,7 @@ wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
 #text gambar
 apt install boxes
 # text pelangi
-sudo apt install ruby
+apt install ruby -y
 sudo apt gem install lolcat
 
 # install dropbear
@@ -79,7 +79,8 @@ sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 77 -p 44"/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 
-
+# Removing Duplicate Squid config
+rm -rf /etc/squid/squid.con*
 # install squid3
 cat > /etc/squid/squid.conf <<-END
 acl localhost src 127.0.0.1/32 ::1
