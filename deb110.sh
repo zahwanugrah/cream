@@ -3,12 +3,17 @@
 # initializing var
 MYIP=$(wget -qO- ipv4.icanhazip.com);
 MYIP2="s/xxxxxxxxx/$MYIP/g";
-cd /root
 
-#rep
-apt update
-apt-get -y install ca-certificates gnupg
-wget -O - https://swupdate.openvpn.net/repos/repo-public.gpg|apt-key add -
+# detail nama perusahaan
+country=ID
+state=PURWOREJO
+locality=JawaTengah
+organization=VPNstunnel
+organizationalunit=VPNinjector
+commonname=denb4gus
+email=admin@vpnstunnel.com
+
+cd /root
 #Requirement
 apt update
 apt upgrade -y
@@ -190,23 +195,36 @@ chmod +x /usr/bin/build
 chmod +x /etc/rc.local
 
 # Configure Stunnel
-sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=PH' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
+# install stunnel
+apt-get install stunnel4 -y
 cat > /etc/stunnel/stunnel.conf <<-END
-sslVersion = all
-pid = /stunnel.pid
+cert = /etc/stunnel/stunnel.pem
+client = no
+socket = a:SO_REUSEADDR=1
 socket = l:TCP_NODELAY=1
 socket = r:TCP_NODELAY=1
-client = no
-
+[dropbear]
+accept = 222
+connect = 127.0.0.1:22
 [dropbear]
 accept = 80
 connect = 127.0.0.1:442
-cert = /etc/stunnel/stunnel.pem
-[openssh]
+[dropbear]
 accept = 777
-connect = 127.0.0.1:22
-cert = /etc/stunnel/stunnel.pem
+connect = 127.0.0.1:77
+END
+
+echo "=================  membuat Sertifikat OpenSSL ======================"
+echo "========================================================="
+#membuat sertifikat
+openssl genrsa -out key.pem 2048
+openssl req -new -x509 -key key.pem -out cert.pem -days 1095 \
+-subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname/emailAddress=$email"
+cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
+
+# konfigurasi stunnel
+sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
+/etc/init.d/stunnel4 restart
 END
 
 #instal sslh
@@ -340,20 +358,25 @@ vnstat -u -i eth0
 # install libxml-parser
 apt-get install libxml-parser-perl -y -f
 
+#auto delete
+wget -O /usr/local/bin/userdelexpired "https://www.dropbox.com/s/cwe64ztqk8w622u/userdelexpired?dl=1" && chmod +x /usr/local/bin/userdelexpired
+
+#autokill
+wget https://raw.githubusercontent.com/emue25/cream/mei/autokill.sh && chmod +x autokill.sh && ./autokill.sh
+
 # finalizing
 vnstat -u -i eth0
 apt-get -y autoremove
 chown -R www-data:www-data /home/vps/public_html
-#/etc/init.d/nginx start
-/etc/init.d/php7.3-fpm start
-/etc/init.d/vnstat restart
-#/etc/init.d/openvpn restart
+#restart
+/etc/init.d/ssh restart
+/etc/init.d/sslh restart
 /etc/init.d/dropbear restart
 /etc/init.d/fail2ban restart
+/etc/init.d/stunnel4 restart
 /etc/init.d/squid restart
 
 #clearing history
-history -c
 rm -rf /root/*
 cd /root
 # info
