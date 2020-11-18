@@ -76,7 +76,7 @@ wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
 apt install boxes
 # text pelangi
 apt install ruby -y
-sudo apt gem install lolcat
+apt gem install lolcat
 
 # install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
@@ -140,13 +140,7 @@ sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dr
 #sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /etc/rc.local
 #chmod +x /usr/bin/badvpn-udpgw
 #screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
-#instal sslh
-cd
-apt-get -y install sslh
 
-#configurasi sslh
-wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/cream/mei/sslh-conf"
-/etc/init.d/sslh restart
 
 echo "=================  Install badVPn (VC and Game) ======================"
 echo "========================================================="
@@ -195,8 +189,6 @@ chmod +x /usr/bin/build
 chmod +x /etc/rc.local
 
 # Configure Stunnel
-# install stunnel
-apt-get install stunnel4 -y
 cat > /etc/stunnel/stunnel.conf <<-END
 cert = /etc/stunnel/stunnel.pem
 client = no
@@ -213,6 +205,7 @@ connect = 127.0.0.1:442
 accept = 777
 connect = 127.0.0.1:77
 
+END
 echo "=================  membuat Sertifikat OpenSSL ======================"
 echo "========================================================="
 #membuat sertifikat
