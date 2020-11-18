@@ -12,25 +12,24 @@
 #############################
 # Variables (Can be changed depends on your preferred values)
 # Script name
-MyScriptName='VPNstunnel'
+MyScriptName='JohnFordTV-Premium Script'
 
 # OpenSSH Ports
 SSH_Port1='22'
+SSH_Port2='226'
 
 # Your SSH Banner
-SSH_Banner='https://raw.githubusercontent.com/emue25/cream/mei/bannerssh'
+SSH_Banner='https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/banner'
 
 # Dropbear Ports
-Dropbear_Port1='442'
-Dropbear_Port2='44'
+Dropbear_Port1='445'
+Dropbear_Port2='442'
 
 # Stunnel Ports
-#Stunnel_Port1='80' # through Dropbear
-#Stunnel_Port2='777' # through OpenSSH
-
+Stunnel_Port1='777' # through openvpn
 # OpenVPN Ports
 OpenVPN_TCP_Port='110'
-OpenVPN_UDP_Port='55'
+OpenVPN_UDP_Port='25222'
 
 # Privoxy Ports
 Privoxy_Port1='3356'
@@ -72,21 +71,18 @@ function InstUpdates(){
  apt-get install nano wget curl zip unzip tar gzip p7zip-full bc rc openssl cron net-tools dnsutils dos2unix screen bzip2 ccrypt -y
  
  # Now installing all our wanted services
- apt-get install dropbear privoxy ca-certificates nginx ruby apt-transport-https lsb-release squid -y
+ apt-get install dropbear stunnel4 privoxy ca-certificates nginx ruby apt-transport-https lsb-release squid -y
 
  # Installing all required packages to install Webmin
  apt-get install perl libnet-ssleay-perl openssl libauthen-pam-perl libpam-runtime libio-pty-perl apt-show-versions python dbus libxml-parser-perl -y
  apt-get install shared-mime-info jq fail2ban -y
 
  
-# Installing a text colorizer
-gem install lolcat
-#text gambar
-apt-get install boxes
-# text pelangi
-apt-get install ruby -y
-# Trying to remove obsolette packages after installation
-apt-get autoremove -y
+ # Installing a text colorizer
+ gem install lolcat
+
+ # Trying to remove obsolette packages after installation
+ apt-get autoremove -y
  
  # Installing OpenVPN by pulling its repository inside sources.list file 
  rm -rf /etc/apt/sources.list.d/openvpn*
@@ -94,25 +90,25 @@ apt-get autoremove -y
  wget -qO - http://build.openvpn.net/debian/openvpn/stable/pubkey.gpg|apt-key add -
  apt-get update
  apt-get install openvpn -y
+}
 
-
-#function InstWebmin(){
+function InstWebmin(){
  # Download the webmin .deb package
  # You may change its webmin version depends on the link you've loaded in this variable(.deb file only, do not load .zip or .tar.gz file):
- #WebminFile='https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/webmin_1.920_all.deb'
- #wget -qO webmin.deb "$WebminFile"
+ WebminFile='https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/webmin_1.920_all.deb'
+ wget -qO webmin.deb "$WebminFile"
  
  # Installing .deb package for webmin
- #dpkg --install webmin.deb
+ dpkg --install webmin.deb
  
- #rm -rf webmin.deb
+ rm -rf webmin.deb
  
  # Configuring webmin server config to use only http instead of https
- #sed -i 's|ssl=1|ssl=0|g' /etc/webmin/miniserv.conf
+ sed -i 's|ssl=1|ssl=0|g' /etc/webmin/miniserv.conf
  
  # Then restart to take effect
-# systemctl restart webmin
-
+ systemctl restart webmin
+}
 
 function InstSSH(){
  # Removing some duplicated sshd server configs
@@ -122,6 +118,7 @@ function InstSSH(){
  cat <<'MySSHConfig' > /etc/ssh/sshd_config
 # My OpenSSH Server config
 Port myPORT1
+Port myPORT2
 AddressFamily inet
 ListenAddress 0.0.0.0
 HostKey /etc/ssh/ssh_host_rsa_key
@@ -146,7 +143,7 @@ MySSHConfig
 
  # Now we'll put our ssh ports inside of sshd_config
  sed -i "s|myPORT1|$SSH_Port1|g" /etc/ssh/sshd_config
- #sed -i "s|myPORT2|$SSH_Port2|g" /etc/ssh/sshd_config
+ sed -i "s|myPORT2|$SSH_Port2|g" /etc/ssh/sshd_config
 
  # Download our SSH Banner
  rm -f /etc/banner
@@ -188,59 +185,46 @@ MyDropbear
  
  # Restarting dropbear service
  systemctl restart dropbear
+}
 
-
-#function InsStunnel(){
- #StunnelDir=$(ls /etc/default | grep stunnel | head -n1)
+function InsStunnel(){
+ StunnelDir=$(ls /etc/default | grep stunnel | head -n1)
 
  # Creating stunnel startup config using cat eof tricks
-#cat <<'MyStunnelD' > /etc/default/$StunnelDir
+cat <<'MyStunnelD' > /etc/default/$StunnelDir
 # My Stunnel Config
-#ENABLED=1
-#FILES="/etc/stunnel/*.conf"
-#OPTIONS=""
-#BANNER="/etc/banner"
-#PPP_RESTART=0
+ENABLED=1
+FILES="/etc/stunnel/*.conf"
+OPTIONS=""
+BANNER="/etc/banner"
+PPP_RESTART=0
 # RLIMITS="-n 4096 -d unlimited"
-#RLIMITS=""
-#MyStunnelD
+RLIMITS=""
+MyStunnelD
 
  # Removing all stunnel folder contents
-# rm -rf /etc/stunnel/*
+ rm -rf /etc/stunnel/*
  
  # Creating stunnel certifcate using openssl
-# openssl req -new -x509 -days 9999 -nodes -subj "/C=ID/ST=NCR/L=INDONESIA/O=$MyScriptName/OU=$MyScriptName/CN=$MyScriptName" -out /etc/stunnel/stunnel.pem -keyout /etc/stunnel/stunnel.pem &> /dev/null
-##  > /dev/null 2>&1
-
- # Creating stunnel server config
-# cat <<'MyStunnelC' > /etc/stunnel/stunnel.conf
-# My Stunnel Config
-#pid = /var/run/stunnel.pid
-#cert = /etc/stunnel/stunnel.pem
-#client = no
-#socket = l:TCP_NODELAY=1
-#socket = r:TCP_NODELAY=1
-#TIMEOUTclose = 0
-
-#[dropbear]
-#accept = Stunnel_Port1
-#connect = 127.0.0.1:dropbear_port_c
-
-#[openssh]
-#accept = Stunnel_Port2
-#connect = 127.0.0.1:openssh_port_c
-#MyStunnelC
-
- # setting stunnel ports
- #sed -i "s|Stunnel_Port1|$Stunnel_Port1|g" /etc/stunnel/stunnel.conf
- #sed -i "s|dropbear_port_c|$(netstat -tlnp | grep -i dropbear | awk '{print $4}' | cut -d: -f2 | xargs | awk '{print $2}' | head -n1)|g" /etc/stunnel/stunnel.conf
- #sed -i "s|Stunnel_Port2|$Stunnel_Port2|g" /etc/stunnel/stunnel.conf
- #sed -i "s|openssh_port_c|$(netstat -tlnp | grep -i ssh | awk '{print $4}' | cut -d: -f2 | xargs | awk '{print $2}' | head -n1)|g" /etc/stunnel/stunnel.conf
-
+ #ssl
+apt update && apt upgrade -y
+apt install sudo
+cd /etc/stunnel/
+openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
+sudo touch stunnel.conf
+echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "accept = 777" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "connect = 127.0.0.1:110" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
+sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+sudo cp /etc/stunnel/stunnel.pem ~
+/etc/init.d/stunnel4 restart
  # Restarting stunnel service
- #systemctl restart $StunnelDir
+ systemctl restart $StunnelDir
 
-
+}
 
 function InsOpenVPN(){
  # Checking if openvpn folder is accidentally deleted or purged
@@ -724,11 +708,18 @@ myNginxC
  # Now creating all of our OpenVPN Configs 
 
 cat <<EOF15> /var/www/openvpn/gtmsnswnp.ovpn
+# JohnFordTV's VPN Premium Script
+# © Github.com/johndesu090
+# Official Repository: https://github.com/johndesu090/AutoScriptDB
+# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
+# For Donations, Im accepting prepaid loads or GCash transactions:
+# Smart: 09206200840
+# Facebook: https://fb.me/johndesu090
 # Thanks for using this script, Enjoy Highspeed OpenVPN Service
 client
 dev tun
 proto tcp
-setenv FRIENDLY_NAME "VPNstunnel"
+setenv FRIENDLY_NAME "Debian VPN WNP"
 remote $IPADDR $OpenVPN_TCP_Port
 nobind
 persist-key
@@ -1110,7 +1101,7 @@ FordServ
 }
  #Create Admin
  useradd -m admin
- echo "admin:kopet" | chpasswd
+ echo "admin:itangsagli" | chpasswd
 
 function ConfMenu(){
 echo -e " Creating Menu scripts.."
@@ -1130,22 +1121,24 @@ cd ~
 function ScriptMessage(){
  echo -e " [\e[1;32m$MyScriptName VPS Installer\e[0m]"
  echo -e ""
+ echo -e " https://fb.com/johndesu090"
+ echo -e "[GCASH] 09206200840 [PAYPAL] johnford090@gmail.com"
  echo -e ""
 }
 
 function InstBadVPN(){
  # Pull BadVPN Binary 64bit or 32bit
 if [ "$(getconf LONG_BIT)" == "64" ]; then
-wget -O /usr/bin/badvpn-udpgw "https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/badvpn-udpgw64"
+ wget -O /usr/bin/badvpn-udpgw "https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/badvpn-udpgw64"
 else
-wget -O /usr/bin/badvpn-udpgw "https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/badvpn-udpgw"
+ wget -O /usr/bin/badvpn-udpgw "https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/badvpn-udpgw"
 fi
  # Set BadVPN to Start on Boot via .profile
-sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /root/.profile
+ sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /root/.profile
  # Change Permission to make it Executable
-chmod +x /usr/bin/badvpn-udpgw
+ chmod +x /usr/bin/badvpn-udpgw
  # Start BadVPN via Screen
-screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
+ screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
 }
 
 
@@ -1218,16 +1211,16 @@ fi
  ConfStartup
 
  ## DNS maker plugin for SUN users(for vps script usage only)
- #wget -qO dnsmaker "https://raw.githubusercontent.com/Bonveio/BonvScripts/master/DNSMaster/debian"
- #chmod +x dnsmaker
- #./dnsmaker
- #rm -rf dnsmaker
- #sed -i "s|http-proxy $IPADDR|http-proxy $(cat /tmp/abonv_mydns)|g" /var/www/openvpn/suntu-dns.ovpn
- #sed -i "s|remote $IPADDR|remote $(cat /tmp/abonv_mydns)|g" /var/www/openvpn/sun-tuudp.ovpn
- #curl -4sSL "$(cat /tmp/abonv_mydns_domain)" &> /dev/null
- #mv /tmp/abonv_mydns /etc/bonveio/my_domain_name
- #mv /tmp/abonv_mydns_id /etc/bonveio/my_domain_id
- #rm -rf /tmp/abonv*
+ wget -qO dnsmaker "https://raw.githubusercontent.com/Bonveio/BonvScripts/master/DNSMaster/debian"
+ chmod +x dnsmaker
+ ./dnsmaker
+ rm -rf dnsmaker
+ sed -i "s|http-proxy $IPADDR|http-proxy $(cat /tmp/abonv_mydns)|g" /var/www/openvpn/suntu-dns.ovpn
+ sed -i "s|remote $IPADDR|remote $(cat /tmp/abonv_mydns)|g" /var/www/openvpn/sun-tuudp.ovpn
+ curl -4sSL "$(cat /tmp/abonv_mydns_domain)" &> /dev/null
+ mv /tmp/abonv_mydns /etc/bonveio/my_domain_name
+ mv /tmp/abonv_mydns_id /etc/bonveio/my_domain_id
+ rm -rf /tmp/abonv*
 
  # VPS Menu script v1.0
  ConfMenu
@@ -1238,43 +1231,14 @@ fi
  clear
  cd ~
  
- #ssl
-apt update && apt upgrade -y
-apt install sudo
-apt install stunnel4 -y
-cd /etc/stunnel/
-openssl req -new -newkey rsa:2048 -days 3650 -nodes -x509 -sha256 -subj '/CN=127.0.0.1/O=localhost/C=US' -keyout /etc/stunnel/stunnel.pem -out /etc/stunnel/stunnel.pem
-sudo touch stunnel.conf
-echo "client = no" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "accept = 777" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "connect = 127.0.0.1:110" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "accept = 80" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "connect = 127.0.0.1:25" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
-sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
-iptables -A INPUT -p tcp --dport 443 -j ACCEPT
-iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-sudo cp /etc/stunnel/stunnel.pem ~
-/etc/init.d/stunnel4 restart
   # Running screenfetch
-cd
-rm -rf /root/.bashrc
-wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
+ wget -O /usr/bin/screenfetch "https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/screenfetch"
+ chmod +x /usr/bin/screenfetch
+ echo "/bin/bash /etc/openvpn/openvpn.bash" >> .profile
+ echo "clear" >> .profile
+ echo "screenfetch" >> .profile
 
-#instal sslh
-cd
-apt-get -y install sslh
-
-#configurasi sslh
-wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/cream/mei/sslh-conf"
-/etc/init.d/sslh restart
-
-#auto dellet exp
-wget -O /usr/local/bin/userdelexpired "https://www.dropbox.com/s/cwe64ztqk8w622u/userdelexpired?dl=1" && chmod +x /usr/local/bin/userdelexpired
-
+ 
  # Showing script's banner message
  ScriptMessage
  
