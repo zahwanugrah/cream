@@ -219,9 +219,12 @@ refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
 refresh_pattern . 0 20% 4320
 visible_hostname zhanzgi
 mySquid
+
+# Setting machine's IP Address inside of our Squid config(security that only allows this machine to use this proxy server)
+sed -i "s|IP-ADDRESS|$IPADDR|g" /etc/squid/squid.conf
 #squid restart
 /etc/init.d/squid.restart
-
+ 
 echo "=================  saya matikan install Webmin  ======================"
 echo "========================================================="
 
