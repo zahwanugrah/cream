@@ -18,7 +18,8 @@ Dropbear_Port2='442'
 
 # Stunnel Ports
 Stunnel_Port1='80' # through Dropbear
-Stunnel_Port2='777' # through OpenSSH
+Stunnel_Port2='77' # through OpenSSH
+Stunnel_Port3= 777 # through Openvpn
 
 # OpenVPN Ports
 OpenVPN_TCP_Port='110'
@@ -208,9 +209,6 @@ MyStunnelD
 pid = /var/run/stunnel.pid
 cert = /etc/stunnel/stunnel.pem
 client = no
-#socket = l:TCP_NODELAY=1
-#socket = r:TCP_NODELAY=1
-#TIMEOUTclose = 0
 
 [dropbear]
 accept = Stunnel_Port1
@@ -219,6 +217,10 @@ connect = 127.0.0.1:dropbear_port_c
 [openssh]
 accept = Stunnel_Port2
 connect = 127.0.0.1:openssh_port_c
+
+[openvpn]
+accept = Stunnel_Port3
+connect = 127.0.0.1:openvpn_port_c
 MyStunnelC
 
  # setting stunnel ports
