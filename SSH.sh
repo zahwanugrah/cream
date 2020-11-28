@@ -31,7 +31,7 @@ ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 
 # set locale
 # setting port ssh
-sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
+#sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
 sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 /etc/init.d/ssh restart
@@ -132,7 +132,7 @@ rm -rf /etc/squid/squid.con*
 # Creating Squid server config using cat eof tricks
 cat <<'mySquid' > /etc/squid/squid.conf
 # My Squid Proxy Server Config
-acl VPN dst xxxxxxxxx/32
+acl VPN dst $IPADDRESS-$IPADDRESS/32
 http_access allow VPN
 http_access deny all 
 http_port 0.0.0.0:3128
