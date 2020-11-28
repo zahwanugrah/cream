@@ -1213,6 +1213,16 @@ fi
  # Setting server local time
  ln -fs /usr/share/zoneinfo/$MyVPS_Time /etc/localtime
  
+#instal sslh
+cd
+apt-get -y install sslh
+#configurasi sslh
+wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/sshtunnel/master/sslh-conf"
+/etc/init.d/sslh restart
+
+#auto delete
+wget -O /usr/local/bin/userdelexpired "https://www.dropbox.com/s/cwe64ztqk8w622u/userdelexpired?dl=1" && chmod +x /usr/local/bin/userdelexpired
+
  clear
  cd ~
  
@@ -1222,7 +1232,13 @@ fi
 # echo "/bin/bash /etc/openvpn/openvpn.bash" >> .profile
 # echo "clear" >> .profile
  #echo "screenfetch" >> .profile
-
+#text gambar
+apt-get install boxes
+# Running screenfetch
+cd
+rm -rf /root/.bashrc
+wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
+ 
  
  # Showing script's banner message
  ScriptMessage
