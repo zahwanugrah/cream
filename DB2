@@ -1,13 +1,5 @@
 #!/bin/bash
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
-
+#thanks
 #############################
 #############################
 # Variables (Can be changed depends on your preferred values)
@@ -19,8 +11,7 @@ SSH_Port1='22'
 SSH_Port2='222'
 
 # Your SSH Banner
-SSH_Banner='https://raw.githubusercontent.com/johndesu090/AutoScriptDB/master/Files/Plugins/banner'
-
+SSH_Banner='https://raw.githubusercontent.com/emue25/cream/mei/bannerssh'
 # Dropbear Ports
 Dropbear_Port1='445'
 Dropbear_Port2='442'
@@ -34,8 +25,8 @@ OpenVPN_TCP_Port='110'
 OpenVPN_UDP_Port='2500'
 
 # Privoxy Ports
-#Privoxy_Port1='3356'
-#Privoxy_Port2='8086'
+Privoxy_Port1='3356'
+Privoxy_Port2='8086'
 
 # Squid Ports
 Squid_Port1='3128'
@@ -46,7 +37,7 @@ Squid_Port3='8888'
 OvpnDownload_Port='85' # Before changing this value, please read this document. It contains all unsafe ports for Google Chrome Browser, please read from line #23 to line #89: https://chromium.googlesource.com/chromium/src.git/+/refs/heads/master/net/base/port_util.cc
 
 # Server local time
-MyVPS_Time='Asia/Manila'
+MyVPS_Time='Asia/Kuala_Lumpur'
 #############################
 
 
@@ -771,18 +762,10 @@ $(cat /etc/openvpn/ca.crt)
 EOF15
 
 cat <<EOF16> /var/www/openvpn/sun-tutcp.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
 client
 dev tun
 proto tcp
-setenv FRIENDLY_NAME "Debian VPN SUN"
+setenv FRIENDLY_NAME "VPNstunnel"
 remote $IPADDR $OpenVPN_TCP_Port
 remote-cert-tls server
 connect-retry infinite
@@ -810,18 +793,10 @@ $(cat /etc/openvpn/ca.crt)
 EOF16
 
 cat <<EOF162> /var/www/openvpn/sun-tuudp.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
 client
 dev tun
 proto udp
-setenv FRIENDLY_NAME "Debian VPN SUN"
+setenv FRIENDLY_NAME "VPNstunnel"
 remote $IPADDR $OpenVPN_UDP_Port
 remote-cert-tls server
 resolv-retry infinite
@@ -839,7 +814,7 @@ comp-lzo
 redirect-gateway def1
 setenv CLIENT_CERT 0
 reneg-sec 0
-verb 1
+verb 3
 
 <ca>
 $(cat /etc/openvpn/ca.crt)
@@ -847,18 +822,10 @@ $(cat /etc/openvpn/ca.crt)
 EOF162
 
 cat <<EOF17> /var/www/openvpn/sun-noload.ovpn
-# JohnFordTV's VPN Premium Script
-# © Github.com/johndesu090
-# Official Repository: https://github.com/johndesu090/AutoScriptDB
-# For Updates, Suggestions, and Bug Reports, Join to my Messenger Groupchat(VPS Owners): https://m.me/join/AbbHxIHfrY9SmoBO
-# For Donations, Im accepting prepaid loads or GCash transactions:
-# Smart: 09206200840
-# Facebook: https://fb.me/johndesu090
-# Thanks for using this script, Enjoy Highspeed OpenVPN Service
 client
 dev tun
 proto tcp-client
-setenv FRIENDLY_NAME "Debian VPN WNP"
+setenv FRIENDLY_NAME "VPNstunnel"
 remote $IPADDR $OpenVPN_TCP_Port
 remote-cert-tls server
 bind
@@ -880,6 +847,9 @@ comp-lzo
 reneg-sec 0
 verb 0
 nice -20
+up /etc/openvpn/update-resolv-conf
+down /etc/openvpn/update-resolv-conf
+route 0.0.0.0 255.255.255.255 net_gateway
 <ca>
 $(cat /etc/openvpn/ca.crt)
 </ca>
@@ -1116,7 +1086,7 @@ FordServ
 }
  #Create Admin
  useradd -m admin
- echo "admin:itangsagli" | chpasswd
+ echo "admin:kopet" | chpasswd
 
 function ConfMenu(){
 echo -e " Creating Menu scripts.."
