@@ -22,6 +22,7 @@ Stunnel_Port2= 777 # through Openvpn
 
 # OpenVPN Ports
 OpenVPN_TCP_Port='110'
+OpenVPN_TCP_Port2='1194'
 OpenVPN_UDP_Port='2500'
 
 # Privoxy Ports
@@ -300,6 +301,36 @@ ncp-disable
 cipher none
 auth none
 myOpenVPNconf2
+cat <<'myOpenVPNconf3' > /etc/openvpn/server_tcp2.conf
+# OpenVPN TCP
+port OVPNTCP
+proto tcp
+dev tun
+ca /etc/openvpn/ca.crt
+cert /etc/openvpn/server.crt
+key /etc/openvpn/server.key
+dh /etc/openvpn/dh2048.pem
+verify-client-cert none
+username-as-common-name
+key-direction 0
+plugin /etc/openvpn/plugins/openvpn-plugin-auth-pam.so login
+server 10.202.0.0 255.255.0.0
+ifconfig-pool-persist ipp.txt
+push "route-method exe"
+push "route-delay 2"
+keepalive 10 120
+comp-lzo
+user nobody
+group nogroup
+persist-key
+persist-tun
+status openvpn-status.log
+log tcp.log
+verb 2
+ncp-disable
+cipher none
+auth none
+myOpenVPNconf3
 
  cat <<'EOF7'> /etc/openvpn/ca.crt
 -----BEGIN CERTIFICATE-----
