@@ -30,12 +30,12 @@ sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 
 # set locale
+sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
+/etc/init.d/ssh restart
 # setting port ssh
-#sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
 sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
 sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
 /etc/init.d/ssh restart
-
 # Edit file /etc/systemd/system/rc-local.service
 cat > /etc/systemd/system/rc-local.service <<-END
 [Unit]
@@ -208,22 +208,9 @@ refresh_pattern . 0 20% 4320
 visible_hostname zhanzgi
 mySquid
 
-
 #squid restart
 /etc/init.d/squid.restart
  
-echo "=================  saya matikan install Webmin  ======================"
-echo "========================================================="
-
-# install webmin
-cd
-#wget http://prdownloads.sourceforge.net/webadmin/webmin_1.910_all.deb
-#dpkg --install webmin_1.910_all.deb;
-#apt-get -y -f install;
-#sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-#rm -f webmin_1.910_all.deb
-#/etc/init.d/webmin restart
-
 echo "=================  install stunnel  ====================="
 echo "========================================================="
 
@@ -467,9 +454,6 @@ wget https://raw.githubusercontent.com/emue25/cream/mei/autokill.sh && chmod +x 
 
 echo "================  install OPENVPN  saya disable======================"
 echo "========================================================="
-# install openvpn debian 9 ( openvpn port 1194 dan 443 )
-#wget https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/openvpn.sh && chmod +x openvpn.sh && bash openvpn.sh
-
 echo "==================== Restart Service ===================="
 echo "========================================================="
 /etc/init.d/ssh restart
@@ -477,9 +461,6 @@ echo "========================================================="
 /etc/init.d/dropbear restart
 /etc/init.d/stunnel4 restart
 /etc/init.d/squid restart
-#/etc/init.d/nginx restart
-#/etc/init.d/php5.6-fpm restart
-#/etc/init.d/openvpn restart
 
 # Delete script
 rm -f /root/SSH.sh
