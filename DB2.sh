@@ -22,7 +22,6 @@ Stunnel_Port2= 777 # through Openvpn
 
 # OpenVPN Ports
 OpenVPN_TCP_Port='110'
-OpenVPN_TCP_Port2='1194'
 OpenVPN_UDP_Port='2500'
 
 # Privoxy Ports
@@ -210,9 +209,9 @@ pid = /var/run/stunnel.pid
 cert = /etc/stunnel/stunnel.pem
 client = no
 
-[openvpn]
+[ssh]
 accept = 80
-connect = 127.0.0.1:1194
+connect = 127.0.0.1:22
 
 [openvpn]
 accept = 777
@@ -265,7 +264,7 @@ persist-key
 persist-tun
 status openvpn-status.log
 log tcp.log
-verb 2
+verb 3
 ncp-disable
 cipher none
 auth none
@@ -296,41 +295,11 @@ persist-key
 persist-tun
 status openvpn-status.log
 log udp.log
-verb 2
+verb 3
 ncp-disable
 cipher none
 auth none
 myOpenVPNconf2
-cat <<'myOpenVPNconf3' > /etc/openvpn/server_tcp2.conf
-# OpenVPN TCP
-port OVPNTCP
-proto tcp
-dev tun
-ca /etc/openvpn/ca.crt
-cert /etc/openvpn/server.crt
-key /etc/openvpn/server.key
-dh /etc/openvpn/dh2048.pem
-verify-client-cert none
-username-as-common-name
-key-direction 0
-plugin /etc/openvpn/plugins/openvpn-plugin-auth-pam.so login
-server 10.202.0.0 255.255.0.0
-ifconfig-pool-persist ipp.txt
-push "route-method exe"
-push "route-delay 2"
-keepalive 10 120
-comp-lzo
-user nobody
-group nogroup
-persist-key
-persist-tun
-status openvpn-status.log
-log tcp.log
-verb 2
-ncp-disable
-cipher none
-auth none
-myOpenVPNconf3
 
  cat <<'EOF7'> /etc/openvpn/ca.crt
 -----BEGIN CERTIFICATE-----
@@ -538,7 +507,6 @@ NUovpn
 
  # setting openvpn server port
  sed -i "s|OVPNTCP|$OpenVPN_TCP_Port|g" /etc/openvpn/server_tcp.conf
- sed -i "s|OVPNTCP|$OpenVPN_TCP_Port|g" /etc/openvpn/server_tcp2.conf
  sed -i "s|OVPNUDP|$OpenVPN_UDP_Port|g" /etc/openvpn/server_udp.conf
  
  # Getting some OpenVPN plugins for unix authentication
@@ -565,7 +533,6 @@ fi
 PUBLIC_INET="$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)"
 IPCIDR='10.200.0.0/16'
 IPCIDR2='10.201.0.0/16'
-IPCIDR2='10.202.0.0/16'
 iptables -I FORWARD -s $IPCIDR -j ACCEPT
 iptables -I FORWARD -s $IPCIDR2 -j ACCEPT
 iptables -t nat -A POSTROUTING -o $PUBLIC_INET -j MASQUERADE
@@ -581,8 +548,6 @@ EOFipt
  # Starting OpenVPN server
  systemctl start openvpn@server_tcp
  systemctl enable openvpn@server_tcp
- systemctl start openvpn@server_tcp2
- systemctl enable openvpn@server_tcp2
  systemctl start openvpn@server_udp
  systemctl enable openvpn@server_udp
 
@@ -805,11 +770,11 @@ comp-lzo
 redirect-gateway def1
 setenv CLIENT_CERT 0
 reneg-sec 0
-verb 1
+verb 3
 http-proxy $IPADDR $Squid_Port1
-http-proxy-option CUSTOM-HEADER Host www.viber.com.edgekey.net
-http-proxy-option CUSTOM-HEADER X-Online-Host www.viber.com.edgekey.net
-http-proxy-option CUSTOM-HEADER X-Forwarded-For www.viber.com.edgekey.net
+http-proxy-option CUSTOM-HEADER Host www.google.com.my
+http-proxy-option CUSTOM-HEADER X-Online-Host www.google.com.my
+http-proxy-option CUSTOM-HEADER X-Forwarded-For www.google.com.my
 
 <ca>
 $(cat /etc/openvpn/ca.crt)
@@ -845,7 +810,7 @@ $(cat /etc/openvpn/ca.crt)
 </ca>
 EOF162
 
-cat <<EOF17> /var/www/openvpn/sun-noload.ovpn
+cat <<EOF17> /var/www/openvpn/VPNssl.ovpn
 client
 dev tun
 proto tcp-client
@@ -869,7 +834,7 @@ auth-retry interact
 cipher none
 comp-lzo
 reneg-sec 0
-verb 0
+verb 3
 nice -20
 up /etc/openvpn/update-resolv-conf
 down /etc/openvpn/update-resolv-conf
@@ -1290,5 +1255,5 @@ echo " Please Reboot your VPS"
  # Clearing all logs from installation
  rm -rf /root/.bash_history && history -c && echo '' > /var/log/syslog
 
-rm -f DB2*
+rm -f DB2.sh*
 exit 1
