@@ -29,8 +29,9 @@ sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 /etc/init.d/ssh restart
 # setting port ssh
 cd
-sed -i 's/Port 22/Port 22/g' /etc/ssh/sshd_config
 sed -i '/Port 22/a Port 90' /etc/ssh/sshd_config
+sed -i 's/Port 22/Port 22/g' /etc/ssh/sshd_config
+sed -i '$ i\Banner bannerssh' /etc/ssh/sshd_config
 
 /etc/init.d/ssh restart
 # Edit file /etc/systemd/system/rc-local.service
@@ -328,6 +329,21 @@ echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-
 echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
 #echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
+
+# swap ram
+dd if=/dev/zero of=/swapfile bs=1024 count=4096k
+# buat swap
+mkswap /swapfile
+# jalan swapfile
+swapon /swapfile
+#auto star saat reboot
+wget https://raw.githubusercontent.com/brantbell/cream/mei/fstab
+mv ./fstab /etc/fstab
+chmod 644 /etc/fstab
+sysctl vm.swappiness=10
+#permission swapfile
+chown root:root /swapfile 
+chmod 0600 /swapfile
 
 #Create Admin
 useradd admin
