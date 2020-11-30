@@ -330,20 +330,6 @@ echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
 #echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
-# swap ram
-dd if=/dev/zero of=/swapfile bs=1024 count=4096k
-# buat swap
-mkswap /swapfile
-# jalan swapfile
-swapon /swapfile
-#auto star saat reboot
-wget https://raw.githubusercontent.com/brantbell/cream/mei/fstab
-mv ./fstab /etc/fstab
-chmod 644 /etc/fstab
-sysctl vm.swappiness=10
-#permission swapfile
-chown root:root /swapfile 
-chmod 0600 /swapfile
 
 #Create Admin
 useradd admin
@@ -351,7 +337,7 @@ echo "admin:kopet" | chpasswd
 
 # finishing
 cd
-chown -R www-data:www-data /home/vps/public_html
+#chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/ssh restart
 /etc/init.d/dropbear restart
 /etc/init.d/stunnel4 restart
