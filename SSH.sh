@@ -33,8 +33,9 @@ ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 /etc/init.d/ssh restart
 # setting port ssh
-sed -i '/Port 22/a Port  90' /etc/ssh/sshd_config
-sed -i 's/Port 22/Port  22/g' /etc/ssh/sshd_config
+sed -i 's/Port 22/Port 22/g' /etc/ssh/sshd_config
+sed -i '/Port 22/a Port 90' /etc/ssh/sshd_config
+
 /etc/init.d/ssh restart
 # Edit file /etc/systemd/system/rc-local.service
 cat > /etc/systemd/system/rc-local.service <<-END
@@ -69,36 +70,26 @@ systemctl start rc-local.service
 
 echo "=================  install neofetch  ===================="
 echo "========================================================="
-# install neofetch
+# install opo2
 apt-get update -y
 apt-get -y install gcc
 apt-get -y install make
 apt-get -y install cmake
 apt-get -y install git
 apt-get -y install screen
+apt-get -y install zip
 apt-get -y install unzip
 apt-get -y install curl
-git clone https://github.com/dylanaraps/neofetch
-cd neofetch
-make install
-make PREFIX=/usr/local install
-make PREFIX=/boot/home/config/non-packaged install
-make -i install
-apt-get -y install neofetch
-
+apt install sudo
+apt-get install boxes
+sudo apt-get install ruby -y
+sudo gem install lolcat
+#install bashrc
 cd
 rm -rf /root/.bashrc
 wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
 
-#text gambar
-apt install sudo
-apt-get install boxes
-# text pelangi
-sudo apt-get install ruby -y
-sudo gem install lolcat
-
-# instal php5.6 ubuntu 16.04 64bit
-apt-get -y update
+# update
 
 echo "================  install Dropbear ======================"
 echo "========================================================="
@@ -222,8 +213,8 @@ client = no
 socket = a:SO_REUSEADDR=1
 socket = l:TCP_NODELAY=1
 socket = r:TCP_NODELAY=1
-[dropbear]
-accept = 222
+[ssh]
+accept = 8443
 connect = 127.0.0.1:22
 [dropbear]
 accept = 80
@@ -247,8 +238,8 @@ sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 /etc/init.d/stunnel4 restart
 
 # common password debian 
-#wget -O /etc/pam.d/common-password "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/common-password-deb9"
-#chmod +x /etc/pam.d/common-password
+wget -O /etc/pam.d/common-password "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/common-password-deb9"
+chmod +x /etc/pam.d/common-password
 
 #instal sslh
 cd
@@ -372,8 +363,6 @@ echo 'Config file is at /usr/local/ddos/ddos.conf'
 echo 'Please send in your comments and/or suggestions to zaf@vsnl.com'
 
 # download script
-sudo apt-get install zip
-sudo apt-get install unzip
 cd /usr/local/bin/
 wget "https://github.com/emue25/cream/raw/mei/menu.zip"
 unzip menu.zip
@@ -450,7 +439,6 @@ wget -O /usr/local/bin/userdelexpired "https://www.dropbox.com/s/cwe64ztqk8w622u
 
 #autokill
 wget https://raw.githubusercontent.com/emue25/cream/mei/autokill.sh && chmod +x autokill.sh && ./autokill.sh
-#rm -f /root/SSH.sh
 
 echo "================  install OPENVPN  saya disable======================"
 echo "========================================================="
