@@ -2,13 +2,8 @@
 #created : 
 
 # initialisasi var
-export DEBIAN_FRONTEND=noninteractive
-OS=`uname -m`;
-#MYIP=$(wget -qO- ipv4.icanhazip.com);
-
-# ipvp
-IPADDRESS=`ifconfig | grep 'inet addr:' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | cut -d: -f2 | awk '{print $1}' | head -1`
-IPADD="s/ipaddresxxx/$IPADDRESS/g";
+MYIP=$(wget -qO- ipv4.icanhazip.com);
+MYIP2="s/xxxxxxxxx/$MYIP/g";
 
 # detail nama perusahaan
 country=ID
@@ -139,7 +134,7 @@ acl Safe_ports port 488
 acl Safe_ports port 591
 acl Safe_ports port 777
 acl CONNECT method CONNECT
-acl SSH dst $IPADDRESS/32
+acl SSH dst xxxxxxxxx/32
 http_access allow SSH
 http_access allow manager localhost
 http_access deny manager
