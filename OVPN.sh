@@ -1,12 +1,8 @@
 #!/bin/bash
-#
-# Original script by fornesia, rzengineer and fawzya
 # Mod By ZhangZi
 # ==================================================
 
 # initialisasi var
-export DEBIAN_FRONTEND=noninteractive
-OS=`uname -m`;
 MYIP=$(wget -qO- ipv4.icanhazip.com);
 MYIP2="s/xxxxxxxxx/$MYIP/g";
 
@@ -104,7 +100,7 @@ http_access allow localhost
 http_access deny all
 http_port 8080
 http_port 8000
-http_port 8989
+http_port 8888
 http_port 3128
 coredump_dir /var/spool/squid3
 refresh_pattern ^ftp: 1440 20% 10080
@@ -209,8 +205,8 @@ status server-tcp-110.log
 verb 3
 END
 
-# Buat config server UDP 25
-cat > /etc/openvpn/server-udp-25.conf <<-END
+# Buat config server UDP 55
+cat > /etc/openvpn/server-udp-55.conf <<-END
 port 25
 proto udp
 dev tun
@@ -230,12 +226,12 @@ keepalive 5 30
 comp-lzo
 persist-key
 persist-tun
-status server-udp-25.log
+status server-udp-55.log
 verb 3
 END
 
-# Buat config server TCP 25
-cat > /etc/openvpn/server-tcp-25.conf <<-END
+# Buat config server TCP 55
+cat > /etc/openvpn/server-tcp-55.conf <<-END
 port 25
 proto tcp
 dev tun
@@ -255,7 +251,7 @@ keepalive 5 30
 comp-lzo
 persist-key
 persist-tun
-status server-tcp-25.log
+status server-tcp-55.log
 verb 3
 END
 
@@ -324,8 +320,8 @@ END
 
 sed -i $MYIP2 /etc/openvpn/client-tcp-110.ovpn;
 
-# Buat config client UDP 25
-cat > /etc/openvpn/client-udp-25.ovpn <<-END
+# Buat config client UDP 55
+cat > /etc/openvpn/client-udp-55.ovpn <<-END
 ##### DONT FORGET FOR SUPPORT US #####
 client
 dev tun
@@ -341,10 +337,10 @@ comp-lzo
 verb 3
 END
 
-sed -i $MYIP2 /etc/openvpn/client-udp-25.ovpn;
+sed -i $MYIP2 /etc/openvpn/client-udp-55.ovpn;
 
 # Buat config client TCP 25
-cat > /etc/openvpn/client-tcp-25.ovpn <<-END
+cat > /etc/openvpn/client-tcp-55.ovpn <<-END
 ##### DONT FORGET FOR SUPPORT US #####
 client
 dev tun
@@ -361,7 +357,7 @@ comp-lzo
 verb 3
 END
 
-sed -i $MYIP2 /etc/openvpn/client-tcp-25.ovpn;
+sed -i $MYIP2 /etc/openvpn/client-tcp-55.ovpn;
 
 # Buat config client SSL 443
 cat > /etc/openvpn/client-ssl-443.ovpn <<-END
@@ -404,21 +400,21 @@ cp /etc/openvpn/client-tcp-110.ovpn /home/vps/public_html/client-tcp-110.ovpn
 # Copy config OpenVPN client ke home directory root agar mudah didownload ( UDP 110 )
 cp /etc/openvpn/client-udp-110.ovpn /home/vps/public_html/client-udp-110.ovpn
 
-# masukkan certificatenya ke dalam config client TCP 25
-echo '<ca>' >> /etc/openvpn/client-tcp-25.ovpn
-cat /etc/openvpn/ca.crt >> /etc/openvpn/client-tcp-25.ovpn
-echo '</ca>' >> /etc/openvpn/client-tcp-25.ovpn
+# masukkan certificatenya ke dalam config client TCP 55
+echo '<ca>' >> /etc/openvpn/client-tcp-55.ovpn
+cat /etc/openvpn/ca.crt >> /etc/openvpn/client-tcp-55.ovpn
+echo '</ca>' >> /etc/openvpn/client-tcp-55.ovpn
 
-# masukkan certificatenya ke dalam config client UDP 25
-echo '<ca>' >> /etc/openvpn/client-udp-25.ovpn
-cat /etc/openvpn/ca.crt >> /etc/openvpn/client-udp-25.ovpn
-echo '</ca>' >> /etc/openvpn/client-udp-25.ovpn
+# masukkan certificatenya ke dalam config client UDP 55
+echo '<ca>' >> /etc/openvpn/client-udp-55.ovpn
+cat /etc/openvpn/ca.crt >> /etc/openvpn/client-udp-55.ovpn
+echo '</ca>' >> /etc/openvpn/client-udp-55.ovpn
 
-# Copy config OpenVPN client ke home directory root agar mudah didownload ( TCP 25 )
-cp /etc/openvpn/client-tcp-25.ovpn /home/vps/public_html/client-tcp-25.ovpn
+# Copy config OpenVPN client ke home directory root agar mudah didownload ( TCP 55 )
+cp /etc/openvpn/client-tcp-55.ovpn /home/vps/public_html/client-tcp-55.ovpn
 
-# Copy config OpenVPN client ke home directory root agar mudah didownload ( UDP 25 )
-cp /etc/openvpn/client-udp-25.ovpn /home/vps/public_html/client-udp-25.ovpn
+# Copy config OpenVPN client ke home directory root agar mudah didownload ( UDP 55 )
+cp /etc/openvpn/client-udp-55.ovpn /home/vps/public_html/client-udp-55.ovpn
 
 
 # masukkan certificatenya ke dalam config client SSL 443
@@ -456,6 +452,99 @@ iptables -t nat -I POSTROUTING -s 10.5.0.0/24 -o ens3 -j MASQUERADE
 iptables -t nat -I POSTROUTING -s 10.6.0.0/24 -o ens3 -j MASQUERADE
 iptables -t nat -I POSTROUTING -s 10.7.0.0/24 -o ens3 -j MASQUERADE
 iptables -t nat -I POSTROUTING -s 10.8.0.0/24 -o ens3 -j MASQUERADE
+
+#Torrent
+iptables -D FORWARD -m string --algo bm --string "BitTorrent" -j LOGDROP 
+iptables -D FORWARD -m string --algo bm --string "BitTorrent protocol" -j LOGDROP
+iptables -D FORWARD -m string --algo bm --string "peer_id=" -j LOGDROP
+iptables -D FORWARD -m string --algo bm --string ".torrent" -j LOGDROP
+iptables -D FORWARD -m string --algo bm --string "announce.php?passkey=" -j LOGDROP 
+iptables -D FORWARD -m string --algo bm --string "torrent" -j LOGDROP
+iptables -D FORWARD -m string --algo bm --string "announce" -j LOGDROP
+iptables -D FORWARD -m string --algo bm --string "info_hash" -j LOGDROP
+# DHT keyword
+iptables -A FORWARD -m string --string "get_peers" --algo bm -j DROP
+iptables -A FORWARD -m string --string "announce_peer" --algo bm -j LOGDROP
+iptables -A FORWARD -m string --string "find_node" --algo bm -j LOGDROP
+#play
+iptables -A OUTPUT -d account.sonyentertainmentnetwork.com -j DROP
+iptables -A OUTPUT -d auth.np.ac.playstation.net -j DROP
+iptables -A OUTPUT -d auth.api.sonyentertainmentnetwork.com -j DROP
+iptables -A OUTPUT -d auth.api.np.ac.playstation.net -j DROP
+## Modified debia commands
+iptables -A FORWARD -p udp -m string --algo bm --string "BitTorrent" -j DROP
+iptables -A FORWARD -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -A FORWARD -p udp -m string --algo bm --string "peer_id=" -j DROP
+iptables -A FORWARD -p udp -m string --algo bm --string ".torrent" -j DROP
+iptables -A FORWARD -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -A FORWARD -p udp -m string --algo bm --string "torrent" -j DROP
+iptables -A FORWARD -p udp -m string --algo bm --string "announce" -j DROP
+iptables -A FORWARD -p udp -m string --algo bm --string "info_hash" -j DROP
+iptables -A FORWARD -p udp -m string --algo bm --string "tracker" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string "BitTorrent" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string "peer_id=" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string ".torrent" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -A INPUT -p udp -m string --algo bm --string "torrent" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string "announce" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string "info_hash" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string "tracker" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string "BitTorrent" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string "peer_id=" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string ".torrent" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -I INPUT -p udp -m string --algo bm --string "torrent" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string "announce" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string "info_hash" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string "tracker" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string "BitTorrent" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string "peer_id=" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string ".torrent" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -D INPUT -p udp -m string --algo bm --string "torrent" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string "announce" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string "info_hash" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string "tracker" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string "BitTorrent" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string "peer_id=" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string ".torrent" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -I OUTPUT -p udp -m string --algo bm --string "torrent" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string "announce" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string "info_hash" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string "tracker" -j DROP
+## Delete
+iptables -D INPUT -m string --algo bm --string "BitTorrent" -j DROP
+iptables -D INPUT -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -D INPUT -m string --algo bm --string "peer_id=" -j DROP
+iptables -D INPUT -m string --algo bm --string ".torrent" -j DROP
+iptables -D INPUT -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -D INPUT -m string --algo bm --string "torrent" -j DROP
+iptables -D INPUT -m string --algo bm --string "announce" -j DROP
+iptables -D INPUT -m string --algo bm --string "info_hash" -j DROP
+iptables -D INPUT -m string --algo bm --string "tracker" -j DROP
+iptables -D OUTPUT -m string --algo bm --string "BitTorrent" -j DROP
+iptables -D OUTPUT -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -D OUTPUT -m string --algo bm --string "peer_id=" -j DROP
+iptables -D OUTPUT -m string --algo bm --string ".torrent" -j DROP
+iptables -D OUTPUT -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -D OUTPUT -m string --algo bm --string "torrent" -j DROP
+iptables -D OUTPUT -m string --algo bm --string "announce" -j DROP
+iptables -D OUTPUT -m string --algo bm --string "info_hash" -j DROP
+iptables -D OUTPUT -m string --algo bm --string "tracker" -j DROP
+iptables -D FORWARD -m string --algo bm --string "BitTorrent" -j DROP
+iptables -D FORWARD -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -D FORWARD -m string --algo bm --string "peer_id=" -j DROP
+iptables -D FORWARD -m string --algo bm --string ".torrent" -j DROP
+iptables -D FORWARD -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -D FORWARD -m string --algo bm --string "torrent" -j DROP
+iptables -D FORWARD -m string --algo bm --string "announce" -j DROP
+iptables -D FORWARD -m string --algo bm --string "info_hash" -j DROP
+iptables -D FORWARD -m string --algo bm --string "tracker" -j DROP 
 
 iptables-save > /etc/iptables/rules.v4
 chmod +x /etc/iptables/rules.v4
@@ -516,7 +605,7 @@ echo "connect = 127.0.0.1:110" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "[openvpn]" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "accept = 80" | sudo tee -a /etc/stunnel/stunnel.conf
-echo "connect = 127.0.0.1:25" | sudo tee -a /etc/stunnel/stunnel.conf
+echo "connect = 127.0.0.1:55" | sudo tee -a /etc/stunnel/stunnel.conf
 echo "cert = /etc/stunnel/stunnel.pem" | sudo tee -a /etc/stunnel/stunnel.conf
 sudo sed -i -e 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 iptables -A INPUT -p tcp --dport 443 -j ACCEPT
