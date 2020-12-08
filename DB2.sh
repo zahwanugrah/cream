@@ -7,7 +7,7 @@
 MyScriptName='VPNstunnel'
 
 # OpenSSH Ports
-SSH_Port1='21'
+SSH_Port1='22'
 SSH_Port2='90'
 
 # Your SSH Banner
