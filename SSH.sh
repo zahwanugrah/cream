@@ -93,7 +93,7 @@ echo "========================================================="
 
 # upgade dropbear 2020
 apt-get install zlib1g-dev
-wget https://raw.githubusercontent.com/brantbell/cream/mei/dropbear-2020.81.tar.bz2
+wget https://raw.githubusercontent.com/emue25/cream/mei/dropbear-2020.81.tar.bz2
 bzip2 -cd dropbear-2020.81.tar.bz2 | tar xvf -
 cd dropbear-2020.81
 ./configure
