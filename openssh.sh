@@ -122,7 +122,7 @@ chown -R vnstat:vnstat /var/lib/vnstat
 # install squid3
 cd
 apt-get -y install squid3
-wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/squid3.conf"
+wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/emue25/sshtunnel/master/debian9/squid3.conf"
 sed -i $MYIP2 /etc/squid/squid.conf;
 /etc/init.d/squid restart
 
@@ -182,8 +182,8 @@ cd
 apt-get -y install sslh
 
 #configurasi sslh
-wget -O /etc/default/sslh "https://raw.githubusercontent.com/cream/mei/sslh-conf"
-service sslh restart
+wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/cream/mei/sslh-conf"
+/etc/init.d/sslh restart
 
 echo "=================  Install badVPn (VC and Game) ======================"
 echo "========================================================="
@@ -580,8 +580,6 @@ wget -O /usr/local/bin/userdelexpired "https://www.dropbox.com/s/cwe64ztqk8w622u
 #autokill
 wget https://raw.githubusercontent.com/emue25/cream/mei/autokill.sh && chmod +x autokill.sh && ./autokill.sh
 
-#delete
-rm -f /root/openssh.sh
 
 echo "================  install OPENVPN  saya disable======================"
 echo "========================================================="
@@ -594,3 +592,7 @@ echo "========================================================="
 /etc/init.d/dropbear restart
 /etc/init.d/stunnel4 restart
 /etc/init.d/squid restart
+/etc/init.d/sslh restart
+
+#delete
+rm -f /root/openssh.sh
