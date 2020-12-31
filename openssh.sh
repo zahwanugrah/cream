@@ -182,7 +182,7 @@ cd
 apt-get -y install sslh
 
 #configurasi sslh
-wget -O /etc/default/sslh "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/sslh-conf"
+wget -O /etc/default/sslh "https://raw.githubusercontent.com/cream/mei/sslh-conf"
 service sslh restart
 
 echo "=================  Install badVPn (VC and Game) ======================"
@@ -261,7 +261,7 @@ chmod +x /usr/bin/build
 chmod +x /etc/rc.local
 
 # Custom Banner SSH
-wget -O /etc/issue.net "https://github.com/idtunnel/sshtunnel/raw/master/debian9/banner-custom.conf"
+wget -O /etc/issue.net "https://github.com/emue25/sshtunnel/raw/master/debian9/banner-custom.conf"
 chmod +x /etc/issue.net
 
 echo "Banner /etc/issue.net" >> /etc/ssh/sshd_config
