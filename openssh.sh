@@ -153,10 +153,10 @@ socket = r:TCP_NODELAY=1
 accept = 1443
 connect = 127.0.0.1:22
 [dropbear]
-accept = 444
+accept = 80
 connect = 127.0.0.1:442
 [dropbear]
-accept = 80
+accept = 777
 connect = 127.0.0.1:77
 
 END
