@@ -518,6 +518,7 @@ chmod +x delete
 #Create Admin
 useradd admin
 echo "admin:kopet" | chpasswd
+
 # finishing
 cd
 chown -R www-data:www-data /home/vps/public_html
