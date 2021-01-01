@@ -106,11 +106,17 @@ sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 77 "/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 echo "/usr/sbin/nologin" >> /etc/shells
+
+# upgade dropbear 2020
+apt-get install zlib1g-dev
+wget https://raw.githubusercontent.com/emue25/cream/mei/dropbear-2020.81.tar.bz2
+bzip2 -cd dropbear-2020.81.tar.bz2 | tar xvf -
+cd dropbear-2020.81
+./configure
+make && make install
+
 /etc/init.d/ssh restart
 /etc/init.d/dropbear restart
-
-echo "=================  install Squid3  ======================"
-echo "========================================================="
 
 # setting dan install vnstat debian 9 64bit
 apt-get -y install vnstat
@@ -119,6 +125,8 @@ systemctl enable vnstat
 chkconfig vnstat on
 chown -R vnstat:vnstat /var/lib/vnstat
 
+echo "=================  install Squid3  ======================"
+echo "========================================================="
 # install squid3
 cd
 apt-get -y install squid3
@@ -188,42 +196,9 @@ wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/cream/mei/ss
 echo "=================  Install badVPn (VC and Game) ======================"
 echo "========================================================="
 
-# buat directory badvpn
-
 echo "================= Disable badVPN V 1  ======================"
-#cd /usr/bin
-#mkdir build
-#cd /usr/bin/build
-#wget https://github.com/idtunnel/sshtunnel/raw/master/debian9/badvpn/badvpn-update.zip
-#unzip badvpn-update
-#cmake -DBUILD_NOTHING_BY_DEFAULT=1 -DBUILD_TUN2SOCKS=1 -DBUILD_UDPGW=1
-#make install
-#make -i install
-
-# aut start badvpn
-#sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300 > /dev/null &' /etc/rc.local
-#screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300 > /dev/null &
 cd
-#cd /usr/bin/build
-
-#sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200 > /dev/null &' /etc/rc.local#
-#screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200 > /dev/null &
-#auto badvpn
-
-# set permition rc.local badvpn
-#chmod +x /usr/local/bin/badvpn-udpgw
-#chmod +x /usr/local/share/man/man7/badvpn.7
-#chmod +x /usr/local/bin/badvpn-tun2socks
-#chmod +x /usr/local/share/man/man8/badvpn-tun2socks.8
-#chmod +x /etc/rc.local
-#chmod +x /usr/bin/build
-
-
 echo "================= Auto Installer Disable badVPN V 2  ======================"
-#wget https://raw.githubusercontent.com/idtunnel/UDPGW-SSH/master/badudp2.sh
-#chmod +x badudp2.sh
-#bash badudp2.sh
-
 echo "================= Auto Installer Disable badVPN V 3  ======================"
 # buat directory badvpn
 cd /usr/bin
@@ -521,13 +496,6 @@ echo "admin:kopet" | chpasswd
 
 # finishing
 cd
-chown -R www-data:www-data /home/vps/public_html
-/etc/init.d/ssh restart
-/etc/init.d/dropbear restart
-/etc/init.d/stunnel4 restart
-service squid restart
-/etc/init.d/nginx restart
-#/etc/init.d/openvpn restart
 rm -rf ~/.bash_history && history -c
 echo "unset HISTFILE" >> /etc/profile
 
@@ -579,13 +547,7 @@ cd
 wget -O /usr/local/bin/userdelexpired "https://www.dropbox.com/s/cwe64ztqk8w622u/userdelexpired?dl=1" && chmod +x /usr/local/bin/userdelexpired
 
 #autokill
-wget https://raw.githubusercontent.com/emue25/cream/mei/autokill.sh && chmod +x autokill.sh && ./autokill.sh
-
-
-echo "================  install OPENVPN  saya disable======================"
-echo "========================================================="
-# install openvpn debian 9 ( openvpn port 1194 dan 443 )
-#wget https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/openvpn.sh && chmod +x openvpn.sh && bash openvpn.sh
+#wget https://raw.githubusercontent.com/emue25/cream/mei/autokill.sh && chmod +x autokill.sh && ./autokill.sh
 
 echo "==================== Restart Service ===================="
 echo "========================================================="
