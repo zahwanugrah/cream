@@ -137,14 +137,6 @@ sed -i $MYIP2 /etc/squid/squid.conf;
 echo "=================  saya matikan install Webmin  ======================"
 echo "========================================================="
 
-# install webmin
-cd
-wget http://prdownloads.sourceforge.net/webadmin/webmin_1.962_all.deb
-dpkg --install webmin_1.962_all.deb;
-apt-get -y -f install;
-sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-rm -f webmin_1.962_all.deb
-/etc/init.d/webmin restart
 
 echo "=================  install stunnel  ====================="
 echo "========================================================="
