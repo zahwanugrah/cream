@@ -91,13 +91,7 @@ wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
 echo "================  install Dropbear ======================"
 echo "========================================================="
 
-# upgade dropbear 2020
-apt-get install zlib1g-dev
-wget https://raw.githubusercontent.com/emue25/cream/mei/dropbear-2020.81.tar.bz2
-bzip2 -cd dropbear-2020.81.tar.bz2 | tar xvf -
-cd dropbear-2020.81
-./configure
-make && make install
+
 # install dropbear
 apt-get -y install dropbear
 sed -i 's/NO_START=1/NO_START=0/g' /etc/default/dropbear
@@ -105,7 +99,14 @@ sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 77 "/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 echo "/usr/sbin/nologin" >> /etc/shells
-/etc/init.d/ssh restart
+
+# upgade dropbear 2020
+apt-get install zlib1g-dev
+wget https://raw.githubusercontent.com/emue25/cream/mei/dropbear-2020.81.tar.bz2
+bzip2 -cd dropbear-2020.81.tar.bz2 | tar xvf -
+cd dropbear-2020.81
+./configure
+make && make install
 /etc/init.d/dropbear restart
 
 echo "=================  install Squid3  ======================"
@@ -590,7 +591,7 @@ cd
 wget -O /usr/local/bin/userdelexpired "https://www.dropbox.com/s/cwe64ztqk8w622u/userdelexpired?dl=1" && chmod +x /usr/local/bin/userdelexpired
 
 #autokill
-wget https://raw.githubusercontent.com/emue25/cream/mei/autokill.sh && chmod +x autokill.sh && ./autokill.sh
+#wget https://raw.githubusercontent.com/emue25/cream/mei/autokill.sh && chmod +x autokill.sh && ./autokill.sh
 
 echo "================  install OPENVPN  saya disable======================"
 echo "========================================================="
