@@ -13,7 +13,7 @@ SSH_Port2='90'
 # Your SSH Banner
 SSH_Banner='https://raw.githubusercontent.com/emue25/cream/mei/bannerssh'
 # Dropbear Ports
-Dropbear_Port1='445'
+Dropbear_Port1='444'
 Dropbear_Port2='442'
 
 # Stunnel Ports
@@ -30,7 +30,7 @@ Privoxy_Port2='8086'
 
 # Squid Ports
 Squid_Port1='3128'
-Squid_Port2='8080'
+Squid_Port2='8081'
 Squid_Port3='8888'
 
 # OpenVPN Config Download Port
