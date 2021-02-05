@@ -4,41 +4,8 @@
 clear
 clear
 clear
-neofetch
-sleep 5
-echo -e "=========================================="
-echo -e "*      Script Created By WILDYVPN        *"
-echo -e "=========================================="
-echo -e ""
-echo -e "Bersabar Script akan di jalankan dalam waktu 5 Detik !!!!!"
-echo -e ""
-sleep 1
-echo -e "Bersabar Script akan di jalankan dalam waktu 4 Detik !!!!!"
-echo -e ""
-sleep 1
-echo -e "Bersabar Script akan di jalankan dalam waktu 3 Detik !!!!!"
-echo -e ""
-sleep 1
-echo -e "Bersabar Script akan di jalankan dalam waktu 2 Detik !!!!!"
-echo -e ""
-sleep 1
-echo -e "Bersabar Script akan di jalankan dalam waktu 1 Detik !!!!!"
-echo -e "gassskannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn"
-
+apt install neofetch
 apt install bash
-
-#sabar taik
-cd /usr/bin
-rm menu
-rm cek
-rm usernew
-rm about
-rm deluser
-rm speedtest
-rm member 
-rm trial
-rm hapus
-rm reboot
 
 #Sabar
 apt -y install vnstat
@@ -59,16 +26,15 @@ rm -rf /root/vnstat-2.6
 #xml parser
 cd
 apt install -y libxml-parser-perl
-
+#insall v2ray
 cd
-wget https://script.vpnstores.net/v2ray.sh
-chmod +x v2ray.sh
-bash v2ray.sh
-cd
+wget https://script.vpnstores.net/v2ray.sh && chmod +x v2ray.sh && ./v2ray.sh
 
 #Config Direcktori V2ray
+cd
 mkdir /etc/v2ray
 cd /etc/v2ray
+#menu
 wget https://raw.githubusercontent.com/joenurul/jokerteam/main/akun.conf
 ls
 cd
@@ -176,9 +142,6 @@ sed -i -e 's/\r$//' tambah
 sed -i -e 's/\r$//' tambah.sh
 ls
 cd
-
-cd
-cd
 clear
 #Meningstall Banner
 cd /etc/
@@ -196,26 +159,22 @@ clear
 #update dulu ya sayang kuuu
 apt update -y
 apt upgrade -y
-apt install stunnel14 -y
+apt install stunnel4 -y
 apt install python -y
 
 #Menginstall Certificate
 ls
 cd /etc/stunnel/
-rm stunnel.pem
+rm -f stunnel.pem
+
+#stunn install
 wget "https://raw.githubusercontent.com/joenurul/jokerteam/main/banner/stunnel.pem"
 cd
-
+#ssr install
+wget https://script.vpnstores.net/ssrmu.sh && chmod +x ssrmu.sh && ./ssrmu.sh
 cd
-wget https://script.vpnstores.net/ssrmu.sh
-chmod +x ssrmu.sh
-bash ssrmu.sh
-cd
-
-cd
-wget https://script.vpnstores.net/wg.sh
-chmod +x wg.sh
-bash wg.sh
+#wg install
+wget https://script.vpnstores.net/wg.sh && chmod +x wg.sh && ./wg.sh
 
 clear
 neofetch
