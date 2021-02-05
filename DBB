@@ -1,4 +1,6 @@
 #!/bin/bash
+# Script Created By Wildy
+# Thanks Too Horass For the v2ray , wg and ssr
 clear
 clear
 clear
@@ -67,7 +69,7 @@ cd
 #Config Direcktori V2ray
 mkdir /etc/v2ray
 cd /etc/v2ray
-wget http://wildyvpn.my.id/akun.conf
+wget https://raw.githubusercontent.com/joenurul/jokerteam/main/akun.conf
 ls
 cd
 
@@ -181,7 +183,7 @@ clear
 #Meningstall Banner
 cd /etc/
 rm issue.net
-wget -O /etc/issue.net "https://wildyvpn.my.id/issue.net" && echo "Banner /etc/issue.net" >>/etc/ssh/sshd_config && sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
+wget -O /etc/issue.net "https://raw.githubusercontent.com/joenurul/jokerteam/main/issue.net" && echo "Banner /etc/issue.net" >>/etc/ssh/sshd_config && sed -i 's@DROPBEAR_BANNER=""@DROPBEAR_BANNER="/etc/issue.net"@g' /etc/default/dropbear
 ls
 cd
 cd /etc/
@@ -201,7 +203,7 @@ apt install python -y
 ls
 cd /etc/stunnel/
 rm stunnel.pem
-wget "https://wildyvpn.my.id/banner/stunnel.pem"
+wget "https://raw.githubusercontent.com/joenurul/jokerteam/main/banner/stunnel.pem"
 cd
 
 cd
