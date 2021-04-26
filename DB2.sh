@@ -6,10 +6,6 @@
 # Script name
 MyScriptName='VPNstunnel'
 
-# simple password minimal
-wget -O /etc/pam.d/common-password "https://raw.githubusercontent.com/zahwanugrah/auto/main/password"
-chmod +x /etc/pam.d/common-password
-
 # OpenSSH Ports
 SSH_Port1='22'
 SSH_Port2='90'
