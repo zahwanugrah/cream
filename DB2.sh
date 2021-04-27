@@ -189,7 +189,9 @@ MyStunnelD
 pid = /var/run/stunnel.pid
 cert = /etc/stunnel/stunnel.pem
 client = no
-
+socket = l:TCP_NODELAY=1
+socket = r:TCP_NODELAY=1
+TIMEOUTclose = 0
 [ssh]
 accept = 80
 connect = 127.0.0.1:22
