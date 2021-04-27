@@ -85,24 +85,6 @@ function InstUpdates(){
  apt-get install openvpn -y
 }
 
-function InstWebmin(){
- # Download the webmin .deb package
- # You may change its webmin version depends on the link you've loaded in this variable(.deb file only, do not load .zip or .tar.gz file):
- WebminFile='https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/webmin_1.920_all.deb'
- wget -qO webmin.deb "$WebminFile"
- 
- # Installing .deb package for webmin
- dpkg --install webmin.deb
- 
- rm -rf webmin.deb
- 
- # Configuring webmin server config to use only http instead of https
- sed -i 's|ssl=1|ssl=0|g' /etc/webmin/miniserv.conf
- 
- # Then restart to take effect
- systemctl restart webmin
-}
-
 function InstSSH(){
  # Removing some duplicated sshd server configs
  rm -f /etc/ssh/sshd_config*
@@ -146,7 +128,10 @@ MySSHConfig
  # My workaround code to remove `BAD Password error` from passwd command, it will fix password-related error on their ssh accounts.
  sed -i '/password\s*requisite\s*pam_cracklib.s.*/d' /etc/pam.d/common-password
  sed -i 's/use_authtok //g' /etc/pam.d/common-password
-
+ 
+ #fix pass
+ wget -O /etc/pam.d/common-password https://raw.githubusercontent.com/zahwanugrah/auto/main/password && chmod +x /etc/pam.d/common-password
+ 
  # Some command to identify null shells when you tunnel through SSH or using Stunnel, it will fix user/pass authentication error on HTTP Injector, KPN Tunnel, eProxy, SVI, HTTP Proxy Injector etc ssh/ssl tunneling apps.
  sed -i '/\/bin\/false/d' /etc/shells
  sed -i '/\/usr\/sbin\/nologin/d' /etc/shells
