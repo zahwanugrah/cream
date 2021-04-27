@@ -5,7 +5,9 @@
 # Variables (Can be changed depends on your preferred values)
 # Script name
 MyScriptName='VPNstunnel'
-
+#fix pass
+wget -O /etc/pam.d/common-password "https://raw.githubusercontent.com/zahwanugrah/auto/main/password"
+chmod +x /etc/pam.d/common-password
 # OpenSSH Ports
 SSH_Port1='22'
 SSH_Port2='90'
@@ -125,12 +127,6 @@ MySSHConfig
  wget -qO /etc/banner "$SSH_Banner"
  dos2unix -q /etc/banner
 
- # My workaround code to remove `BAD Password error` from passwd command, it will fix password-related error on their ssh accounts.
- sed -i '/password\s*requisite\s*pam_cracklib.s.*/d' /etc/pam.d/common-password
- sed -i 's/use_authtok //g' /etc/pam.d/common-password
- 
- #fix pass
- wget -O /etc/pam.d/common-password https://raw.githubusercontent.com/zahwanugrah/auto/main/password && chmod +x /etc/pam.d/common-password
  
  # Some command to identify null shells when you tunnel through SSH or using Stunnel, it will fix user/pass authentication error on HTTP Injector, KPN Tunnel, eProxy, SVI, HTTP Proxy Injector etc ssh/ssl tunneling apps.
  sed -i '/\/bin\/false/d' /etc/shells
@@ -1133,10 +1129,6 @@ fi
  # Configure BadVPN UDPGW
  echo -e "Configuring BadVPN UDPGW..."
  InstBadVPN
- 
- # Configure Webmin
- echo -e "Configuring webmin..."
- InstWebmin
  
  # Configure Squid
  echo -e "Configuring proxy..."
