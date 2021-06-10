@@ -179,9 +179,9 @@ socket = r:TCP_NODELAY=1
 [ssh]
 accept = 8443
 connect = 127.0.0.1:22
-[https]
+[dropbear]
 accept = 443
-connect = 127.0.0.1:80
+connect = 127.0.0.1:442
 [dropbear]
 accept = 777
 connect = 127.0.0.1:77
