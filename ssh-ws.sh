@@ -258,7 +258,7 @@ echo "Banner /etc/issue.net" >> /etc/ssh/sshd_config
 echo "DROPBEAR_BANNER="/etc/issue.net"" >> /etc/default/dropbear
 
 #install CDN
-wget https://raw.githubusercontent.com/emue25/cream/mei/edu.sh && chmod +X edu.sh && ./edu.sh
+wget https://raw.githubusercontent.com/emue25/cream/mei/edu.sh && chmod +x edu.sh && ./edu.sh
 
 # install fail2ban
 apt-get -y install fail2ban
