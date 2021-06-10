@@ -179,9 +179,9 @@ socket = r:TCP_NODELAY=1
 [ssh]
 accept = 8443
 connect = 127.0.0.1:22
-[dropbear]
-accept = 80
-connect = 127.0.0.1:442
+[https]
+accept = 443
+connect = 127.0.0.1:80
 [dropbear]
 accept = 777
 connect = 127.0.0.1:77
@@ -205,12 +205,12 @@ wget -O /etc/pam.d/common-password "https://raw.githubusercontent.com/idtunnel/s
 chmod +x /etc/pam.d/common-password
 
 #instal sslh
-cd
-apt-get -y install sslh
+#cd
+#apt-get -y install sslh
 
 #configurasi sslh
-wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/cream/mei/sslh-conf"
-/etc/init.d/sslh restart
+#wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/cream/mei/sslh-conf"
+#/etc/init.d/sslh restart
 
 echo "=================  Install badVPn (VC and Game) ======================"
 echo "========================================================="
@@ -598,7 +598,7 @@ echo "========================================================="
 echo "==================== Restart Service ===================="
 echo "========================================================="
 /etc/init.d/ssh restart
-/etc/init.d/sslh restart
+#/etc/init.d/sslh restart
 /etc/init.d/dropbear restart
 /etc/init.d/stunnel4 restart
 /etc/init.d/squid restart
