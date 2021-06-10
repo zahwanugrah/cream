@@ -9,12 +9,12 @@ MYIP2="s/xxxxxxxxx/$MYIP/g";
 
 # detail nama perusahaan
 country=ID
-state=Semarang
+state=Purworejo
 locality=Jawa Tengah
-organization=hidessh
-organizationalunit=HideSSH
-commonname=hidessh.com
-email=admin@hidessh.com
+organization=Denb4gus
+organizationalunit=Zhang-Zi
+commonname=vpnstunnel.com
+email=admin@vpnstunnel.com
 
 # go to root
 cd
@@ -23,8 +23,8 @@ cd
 echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 
-# set time GMT +7 jakarta
-ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+# set time GMT +8 Malaysia
+ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 
 # set locale
 sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
@@ -319,6 +319,10 @@ chmod +x info
 chmod +x about
 chmod +x delete
 
+#Create Admin
+useradd admin
+echo "admin:kopet" | chpasswd
+
 # finishing
 cd
 chown -R www-data:www-data /home/vps/public_html
@@ -375,7 +379,7 @@ echo ""  | tee -a log-install.txt
 echo "==========================================="  | tee -a log-install.txt
 cd
 
-rm -f /root/openssh.sh
+#rm -f /root/openssh.sh
 
 echo "================  install OPENVPN  saya disable======================"
 echo "========================================================="
