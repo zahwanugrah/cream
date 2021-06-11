@@ -2,19 +2,17 @@
 #created : 
 
 # initialisasi var
-export DEBIAN_FRONTEND=noninteractive
-OS=`uname -m`;
-MYIP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0'`;
+MYIP=$(wget -qO- ipv4.icanhazip.com);
 MYIP2="s/xxxxxxxxx/$MYIP/g";
 
 # detail nama perusahaan
 country=ID
-state=Semarang
+state=PURWOREJO
 locality=JawaTengah
-organization=hidessh
-organizationalunit=HideSSH
-commonname=hidessh.com
-email=admin@hidessh.com
+organization=VPNstunnel
+organizationalunit=VPNinjector
+commonname=denb4gus
+email=admin@vpnstunnel.com
 
 # go to root
 cd
@@ -24,12 +22,18 @@ echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 
 # set time GMT +7 jakarta
-ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
 
 # set locale
 sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
 /etc/init.d/ssh restart
+# setting port ssh
+cd
+sed -i '/Port 22/a Port 90' /etc/ssh/sshd_config
+sed -i 's/Port 22/Port 22/g' /etc/ssh/sshd_config
+sed -i '$ i\Banner bannerssh' /etc/ssh/sshd_config
 
+/etc/init.d/ssh restart
 # Edit file /etc/systemd/system/rc-local.service
 cat > /etc/systemd/system/rc-local.service <<-END
 [Unit]
@@ -63,42 +67,30 @@ systemctl start rc-local.service
 
 echo "=================  install neofetch  ===================="
 echo "========================================================="
-# install neofetch
+# install opo2
 apt-get update -y
 apt-get -y install gcc
 apt-get -y install make
 apt-get -y install cmake
-apt-get -y install build-essential
 apt-get -y install git
 apt-get -y install screen
+apt-get -y install zip
 apt-get -y install unzip
 apt-get -y install curl
-git clone https://github.com/dylanaraps/neofetch
-cd neofetch
-make install
-make PREFIX=/usr/local install
-make PREFIX=/boot/home/config/non-packaged install
-make -i install
-apt-get -y install neofetch
+apt install sudo
+apt-get install boxes
+sudo apt-get install ruby -y
+sudo gem install lolcat
+#install bashrc
 cd
-echo "clear" >> .bashrc
-echo "neofetch" >> .bashrc
+rm -rf /root/.bashrc
+wget -O /root/.bashrc https://raw.githubusercontent.com/emue25/cream/mei/.bashrc
 
-# instal php5.6 ubuntu 16.04 64bit
-apt-get -y update
-
-# set repo webmin
-#sh -c 'echo "deb http://download.webmin.com/download/repository sarge contrib" > /etc/apt/sources.list.d/webmin.list'
-#wget -qO - http://www.webmin.com/jcameron-key.asc | apt-key add -
-
-# setting port ssh
-cd
-sed -i '/Port 22/a Port 143' /etc/ssh/sshd_config
-sed -i 's/#Port 22/Port 22/g' /etc/ssh/sshd_config
-/etc/init.d/ssh restart
+# update
 
 echo "================  install Dropbear ======================"
 echo "========================================================="
+
 
 # install dropbear
 apt-get -y install dropbear
@@ -107,7 +99,14 @@ sed -i 's/DROPBEAR_PORT=22/DROPBEAR_PORT=442/g' /etc/default/dropbear
 sed -i 's/DROPBEAR_EXTRA_ARGS=/DROPBEAR_EXTRA_ARGS="-p 77 "/g' /etc/default/dropbear
 echo "/bin/false" >> /etc/shells
 echo "/usr/sbin/nologin" >> /etc/shells
-/etc/init.d/ssh restart
+
+# upgade dropbear 2020
+apt-get install zlib1g-dev
+wget https://raw.githubusercontent.com/emue25/cream/mei/dropbear-2020.81.tar.bz2
+bzip2 -cd dropbear-2020.81.tar.bz2 | tar xvf -
+cd dropbear-2020.81
+./configure
+make && make install
 /etc/init.d/dropbear restart
 
 echo "=================  install Squid3  ======================"
@@ -122,23 +121,50 @@ chown -R vnstat:vnstat /var/lib/vnstat
 
 # install squid3
 cd
-apt-get -y install squid3
-wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/squid3.conf"
+apt install squid -y
+# Removing Duplicate Squid config
+rm -rf /etc/squid/squid.con*
+# Creating Squid server config using cat eof tricks
+apt install squid -y
+cat > /etc/squid/squid.conf <<-END
+acl localhost src 127.0.0.1/32 ::1
+acl to_localhost dst 127.0.0.0/8 0.0.0.0/32 ::1
+acl SSL_ports port 443
+acl Safe_ports port 80
+acl Safe_ports port 21
+acl Safe_ports port 442
+acl Safe_ports port 443
+acl Safe_ports port 444
+acl Safe_ports port 70
+acl Safe_ports port 210
+acl Safe_ports port 1025-65535
+acl Safe_ports port 280
+acl Safe_ports port 488
+acl Safe_ports port 591
+acl Safe_ports port 777
+acl CONNECT method CONNECT
+acl SSH dst xxxxxxxxx/32
+http_access allow SSH
+http_access allow manager localhost
+http_access deny manager
+http_access allow localhost
+http_access deny all
+http_port 8080
+http_port 8000
+http_port 8888
+http_port 3128
+coredump_dir /var/spool/squid3
+refresh_pattern ^ftp: 1440 20% 10080
+refresh_pattern ^gopher: 1440 0% 1440
+refresh_pattern -i (/cgi-bin/|\?) 0 0% 0
+refresh_pattern . 0 20% 4320
+visible_hostname kopet
+END
 sed -i $MYIP2 /etc/squid/squid.conf;
-/etc/init.d/squid restart
 
-echo "=================  saya matikan install Webmin  ======================"
-echo "========================================================="
-
-# install webmin
-cd
-#wget http://prdownloads.sourceforge.net/webadmin/webmin_1.910_all.deb
-#dpkg --install webmin_1.910_all.deb;
-#apt-get -y -f install;
-#sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
-#rm -f webmin_1.910_all.deb
-#/etc/init.d/webmin restart
-
+#squid restart
+/etc/init.d/squid.restart
+ 
 echo "=================  install stunnel  ====================="
 echo "========================================================="
 
@@ -177,8 +203,8 @@ chmod +x /etc/pam.d/common-password
 #apt-get -y install sslh
 
 #configurasi sslh
-#wget -O /etc/default/sslh "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/sslh-conf"
-#service sslh restart
+#wget -O /etc/default/sslh "https://raw.githubusercontent.com/emue25/cream/mei/sslh-conf"
+#/etc/init.d/sslh restart
 
 echo "=================  Install badVPn (VC and Game) ======================"
 echo "========================================================="
@@ -254,12 +280,198 @@ chmod +x /usr/local/bin/badvpn-tun2socks
 chmod +x /usr/local/share/man/man8/badvpn-tun2socks.8
 chmod +x /usr/bin/build
 chmod +x /etc/rc.local
+#Setting IPtables
+cat > /etc/iptables.up.rules <<-END
+*nat
+:PREROUTING ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+-A POSTROUTING -j SNAT --to-source xxxxxxxxx
+-A POSTROUTING -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.10.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.100.0/24 -o eth1 -j MASQUERADE
+-A POSTROUTING -s 192.168.200.0/24 -o eth0 -j MASQUERADE
+-A POSTROUTING -s 192.168.20.0/24 -o eth1 -j MASQUERADE
+COMMIT
+*filter
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:fail2ban-ssh - [0:0]
+-A INPUT -p tcp -m multiport --dports 22 -j fail2ban-ssh
+-A INPUT -p ICMP --icmp-type 8 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport 53 -j ACCEPT
+-A INPUT -p tcp --dport 22  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 80  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 143  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 442  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 443  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 444  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 587  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 1194  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 1194  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 55  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 55  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 8085  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 8085  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 8888  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 8888  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 3128  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 3128  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 8080  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 8080  -m state --state NEW -j ACCEPT 
+-A INPUT -p tcp --dport 7300  -m state --state NEW -j ACCEPT
+-A INPUT -p udp --dport 7300  -m state --state NEW -j ACCEPT 
+-A INPUT -p tcp --dport 10000  -m state --state NEW -j ACCEPT
+-A INPUT -p tcp --dport 587 -j ACCEPT
+-A OUTPUT -p tcp --dport 6881:6889 -j DROP
+-A OUTPUT -p udp --dport 1024:65534 -j DROP
+-A FORWARD -m string --string "get_peers" --algo bm -j DROP
+-A FORWARD -m string --string "announce_peer" --algo bm -j DROP
+-A FORWARD -m string --string "find_node" --algo bm -j DROP
+-A FORWARD -m string --algo bm --string "BitTorrent" -j DROP
+-A FORWARD -m string --algo bm --string "BitTorrent protocol" -j DROP
+-A FORWARD -m string --algo bm --string "peer_id=" -j DROP
+-A FORWARD -m string --algo bm --string ".torrent" -j DROP
+-A FORWARD -m string --algo bm --string "announce.php?passkey=" -j DROP
+-A FORWARD -m string --algo bm --string "torrent" -j DROP
+-A FORWARD -m string --algo bm --string "announce" -j DROP
+-A FORWARD -m string --algo bm --string "info_hash" -j DROP
+-A fail2ban-ssh -j RETURN
+COMMIT
+*raw
+:PREROUTING ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+COMMIT
 
-#install CDN
-wget https://raw.githubusercontent.com/emue25/cream/mei/ssh-ws.sh && chmod +x ssh-ws.sh && ./ssh-ws.sh
+## Allowing all neede ports for OpenVPN L2TP PPTP and RADIUS
+iptables -I OUTPUT -p udp --dport 1812 -j ACCEPT
+iptables -I OUTPUT -p udp --dport 1813 -j ACCEPT
+iptables -I OUTPUT -p udp --dport 1701 -j ACCEPT
+iptables -I OUTPUT -p udp --dport 4500 -j ACCEPT
+iptables -I OUTPUT -p udp --dport 500 -j ACCEPT
+iptables -I OUTPUT -p udp --dport 443 -j ACCEPT
+iptables -I OUTPUT -p tcp --dport 1723 -j ACCEPT
+## Drop torrents
+iptables -A OUTPUT -p tcp --dport 6881:6889 -j DROP
+iptables -A OUTPUT -p udp --dport 1024:65534 -j DROP
+## Set more radius (alt) ports
+iptables -I OUTPUT -p udp --dport 1645 -j ACCEPT
+iptables -I OUTPUT -p udp --dport 1646 -j ACCEPT
+## Try torrent name filters
+iptables -A FORWARD -m string --algo bm --string "BitTorrent" -j DROP
+## Trying forward
+iptables -A FORWARD -p tcp --dport 6881:6889 -j DROP
+iptables -A FORWARD -p udp --dport 1024:65534 -j DROP
+###### Found on web
+iptables -N LOGDROP > /dev/null 2> /dev/null
+iptables -F LOGDROP
+iptables -A LOGDROP -j DROP
+#Torrent
+iptables -D FORWARD -m string --algo bm --string "BitTorrent" -j LOGDROP 
+iptables -D FORWARD -m string --algo bm --string "BitTorrent protocol" -j LOGDROP
+iptables -D FORWARD -m string --algo bm --string "peer_id=" -j LOGDROP
+iptables -D FORWARD -m string --algo bm --string ".torrent" -j LOGDROP
+iptables -D FORWARD -m string --algo bm --string "announce.php?passkey=" -j LOGDROP 
+iptables -D FORWARD -m string --algo bm --string "torrent" -j LOGDROP
+iptables -D FORWARD -m string --algo bm --string "announce" -j LOGDROP
+iptables -D FORWARD -m string --algo bm --string "info_hash" -j LOGDROP
+# DHT keyword
+iptables -A FORWARD -m string --string "get_peers" --algo bm -j DROP
+iptables -A FORWARD -m string --string "announce_peer" --algo bm -j LOGDROP
+iptables -A FORWARD -m string --string "find_node" --algo bm -j LOGDROP
+#play
+iptables -A OUTPUT -d account.sonyentertainmentnetwork.com -j DROP
+iptables -A OUTPUT -d auth.np.ac.playstation.net -j DROP
+iptables -A OUTPUT -d auth.api.sonyentertainmentnetwork.com -j DROP
+iptables -A OUTPUT -d auth.api.np.ac.playstation.net -j DROP
+## Modified debia commands
+iptables -A FORWARD -p udp -m string --algo bm --string "BitTorrent" -j DROP
+iptables -A FORWARD -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -A FORWARD -p udp -m string --algo bm --string "peer_id=" -j DROP
+iptables -A FORWARD -p udp -m string --algo bm --string ".torrent" -j DROP
+iptables -A FORWARD -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -A FORWARD -p udp -m string --algo bm --string "torrent" -j DROP
+iptables -A FORWARD -p udp -m string --algo bm --string "announce" -j DROP
+iptables -A FORWARD -p udp -m string --algo bm --string "info_hash" -j DROP
+iptables -A FORWARD -p udp -m string --algo bm --string "tracker" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string "BitTorrent" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string "peer_id=" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string ".torrent" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -A INPUT -p udp -m string --algo bm --string "torrent" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string "announce" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string "info_hash" -j DROP
+iptables -A INPUT -p udp -m string --algo bm --string "tracker" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string "BitTorrent" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string "peer_id=" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string ".torrent" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -I INPUT -p udp -m string --algo bm --string "torrent" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string "announce" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string "info_hash" -j DROP
+iptables -I INPUT -p udp -m string --algo bm --string "tracker" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string "BitTorrent" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string "peer_id=" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string ".torrent" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -D INPUT -p udp -m string --algo bm --string "torrent" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string "announce" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string "info_hash" -j DROP
+iptables -D INPUT -p udp -m string --algo bm --string "tracker" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string "BitTorrent" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string "peer_id=" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string ".torrent" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -I OUTPUT -p udp -m string --algo bm --string "torrent" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string "announce" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string "info_hash" -j DROP
+iptables -I OUTPUT -p udp -m string --algo bm --string "tracker" -j DROP
+## Delete
+iptables -D INPUT -m string --algo bm --string "BitTorrent" -j DROP
+iptables -D INPUT -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -D INPUT -m string --algo bm --string "peer_id=" -j DROP
+iptables -D INPUT -m string --algo bm --string ".torrent" -j DROP
+iptables -D INPUT -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -D INPUT -m string --algo bm --string "torrent" -j DROP
+iptables -D INPUT -m string --algo bm --string "announce" -j DROP
+iptables -D INPUT -m string --algo bm --string "info_hash" -j DROP
+iptables -D INPUT -m string --algo bm --string "tracker" -j DROP
+iptables -D OUTPUT -m string --algo bm --string "BitTorrent" -j DROP
+iptables -D OUTPUT -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -D OUTPUT -m string --algo bm --string "peer_id=" -j DROP
+iptables -D OUTPUT -m string --algo bm --string ".torrent" -j DROP
+iptables -D OUTPUT -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -D OUTPUT -m string --algo bm --string "torrent" -j DROP
+iptables -D OUTPUT -m string --algo bm --string "announce" -j DROP
+iptables -D OUTPUT -m string --algo bm --string "info_hash" -j DROP
+iptables -D OUTPUT -m string --algo bm --string "tracker" -j DROP
+iptables -D FORWARD -m string --algo bm --string "BitTorrent" -j DROP
+iptables -D FORWARD -m string --algo bm --string "BitTorrent protocol" -j DROP
+iptables -D FORWARD -m string --algo bm --string "peer_id=" -j DROP
+iptables -D FORWARD -m string --algo bm --string ".torrent" -j DROP
+iptables -D FORWARD -m string --algo bm --string "announce.php?passkey=" -j DROP 
+iptables -D FORWARD -m string --algo bm --string "torrent" -j DROP
+iptables -D FORWARD -m string --algo bm --string "announce" -j DROP
+iptables -D FORWARD -m string --algo bm --string "info_hash" -j DROP
+iptables -D FORWARD -m string --algo bm --string "tracker" -j DROP  
+*mangle
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+COMMIT
+END
+sed -i $MYIP2 /etc/iptables.up.rules;
+iptables-restore < /etc/iptables.up.rules
 
 # Custom Banner SSH
-wget -O /etc/issue.net "https://github.com/emue25/cream/raw/mei/bannerssh"
+wget -O /etc/issue.net "https://raw.githubusercontent.com/emue25/cream/mei/bannerssh"
 chmod +x /etc/issue.net
 
 echo "Banner /etc/issue.net" >> /etc/ssh/sshd_config
@@ -267,7 +479,7 @@ echo "DROPBEAR_BANNER="/etc/issue.net"" >> /etc/default/dropbear
 
 # install fail2ban
 apt-get -y install fail2ban
-service fail2ban restart
+/etc/init.d/fail2ban restart
 
 # Instal DDOS Flate
 if [ -d '/usr/local/ddos' ]; then
@@ -297,36 +509,25 @@ echo 'Config file is at /usr/local/ddos/ddos.conf'
 echo 'Please send in your comments and/or suggestions to zaf@vsnl.com'
 
 # download script
-cd /usr/bin
-wget -O menu "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/menu.sh"
-wget -O usernew "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/usernew.sh"
-wget -O trial "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/trial.sh"
-wget -O hapus "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/hapus.sh"
-wget -O cek "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/user-login.sh"
-wget -O member "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/user-list.sh"
-wget -O jurus69 "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/restart.sh"
-wget -O speedtest "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/speedtest_cli.py"
-wget -O info "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/info.sh"
-wget -O about "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/about.sh"
-wget -O delete "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/delete.sh"
+cd /usr/local/bin/
+wget "https://github.com/emue25/cream/raw/mei/menu.zip"
+unzip menu.zip
+chmod +x /usr/local/bin/*
+# cronjob
+echo "02 */12 * * * root service dropbear restart" > /etc/cron.d/dropbear
+echo "00 23 * * * root /usr/bin/disable-user-expire" > /etc/cron.d/disable-user-expire
+echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
+#echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
+echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
-echo "0 0 * * * root /sbin/reboot" > /etc/cron.d/reboot
 
-chmod +x menu
-chmod +x usernew
-chmod +x trial
-chmod +x hapus
-chmod +x cek
-chmod +x member
-chmod +x jurus69
-chmod +x speedtest
-chmod +x info
-chmod +x about
-chmod +x delete
+#Create Admin
+useradd admin
+echo "admin:kopet" | chpasswd
 
 # finishing
 cd
-chown -R www-data:www-data /home/vps/public_html
+#chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/ssh restart
 /etc/init.d/dropbear restart
 /etc/init.d/stunnel4 restart
@@ -338,68 +539,63 @@ echo "unset HISTFILE" >> /etc/profile
 
 # info
 clear
-echo "Autoscript Include:" | tee log-install.txt
-echo "===========================================" | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "Service"  | tee -a log-install.txt
-echo "-------"  | tee -a log-install.txt
-echo "OpenSSH   : 22,143"  | tee -a log-install.txt
-echo "Dropbear  : 109,456"  | tee -a log-install.txt
-echo "SSL       : 443"  | tee -a log-install.txt
-echo "Squid3    : 80,8080,3128 (limit to IP SSH)"  | tee -a log-install.txt
-echo "badvpn    : badvpn-udpgw port 7300"  | tee -a log-install.txt
-echo "nginx     : 81"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "Script"  | tee -a log-install.txt
-echo "------"  | tee -a log-install.txt
-echo "menu      : Menampilkan daftar perintah yang tersedia"  | tee -a log-install.txt
-echo "usernew   : Membuat Akun SSH"  | tee -a log-install.txt
-echo "trial     : Membuat Akun Trial"  | tee -a log-install.txt
-echo "hapus     : Menghapus Akun SSH"  | tee -a log-install.txt
-echo "cek       : Cek User Login"  | tee -a log-install.txt
-echo "member    : Cek Member SSH"  | tee -a log-install.txt
-echo "jurus69   : Restart Service dropbear, squid3, stunnel4, vpn, ssh)"  | tee -a log-install.txt
-echo "reboot    : Reboot VPS"  | tee -a log-install.txt
-echo "speedtest : Speedtest VPS"  | tee -a log-install.txt
-echo "info      : Menampilkan Informasi Sistem"  | tee -a log-install.txt
-echo "delete    : auto Delete user expired"  | tee -a log-install.txt
-echo "about     : Informasi tentang script auto install"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
+#echo "Autoscript Include:" | tee log-install.txt
+#echo "===========================================" | tee -a log-install.txt
+#echo ""  | tee -a log-install.txt
+#echo "Service"  | tee -a log-install.txt
+#echo "-------"  | tee -a log-install.txt
+#echo "OpenSSH   : 22,143"  | tee -a log-install.txt
+#echo "Dropbear  : 109,456"  | tee -a log-install.txt
+#echo "SSL       : 443"  | tee -a log-install.txt
+#echo "Squid3    : 80,8080,3128 (limit to IP SSH)"  | tee -a log-install.txt
+#echo "badvpn    : badvpn-udpgw port 7300"  | tee -a log-install.txt
+#echo "nginx     : 81"  | tee -a log-install.txt
+#echo ""  | tee -a log-install.txt
+#echo "Script"  | tee -a log-install.txt
+#echo "------"  | tee -a log-install.txt
+#echo "menu      : Menampilkan daftar perintah yang tersedia"  | tee -a log-install.txt
+#echo "usernew   : Membuat Akun SSH"  | tee -a log-install.txt
+#echo "trial     : Membuat Akun Trial"  | tee -a log-install.txt
+#echo "hapus     : Menghapus Akun SSH"  | tee -a log-install.txt
+#echo "cek       : Cek User Login"  | tee -a log-install.txt
+#echo "member    : Cek Member SSH"  | tee -a log-install.txt
+#echo "jurus69   : Restart Service dropbear, squid3, stunnel4, vpn, ssh)"  | tee -a log-install.txt
+#echo "reboot    : Reboot VPS"  | tee -a log-install.txt
+#echo "speedtest : Speedtest VPS"  | tee -a log-install.txt
+#echo "info      : Menampilkan Informasi Sistem"  | tee -a log-install.txt
+#echo "delete    : auto Delete user expired"  | tee -a log-install.txt
+#echo "about     : Informasi tentang script auto install"  | tee -a log-install.txt
+#echo ""  | tee -a log-install.txt
 
-echo "Fitur lain"  | tee -a log-install.txt
-echo "----------"  | tee -a log-install.txt
-echo "Timezone  : Asia/Jakarta (GMT +7)"  | tee -a log-install.txt
-echo "IPv6      : [off]"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "Modified by hidessh"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "Log Instalasi --> /root/log-install.txt"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "VPS AUTO REBOOT TIAP JAM 12 MALAM"  | tee -a log-install.txt
-echo ""  | tee -a log-install.txt
-echo "==========================================="  | tee -a log-install.txt
+#echo "Fitur lain"  | tee -a log-install.txt
+#echo "----------"  | tee -a log-install.txt
+#echo "Timezone  : Asia/Jakarta (GMT +7)"  | tee -a log-install.txt
+#echo "IPv6      : [off]"  | tee -a log-install.txt
+#echo ""  | tee -a log-install.txt
+#echo "Modified by hidessh"  | tee -a log-install.txt
+#echo ""  | tee -a log-install.txt
+#echo "Log Instalasi --> /root/log-install.txt"  | tee -a log-install.txt
+#echo ""  | tee -a log-install.txt
+#echo "VPS AUTO REBOOT TIAP JAM 12 MALAM"  | tee -a log-install.txt
+#echo ""  | tee -a log-install.txt
+#echo "==========================================="  | tee -a log-install.txt
 cd
 
 # auto Delete Acount SSH Expired
 wget -O /usr/local/bin/userdelexpired "https://www.dropbox.com/s/cwe64ztqk8w622u/userdelexpired?dl=1" && chmod +x /usr/local/bin/userdelexpired
 
-
-rm -f /root/ssh-ws.sh
+#autokill
+#wget https://raw.githubusercontent.com/emue25/cream/mei/autokill.sh && chmod +x autokill.sh && ./autokill.sh
 
 echo "================  install OPENVPN  saya disable======================"
 echo "========================================================="
-# install openvpn debian 9 ( openvpn port 1194 dan 443 )
-#wget https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/openvpn.sh && chmod +x openvpn.sh && bash openvpn.sh
-
 echo "==================== Restart Service ===================="
 echo "========================================================="
 /etc/init.d/ssh restart
+#/etc/init.d/sslh restart
 /etc/init.d/dropbear restart
 /etc/init.d/stunnel4 restart
 /etc/init.d/squid restart
-/etc/init.d/nginx restart
-#/etc/init.d/php5.6-fpm restart
-#/etc/init.d/openvpn restart
 
 # Delete script
-#rm -f /root/openvpn.sh
+rm -f /root/ssh-ws.sh
