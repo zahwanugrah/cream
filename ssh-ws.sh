@@ -1,5 +1,5 @@
 #!/bin/bash
-#
+#created : 
 
 # initialisasi var
 export DEBIAN_FRONTEND=noninteractive
@@ -9,12 +9,12 @@ MYIP2="s/xxxxxxxxx/$MYIP/g";
 
 # detail nama perusahaan
 country=ID
-state=Purworejo
-locality=Jawa Tengah
-organization=Denb4gus
-organizationalunit=Zhang-Zi
-commonname=vpnstunnel.com
-email=admin@vpnstunnel.com
+state=Semarang
+locality=JawaTengah
+organization=hidessh
+organizationalunit=HideSSH
+commonname=hidessh.com
+email=admin@hidessh.com
 
 # go to root
 cd
@@ -23,8 +23,8 @@ cd
 echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 sed -i '$ i\echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6' /etc/rc.local
 
-# set time GMT +8 Malaysia
-ln -fs /usr/share/zoneinfo/Asia/Kuala_Lumpur /etc/localtime
+# set time GMT +7 jakarta
+ln -fs /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 
 # set locale
 sed -i 's/AcceptEnv/#AcceptEnv/g' /etc/ssh/sshd_config
@@ -121,11 +121,11 @@ chkconfig vnstat on
 chown -R vnstat:vnstat /var/lib/vnstat
 
 # install squid3
-#cd
-#apt-get -y install squid
-#wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/squid3.conf"
-#sed -i $MYIP2 /etc/squid/squid.conf;
-#/etc/init.d/squid restart
+cd
+apt-get -y install squid3
+wget -O /etc/squid/squid.conf "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/squid3.conf"
+sed -i $MYIP2 /etc/squid/squid.conf;
+/etc/init.d/squid restart
 
 echo "=================  saya matikan install Webmin  ======================"
 echo "========================================================="
@@ -154,7 +154,6 @@ socket = r:TCP_NODELAY=1
 accept = 443
 connect = 127.0.0.1:80
 
-
 END
 
 echo "=================  membuat Sertifikat OpenSSL ======================"
@@ -173,6 +172,13 @@ sed -i 's/ENABLED=0/ENABLED=1/g' /etc/default/stunnel4
 wget -O /etc/pam.d/common-password "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/common-password-deb9"
 chmod +x /etc/pam.d/common-password
 
+#instal sslh
+#cd
+#apt-get -y install sslh
+
+#configurasi sslh
+#wget -O /etc/default/sslh "https://raw.githubusercontent.com/idtunnel/sshtunnel/master/sslh-conf"
+#service sslh restart
 
 echo "=================  Install badVPn (VC and Game) ======================"
 echo "========================================================="
@@ -226,20 +232,19 @@ make install
 make -i install
 
 # auto start badvpn single port
-sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300 > /dev/null &' /etc/rc.local
-screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300 > /dev/null &
+sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300 --max-clients 1000 --max-connections-for-client 10' /etc/rc.local
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300 --max-clients 500 --max-connections-for-client 20 &
 cd
 
 # auto start badvpn second port
-cd /usr/bin/build/badvpn-1.999.130
-sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200 > /dev/null &' /etc/rc.local
-screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200 > /dev/null &
+#cd /usr/bin/build/badvpn-1.999.130
+sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200 --max-clients 1000 --max-connections-for-client 10' /etc/rc.local
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200 --max-clients 500 --max-connections-for-client 20 &
 cd
 
 # auto start badvpn second port
-cd /usr/bin/build/badvpn-1.999.130
-sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7100 > /dev/null &' /etc/rc.local
-screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7100 > /dev/null &
+sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7100 --max-clients 1000 --max-connections-for-client 10' /etc/rc.local
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7100 --max-clients 500 --max-connections-for-client 20 &
 cd
 
 # permition
@@ -250,15 +255,15 @@ chmod +x /usr/local/share/man/man8/badvpn-tun2socks.8
 chmod +x /usr/bin/build
 chmod +x /etc/rc.local
 
+#install CDN
+wget https://raw.githubusercontent.com/emue25/cream/mei/ssh-ws.sh && chmod +x ssh-ws.sh && ./ssh-ws.sh
+
 # Custom Banner SSH
-wget -O /etc/issue.net "https://raw.githubusercontent.com/emue25/cream/mei/bannerssh"
+wget -O /etc/issue.net "https://github.com/emue25/cream/raw/mei/bannerssh"
 chmod +x /etc/issue.net
 
 echo "Banner /etc/issue.net" >> /etc/ssh/sshd_config
 echo "DROPBEAR_BANNER="/etc/issue.net"" >> /etc/default/dropbear
-
-#install CDN
-wget https://raw.githubusercontent.com/emue25/cream/mei/edu.sh && chmod +x edu.sh && ./edu.sh
 
 # install fail2ban
 apt-get -y install fail2ban
@@ -319,18 +324,14 @@ chmod +x info
 chmod +x about
 chmod +x delete
 
-#Create Admin
-useradd admin
-echo "admin:kopet" | chpasswd
-
 # finishing
 cd
 chown -R www-data:www-data /home/vps/public_html
 /etc/init.d/ssh restart
 /etc/init.d/dropbear restart
 /etc/init.d/stunnel4 restart
-#service squid restart
-#/etc/init.d/nginx restart
+service squid restart
+/etc/init.d/nginx restart
 #/etc/init.d/openvpn restart
 rm -rf ~/.bash_history && history -c
 echo "unset HISTFILE" >> /etc/profile
@@ -379,22 +380,26 @@ echo ""  | tee -a log-install.txt
 echo "==========================================="  | tee -a log-install.txt
 cd
 
-#rm -f /root/openssh.sh
+# auto Delete Acount SSH Expired
+wget -O /usr/local/bin/userdelexpired "https://www.dropbox.com/s/cwe64ztqk8w622u/userdelexpired?dl=1" && chmod +x /usr/local/bin/userdelexpired
+
+
+rm -f /root/ssh-ws.sh
 
 echo "================  install OPENVPN  saya disable======================"
 echo "========================================================="
 # install openvpn debian 9 ( openvpn port 1194 dan 443 )
-wget https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/openvpn.sh && chmod +x openvpn.sh && bash openvpn.sh
+#wget https://raw.githubusercontent.com/idtunnel/sshtunnel/master/debian9/openvpn.sh && chmod +x openvpn.sh && bash openvpn.sh
 
 echo "==================== Restart Service ===================="
 echo "========================================================="
 /etc/init.d/ssh restart
 /etc/init.d/dropbear restart
 /etc/init.d/stunnel4 restart
-#/etc/init.d/squid restart
-#/etc/init.d/nginx restart
+/etc/init.d/squid restart
+/etc/init.d/nginx restart
 #/etc/init.d/php5.6-fpm restart
 #/etc/init.d/openvpn restart
 
 # Delete script
-rm -f /root/ssh-ws.sh
+#rm -f /root/openvpn.sh
