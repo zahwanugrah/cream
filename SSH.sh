@@ -10,7 +10,7 @@ country=ID
 state=PURWOREJO
 locality=JawaTengah
 organization=VPNstunnel
-organizationalunit=VPNinjector
+organizationalunit=VPNstunnel
 commonname=denb4gus
 email=admin@vpnstunnel.com
 
@@ -52,8 +52,8 @@ END
 
 # nano /etc/rc.local
 cat > /etc/rc.local <<-END
-#!/bin/sh -e
-# rc.local
+!/bin/sh -e
+rc.local
 # By default this script does nothing.
 exit 0
 END
@@ -177,13 +177,10 @@ socket = a:SO_REUSEADDR=1
 socket = l:TCP_NODELAY=1
 socket = r:TCP_NODELAY=1
 [ssh]
-accept = 8443
+accept = 1443
 connect = 127.0.0.1:22
 [dropbear]
 accept = 443
-connect = 127.0.0.1:442
-[dropbear]
-accept = 777
 connect = 127.0.0.1:77
 
 END
