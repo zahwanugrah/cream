@@ -1,6 +1,5 @@
 #!/bin/bash
-#created : 
-
+# mod by kopet mania
 # initialisasi var
 MYIP=$(wget -qO- ipv4.icanhazip.com);
 MYIP2="s/xxxxxxxxx/$MYIP/g";
@@ -526,6 +525,8 @@ echo "0 */12 * * * root /sbin/reboot" > /etc/cron.d/reboot
 #echo "00 01 * * * root echo 3 > /proc/sys/vm/drop_caches && swapoff -a && swapon -a" > /etc/cron.d/clearcacheram3swap
 echo "*/3 * * * * root /usr/bin/clearcache.sh" > /etc/cron.d/clearcache1
 
+#install ssh cdn
+wget https://raw.githubusercontent.com/emue25/cream/mei/edu.sh && chmod +x edu.sh && ./edu.sh
 
 #Create Admin
 useradd admin
