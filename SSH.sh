@@ -101,12 +101,15 @@ echo "/bin/false" >> /etc/shells
 echo "/usr/sbin/nologin" >> /etc/shells
 
 # upgade dropbear 2020
+/etc/init.d/dropbear stop
 apt-get install zlib1g-dev
-wget https://raw.githubusercontent.com/emue25/cream/mei/dropbear-2020.81.tar.bz2
-bzip2 -cd dropbear-2020.81.tar.bz2 | tar xvf -
+wget https://mirror.dropbear.nl/mirror/dropbear-2020.81.tar.bz2
+tar -xvjf dropbear-2020.81.tar.bz2
 cd dropbear-2020.81
 ./configure
 make && make install
+mv /usr/sbin/dropbear /usr/sbin/dropbear.old
+ln /usr/local/sbin/dropbear /usr/sbin/dropbear
 /etc/init.d/dropbear restart
 
 echo "=================  install Squid3  ======================"
