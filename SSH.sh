@@ -101,6 +101,7 @@ echo "/usr/sbin/nologin" >> /etc/shells
 
 # upgade dropbear 2020
 /etc/init.d/dropbear stop
+apt-get remove dropbear -y
 apt-get install zlib1g-dev
 wget https://mirror.dropbear.nl/mirror/dropbear-2020.81.tar.bz2
 tar -xvjf dropbear-2020.81.tar.bz2
