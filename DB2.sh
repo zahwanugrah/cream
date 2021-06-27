@@ -193,7 +193,7 @@ socket = l:TCP_NODELAY=1
 socket = r:TCP_NODELAY=1
 TIMEOUTclose = 0
 [ssh]
-accept = 80
+accept = 1443
 connect = 127.0.0.1:22
 
 [openvpn]
@@ -1068,17 +1068,32 @@ function ScriptMessage(){
 
 function InstBadVPN(){
  # Pull BadVPN Binary 64bit or 32bit
-if [ "$(getconf LONG_BIT)" == "64" ]; then
- wget -O /usr/bin/badvpn-udpgw "https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/badvpn-udpgw64"
-else
- wget -O /usr/bin/badvpn-udpgw "https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/badvpn-udpgw"
-fi
+#if [ "$(getconf LONG_BIT)" == "64" ]; then
+ #wget -O /usr/bin/badvpn-udpgw "https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/badvpn-udpgw64"
+#else
+ #wget -O /usr/bin/badvpn-udpgw "https://github.com/johndesu090/AutoScriptDB/raw/master/Files/Plugins/badvpn-udpgw"
+#fi
  # Set BadVPN to Start on Boot via .profile
- sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /root/.profile
+ #sed -i '$ i\screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300' /root/.profile
  # Change Permission to make it Executable
- chmod +x /usr/bin/badvpn-udpgw
+ #chmod +x /usr/bin/badvpn-udpgw
  # Start BadVPN via Screen
- screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
+ #screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
+ cd
+apt-get install -y cmake
+wget -q https://raw.githubusercontent.com/iriszz-my/autoscript/main/FILES/badvpn.zip
+unzip badvpn.zip
+cd badvpn-master
+mkdir build-badvpn
+cd build-badvpn
+cmake .. -DBUILD_NOTHING_BY_DEFAULT=1 -DBUILD_UDPGW=1
+make install
+cd
+rm -r badvpn-master
+rm badvpn.zip
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7100
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7200
+screen -AmdS badvpn badvpn-udpgw --listen-addr 127.0.0.1:7300
 }
 
 
