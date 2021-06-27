@@ -1,7 +1,9 @@
 #!/bin/bash
 # mod by kopet mania
 # initialisasi var
-MYIP=$(wget -qO- ipv4.icanhazip.com);
+export DEBIAN_FRONTEND=noninteractive
+OS=`uname -m`;
+MYIP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0'`;
 MYIP2="s/xxxxxxxxx/$MYIP/g";
 
 # detail nama perusahaan
@@ -51,8 +53,8 @@ END
 
 # nano /etc/rc.local
 cat > /etc/rc.local <<-END
-!/bin/sh -e
-rc.local
+#!/bin/sh -e
+# rc.local
 # By default this script does nothing.
 exit 0
 END
